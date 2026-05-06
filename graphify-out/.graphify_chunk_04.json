@@ -1,0 +1,205 @@
+{
+  "nodes": [
+    {
+      "id": "hero_isometric_layer_stack",
+      "label": "Isometric stacked rounded-square layers",
+      "file_type": "image",
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "hero_wireframe_top_plate",
+      "label": "Upper wireframe rounded-square layer",
+      "file_type": "image",
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "hero_purple_glow_base",
+      "label": "Lower layer with purple neon extrusion",
+      "file_type": "image",
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "hero_dashed_corner_connectors",
+      "label": "Dashed vertical corner alignment guides",
+      "file_type": "image",
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "hero_black_background",
+      "label": "Solid black negative space background",
+      "file_type": "image",
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "hero_platform_stack_metaphor",
+      "label": "Platform / modularity / stack marketing metaphor",
+      "file_type": "image",
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "hero_wireframe_top_plate",
+      "target": "hero_isometric_layer_stack",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "hero_purple_glow_base",
+      "target": "hero_isometric_layer_stack",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "hero_wireframe_top_plate",
+      "target": "hero_purple_glow_base",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "hero_dashed_corner_connectors",
+      "target": "hero_wireframe_top_plate",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "hero_dashed_corner_connectors",
+      "target": "hero_purple_glow_base",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "hero_isometric_layer_stack",
+      "target": "hero_black_background",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "hero_purple_glow_base",
+      "target": "hero_black_background",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "hero_platform_stack_metaphor",
+      "target": "hero_isometric_layer_stack",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.72,
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "hero_wireframe_top_plate",
+      "target": "hero_platform_stack_metaphor",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.64,
+      "source_file": "src/assets/hero.png",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "hero_hg_layer_stack_geometry",
+      "label": "Two-layer isometric stack with corner guides",
+      "nodes": [
+        "hero_wireframe_top_plate",
+        "hero_purple_glow_base",
+        "hero_dashed_corner_connectors"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/assets/hero.png"
+    },
+    {
+      "id": "hero_hg_neon_on_black_identity",
+      "label": "Purple neon glow on black minimalist shell",
+      "nodes": [
+        "hero_purple_glow_base",
+        "hero_black_background",
+        "hero_isometric_layer_stack"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.78,
+      "source_file": "src/assets/hero.png"
+    },
+    {
+      "id": "hero_hg_wireframe_to_solid_contrast",
+      "label": "Wireframe blueprint layer above powered solid base",
+      "nodes": [
+        "hero_wireframe_top_plate",
+        "hero_purple_glow_base",
+        "hero_platform_stack_metaphor"
+      ],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.66,
+      "source_file": "src/assets/hero.png"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
