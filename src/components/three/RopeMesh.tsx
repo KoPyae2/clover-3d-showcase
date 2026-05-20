@@ -5,7 +5,7 @@
 import { useRef, forwardRef, useImperativeHandle } from 'react'
 import * as THREE from 'three'
 
-const TUBE_SEGS_R = 12
+const TUBE_SEGS_R = 6
 /** Max lateral half-separation between strands (world units), strongest mid-span */
 const MAX_SPREAD = 0.013
 
@@ -73,17 +73,18 @@ export const RopeMesh = forwardRef<RopeMeshHandle, object>(function RopeMesh(_pr
     updateStrands(pts: THREE.Vector3[], color: string, ropeStroke: number) {
       if (pts.length < 2) return
 
-      const nextHex = new THREE.Color(color).getHexString()
       const geomSame =
-        ptsMatch(pts, prevPts.current) && prevColorHex.current === nextHex && prevStroke.current === ropeStroke
+        ptsMatch(pts, prevPts.current) && prevColorHex.current === color && prevStroke.current === ropeStroke
       if (geomSame) return
 
       prevPts.current = pts.map((p) => p.clone())
-      prevColorHex.current = nextHex
+      if (prevColorHex.current !== color) {
+        prevColorHex.current = color
+        const c = darken(color)
+        mat.current.color.copy(c)
+      }
       prevStroke.current = ropeStroke
 
-      const c = darken(color)
-      mat.current.color.copy(c)
       mat.current.roughness = 0.66
       mat.current.metalness = 0.24
 

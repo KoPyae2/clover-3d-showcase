@@ -1,55 +1,81 @@
-import { useRef } from 'react'
-import { TRUST_POINTS } from '../../data/showcaseContent'
+import { motion } from 'framer-motion'
+import { PRODUCT } from '../../data/showcaseContent'
 import { useColorStore } from '../../store/useColorStore'
+import { CloverDecor } from '../CloverDecor'
 
 export function FinaleSection() {
-  const { entry, color } = useColorStore()
-  const boxRef = useRef<HTMLDivElement>(null)
+  const { color } = useColorStore()
 
   return (
-    <section id="section-finale" className="page-section finale reveal" aria-label="Closing">
-      <div className="finale__clover-box">
-        <div ref={boxRef} className="finale__inner">
-          <div className="finale__mark" style={{ color }} aria-hidden>
-            <svg viewBox="0 0 80 80" className="finale__clover-svg">
-              <g transform="translate(40,42)" fill="currentColor">
-                {[0, 90, 180, 270].map((deg) => (
-                  <ellipse key={deg} cx="0" cy="-14" rx="12" ry="18" transform={`rotate(${deg})`} />
-                ))}
-                <circle cx="0" cy="0" r="5" />
-              </g>
-            </svg>
-          </div>
-          <h2 className="finale__title">One keychain. Six personalities. Infinite taps.</h2>
-          <p className="finale__text">
-            Clover NFC Keychain is a compact NFC tag you actually want on your keys — {entry.label.toLowerCase()} is
-            only the beginning. Below are sample trust claims; this page is a design study, not a store.
-          </p>
-          <ul className="finale__chips" aria-label="Feature tags">
-            <li className="finale__chip">ISO 14443-A</li>
-            <li className="finale__chip">No battery</li>
-            <li className="finale__chip">3D-printed</li>
-            <li className="finale__chip">WebGL</li>
-          </ul>
-          <ul className="finale__trust">
-            {TRUST_POINTS.map((t) => (
-              <li key={t}>{t}</li>
-            ))}
-          </ul>
-          <div className="finale__cta-row">
-            <button type="button" className="btn btn--primary" disabled title="Dummy — no checkout">
-              &#x2618; Join waitlist (demo)
+    <section
+      id="section-finale"
+      className="page-section py-40 relative overflow-hidden"
+      aria-label="Finale"
+    >
+      <div className="container mx-auto px-6 max-w-6xl relative z-10 lg:pr-[20%]">
+        <div className="w-full text-left">
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="mb-12 inline-block relative"
+          >
+             <div className="absolute inset-0 blur-[60px] opacity-20" style={{ background: color }} />
+             <CloverDecor className="w-32 h-32 relative z-10" color={color} />
+          </motion.div>
+
+          <motion.h2 
+            className="text-5xl md:text-7xl font-black tracking-tighter text-(--ink) mb-8 leading-tight"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Ready for your <br />
+            <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'var(--grad-clover)' }}>next lucky tap?</span>
+          </motion.h2>
+
+          <motion.p 
+            className="text-xl text-(--ink-muted) mb-12 max-w-2xl mr-auto ml-0 font-medium"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            The Clover Series A is more than a keychain. It is a bridge between the physical and digital worlds, crafted to last a lifetime.
+          </motion.p>
+
+          <motion.div 
+            className="flex flex-col sm:flex-row items-center justify-start gap-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            <button className="px-10 py-5 bg-(--ink) text-white text-[0.9rem] font-black uppercase tracking-widest rounded-full hover:scale-105 transition-transform shadow-xl">
+              Buy Now — {PRODUCT.msrp}
             </button>
-            <a className="btn btn--ghost" href="#section-specs">
-              &#x21bb; View specs again
-            </a>
-          </div>
-          <p className="finale__fine">
-            Keyboard: focus swatches with Tab · Enter to change finish. Drag uses primary pointer; reset NFC
-            from the tap section.
-          </p>
+            <button className="px-10 py-5 bg-white border border-black/[0.05] text-(--ink) text-[0.9rem] font-black uppercase tracking-widest rounded-full hover:bg-black hover:text-white transition-all duration-300">
+              View Catalogue
+            </button>
+          </motion.div>
+
+          <motion.p 
+            className="mt-12 text-[0.75rem] font-bold text-(--ink-muted) uppercase tracking-[0.2em]"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+          >
+            Free shipping on all Series A prototypes
+          </motion.p>
         </div>
       </div>
+      
+      {/* Abstract Background Shapes */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-(--clover-soft) rounded-full blur-[150px] opacity-20 -z-10 translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-50 rounded-full blur-[120px] opacity-30 -z-10 -translate-x-1/2 translate-y-1/2" />
     </section>
   )
 }

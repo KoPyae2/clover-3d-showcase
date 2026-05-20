@@ -1,6 +1,6 @@
 /**
  * CloverOverlayScene — full-viewport canvas; rope anchors top; tail pins to eyelet world position.
- * Scan uses eyelet (ring) vs DOM tap target.
+ * Rope pins to eyelet; tap / NFC proximity uses model bbox center vs DOM tap target.
  */
 import { Suspense, useRef, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
@@ -11,54 +11,107 @@ import type { RopeMeshHandle } from './RopeMesh'
 import { useVerletRope } from '../../hooks/useVerletRope'
 import { useDrag } from '../../hooks/useDrag'
 import { useColorStore } from '../../store/useColorStore'
-import { pointInTapTarget } from '../../lib/tapTargetRect'
+import { pointInTapTarget, getTapTargetRect } from '../../lib/tapTargetRect'
 const MAX_TILT_DEG = 25
 
 const SCAN_HOLD_FRAMES = 22
 const _projScratch = new THREE.Vector3()
+const _s2wScratch = new THREE.Vector3()
 
 function worldToClient(
   wp: THREE.Vector3,
   camera: THREE.Camera,
-  canvasRect: DOMRectReadOnly
+  width: number,
+  height: number
 ): { x: number; y: number } {
   _projScratch.copy(wp).project(camera)
-  const x = canvasRect.left + (_projScratch.x * 0.5 + 0.5) * canvasRect.width
-  const y = canvasRect.top + (-_projScratch.y * 0.5 + 0.5) * canvasRect.height
+  const x = (_projScratch.x * 0.5 + 0.5) * width
+  const y = (-_projScratch.y * 0.5 + 0.5) * height
   return { x, y }
 }
 
-function s2w(localX: number, localY: number, cam: THREE.Camera, w: number, h: number) {
-  const v = new THREE.Vector3((localX / w) * 2 - 1, -(localY / h) * 2 + 1, 0.5)
-  v.unproject(cam)
-  const d = v.sub(cam.position).normalize()
-  const t = (0 - cam.position.z) / d.z
-  return cam.position.clone().add(d.multiplyScalar(t))
+function s2w(localX: number, localY: number, cam: THREE.Camera, w: number, h: number, target: THREE.Vector3) {
+  target.set((localX / w) * 2 - 1, -(localY / h) * 2 + 1, 0.5)
+  target.unproject(cam)
+  
+  const dx = target.x - cam.position.x
+  const dy = target.y - cam.position.y
+  const dz = target.z - cam.position.z
+  
+  const len = Math.sqrt(dx * dx + dy * dy + dz * dz)
+  const nx = dx / len
+  const ny = dy / len
+  const nz = dz / len
+  
+  const t = (0 - cam.position.z) / nz
+  return target.set(
+    cam.position.x + nx * t,
+    cam.position.y + ny * t,
+    cam.position.z + nz * t
+  )
 }
 
 const Z_CANVAS = 140
 
+const ropeSettings = {
+  anchorY: 30,
+  anchorZ: 0,
+  ropeTwinSpreadPx: 3,
+  ropeStroke: 0.011,
+  ropeSpan: 1.28,
+  ropeNodes: 10,
+}
+
+const modelSettings = {
+  eyeletOffsetX: -0.0001,
+  eyeletOffsetY: 0,
+  eyeletOffsetZ: 0.001,
+  modelScale: 12.5,
+}
+
 function Scene() {
-  const { camera, size, gl } = useThree()
+  const { camera, size } = useThree()
   const color = useColorStore((s) => s.color)
   const scanTriggered = useColorStore((s) => s.scanTriggered)
   const setModelX = useColorStore((s) => s.setModelX)
   const setScanTriggered = useColorStore((s) => s.setScanTriggered)
   const setModelDragActive = useColorStore((s) => s.setModelDragActive)
-  const ropeSettings = useColorStore((s) => s.ropeSettings)
-  const modelSettings = useColorStore((s) => s.modelSettings)
+  const setCloverScreenX = useColorStore((s) => s.setCloverScreenX)
+  const setCloverScreenY = useColorStore((s) => s.setCloverScreenY)
+  const isAutoScanning = useColorStore((s) => s.isAutoScanning)
+  const setIsAutoScanning = useColorStore((s) => s.setIsAutoScanning)
+
+  const autoScanProgress = useRef(0)
+  const autoScanStartPos = useRef(new THREE.Vector3())
+  const isAutoScanningPrev = useRef(false)
 
   const modelRef = useRef<THREE.Group>(null)
+  /** Local-space point on mesh at pointer down — keeps grab under finger while dragging (vs eyelet snap). */
+  const grabAnchorLocal = useRef(new THREE.Vector3(0, 0, 0))
   const ropeSeg = ropeSettings.ropeSpan / Math.max(ropeSettings.ropeNodes - 1, 1)
-  const rope = useVerletRope(ropeSeg, ropeSettings.ropeNodes, ropeSettings.windStrength, ropeSettings.windFreq)
-  const drag = useDrag(0, setModelDragActive, { mode: 'window', raycastTarget: modelRef })
+  const rope = useVerletRope(ropeSeg, ropeSettings.ropeNodes)
+  const drag = useDrag(0, setModelDragActive, {
+    mode: 'window',
+    raycastTarget: modelRef,
+    onGrabWorld: (worldPoint) => {
+      const g = modelRef.current
+      if (!g) return
+      const lc = worldPoint.clone()
+      g.worldToLocal(lc)
+      grabAnchorLocal.current.copy(lc)
+    },
+  })
   const ropeMeshRef = useRef<RopeMeshHandle>(null)
 
   /** Auto-detected ring point in model space (from bbox); user offsets add on top in real time. */
   const eyeletBaseLocal = useRef(new THREE.Vector3(0, 0.1, 0))
+  /** Bbox centroid in Clover root local space — used as screen-space tap proximity point */
+  const modelCenterLocal = useRef(new THREE.Vector3(0, 0, 0))
   const eyeletEffectiveLocal = useRef(new THREE.Vector3())
   const eyeOffWorld = useRef(new THREE.Vector3())
-  const eyeWorld = useRef(new THREE.Vector3())
+  /** World-space eyelet for rope tail pin while dragging */
+  const eyeWorldPin = useRef(new THREE.Vector3())
+  const tapPointWorld = useRef(new THREE.Vector3())
   const bbDone = useRef(false)
   const modelPos = useRef(new THREE.Vector3(0, -1.0, 0))
   const modelTilt = useRef(0)
@@ -84,34 +137,38 @@ function Scene() {
       const topW = new THREE.Vector3(c.x, box.max.y - 0.014, c.z)
       g.worldToLocal(topW)
       eyeletBaseLocal.current.copy(topW)
+      const centerLocalPt = new THREE.Vector3().copy(c)
+      g.worldToLocal(centerLocalPt)
+      modelCenterLocal.current.copy(centerLocalPt)
       bbDone.current = true
     }
     run()
     const id = setTimeout(run, 500)
     return () => clearTimeout(id)
-  }, [modelSettings.modelScale])
+  }, [])
 
   useFrame(() => {
     const dragging = drag.isDragging.current
-    let tailPin: THREE.Vector3 | undefined
-    if (dragging && drag.dragPos.current) {
-      tailPin = drag.dragPos.current.clone()
-    }
 
     if (wasDragging.current && !dragging) {
       rope.injectTailVelocity(drag.getRelease())
     }
     wasDragging.current = dragging
 
-    const ax = size.width * ropeSettings.anchorX
+    let ax: number
+    // Precise alignment with the header's "Active Finish" dot
+    const containerMaxWidth = 1200
+    const padding = 24
+    const dotCenterOffset = 20
+    if (size.width > containerMaxWidth) {
+      ax = (size.width / 2) + (containerMaxWidth / 2) - padding - dotCenterOffset
+    } else {
+      ax = size.width - padding - dotCenterOffset
+    }
     const ay = ropeSettings.anchorY
-    const anchor = s2w(ax, ay, camera, size.width, size.height)
+    const anchor = s2w(ax, ay, camera, size.width, size.height, _s2wScratch)
     anchor.z += ropeSettings.anchorZ
 
-    rope.simulate(anchor, tailPin)
-    ropeMeshRef.current?.updateStrands(rope.positions(), color, ropeSettings.ropeStroke)
-
-    const tail = rope.tail()
     const g = modelRef.current
 
     const eyeLocal = eyeletEffectiveLocal.current
@@ -120,16 +177,96 @@ function Scene() {
     eyeLocal.y += modelSettings.eyeletOffsetY
     eyeLocal.z += modelSettings.eyeletOffsetZ
 
-    if (g && bbDone.current) {
+    let tailPin: THREE.Vector3 | undefined
+
+    if (isAutoScanning && !dragging) {
+      if (!isAutoScanningPrev.current) {
+        isAutoScanningPrev.current = true
+        autoScanProgress.current = 0
+        autoScanStartPos.current.copy(modelPos.current)
+      }
+
+      autoScanProgress.current = Math.min(autoScanProgress.current + 0.03, 1.2)
+
+      const r = getTapTargetRect()
+      let tx = size.width / 2
+      let ty = size.height / 2
+      if (r) {
+        tx = r.left + r.width / 2
+        ty = r.top + r.height / 2
+      }
+
+      const targetW = new THREE.Vector3()
+      s2w(tx, ty, camera, size.width, size.height, targetW)
+
       const off = eyeOffWorld.current
       off.copy(eyeLocal)
-      off.multiplyScalar(g.scale.x)
-      off.applyQuaternion(g.quaternion)
-      modelPos.current.copy(tail).sub(off)
+      if (g) {
+        off.multiplyScalar(g.scale.x)
+        off.applyQuaternion(g.quaternion)
+      }
+      const desiredModelPos = targetW.clone().sub(off)
+
+      let currentProgress = Math.min(autoScanProgress.current, 1)
+      const t = currentProgress < 0.5 
+        ? 4 * currentProgress * currentProgress * currentProgress 
+        : 1 - Math.pow(-2 * currentProgress + 2, 3) / 2
+
+      modelPos.current.lerpVectors(autoScanStartPos.current, desiredModelPos, t)
+      if (g) {
+        g.position.copy(modelPos.current)
+      }
+
+      const ew = eyeWorldPin.current
+      ew.copy(eyeLocal)
+      if (g) {
+        ew.multiplyScalar(g.scale.x)
+        ew.applyQuaternion(g.quaternion)
+        ew.add(g.position)
+      }
+      tailPin = ew
+
+      if (autoScanProgress.current >= 1.0 && !scanTriggered) {
+        setScanTriggered(true)
+      }
+      if (autoScanProgress.current >= 1.2) {
+        setIsAutoScanning(false)
+        isAutoScanningPrev.current = false
+      }
+    } else {
+      isAutoScanningPrev.current = false
+
+      if (!dragging) {
+        if (g && bbDone.current) {
+          const tail = rope.tail()
+          const off = eyeOffWorld.current
+          off.copy(eyeLocal)
+          off.multiplyScalar(g.scale.x)
+          off.applyQuaternion(g.quaternion)
+          modelPos.current.copy(tail).sub(off)
+          g.position.copy(modelPos.current)
+        } else if (g) {
+          const tail = rope.tail()
+          modelPos.current.copy(tail)
+          g.position.copy(modelPos.current)
+        }
+      }
+    }
+
+    if (dragging && drag.dragPos.current && g && bbDone.current) {
+      const offGrab = eyeOffWorld.current
+      offGrab.copy(grabAnchorLocal.current)
+      offGrab.multiplyScalar(g.scale.x)
+      offGrab.applyQuaternion(g.quaternion)
+      modelPos.current.copy(drag.dragPos.current).sub(offGrab)
       g.position.copy(modelPos.current)
-    } else if (g) {
-      modelPos.current.set(tail.x, tail.y, tail.z)
-      g.position.copy(modelPos.current)
+
+      const ew = eyeWorldPin.current
+      ew.copy(eyeLocal)
+      ew.multiplyScalar(g.scale.x)
+      ew.applyQuaternion(g.quaternion)
+      ew.add(g.position)
+      tailPin = ew
     }
 
     const dx = modelPos.current.x - prevX.current
@@ -140,42 +277,65 @@ function Scene() {
       THREE.MathUtils.degToRad(MAX_TILT_DEG)
     )
     modelTilt.current = THREE.MathUtils.lerp(modelTilt.current, targetTilt, 0.06)
-
     if (g) {
       g.rotation.z = modelTilt.current
     }
 
+    // Run the rope physics simulation
+    rope.simulate(anchor, tailPin)
+
+    ropeMeshRef.current?.updateStrands(rope.positions(), color, ropeSettings.ropeStroke)
+
     setModelX(THREE.MathUtils.lerp(0, modelPos.current.x, 1))
 
-    if (!scanTriggered && g && bbDone.current) {
-      const ew = eyeWorld.current
-      ew.copy(eyeLocal)
-      ew.multiplyScalar(g.scale.x)
-      ew.applyQuaternion(g.quaternion)
-      ew.add(g.position)
-      const rect = gl.domElement.getBoundingClientRect()
-      const { x, y } = worldToClient(ew, camera, rect)
-      const inZone = pointInTapTarget(x, y, 28)
-      scanFrames.current = inZone ? scanFrames.current + 1 : 0
-      if (scanFrames.current >= SCAN_HOLD_FRAMES) {
-        scanFrames.current = 0
-        setScanTriggered(true)
+    // Model-center → screen (tap target / PhoneMockup proximity)
+    if (g && bbDone.current) {
+      const tw = tapPointWorld.current
+      tw.copy(modelCenterLocal.current)
+      tw.multiplyScalar(g.scale.x)
+      tw.applyQuaternion(g.quaternion)
+      tw.add(g.position)
+      
+      const { x, y } = worldToClient(tw, camera, size.width, size.height)
+      setCloverScreenX(x)
+      setCloverScreenY(y)
+
+      if (!scanTriggered) {
+        const inZone = pointInTapTarget(x, y, 28)
+        scanFrames.current = inZone ? scanFrames.current + 1 : 0
+        if (scanFrames.current >= SCAN_HOLD_FRAMES) {
+          scanFrames.current = 0
+          setScanTriggered(true)
+        }
       }
     }
   })
 
   return (
     <>
-      <ambientLight intensity={0.3} />
+      {/*
+        Three-point + hemisphere: defined form without harsh contrast.
+        Clover uses receiveSceneShadow=false so shadow maps don’t stripe thin shells; rope still casts.
+      */}
+      <ambientLight intensity={0.36} color="#f4f6fa" />
+      <hemisphereLight args={['#eef2ff', '#2a2d35', 0.48]} />
+      {/* Key — warm, front-top-right */}
       <directionalLight
-        position={[2, 4, 3]}
-        intensity={1.2}
+        position={[2.6, 5.2, 3.8]}
+        intensity={0.92}
+        color="#fff8f2"
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-bias={-0.00012}
+        shadow-normalBias={0.028}
       />
-      <directionalLight position={[-1, -1, 1]} intensity={0.3} color="#c8d8ff" />
-      <pointLight position={[0, -3, 2]} intensity={1.0} color={color} distance={8} />
+      {/* Fill — cool, opposite side (opens shadows) */}
+      <directionalLight position={[-3.2, 2.4, 1.2]} intensity={0.34} color="#d6e4ff" />
+      {/* Rim — edge read against page background */}
+      <directionalLight position={[-1.2, 3.5, -4]} intensity={0.2} color="#ffffff" />
+      {/* Brand kiss — subtle, near camera side */}
+      <pointLight position={[2.2, 0.8, 4.2]} intensity={0.32} color={color} distance={14} decay={2} />
 
       <RopeMesh ref={ropeMeshRef} />
 
@@ -186,8 +346,7 @@ function Scene() {
           rotation={[Math.PI / 2, 0, 0]}
           scale={modelSettings.modelScale}
           color={color}
-          windSwayX={modelSettings.windSwayX}
-          windSwayY={modelSettings.windSwayY}
+          receiveSceneShadow={false}
         />
       </Suspense>
     </>
@@ -205,6 +364,7 @@ function CloverOverlayCanvas() {
   return (
     <Canvas
       shadows
+      dpr={[1, 1.5]}
       camera={{ position: [0, 0.5, 5], fov: 50 }}
       style={{
         position: 'fixed',
@@ -217,9 +377,12 @@ function CloverOverlayCanvas() {
         transform: 'translateZ(0)',
       }}
       onCreated={({ gl }) => {
+        gl.shadowMap.enabled = true
+        gl.shadowMap.type = THREE.PCFSoftShadowMap
+        gl.toneMapping = THREE.ACESFilmicToneMapping
+        gl.toneMappingExposure = 1.06
         const el = gl.domElement
         el.style.pointerEvents = 'none'
-        el.style.touchAction = 'none'
       }}
     >
       <Scene />

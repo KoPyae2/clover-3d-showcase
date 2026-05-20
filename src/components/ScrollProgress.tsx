@@ -1,33 +1,23 @@
-import { useEffect, useState } from 'react'
+import { motion, useScroll, useSpring } from "framer-motion";
 
 export function ScrollProgress() {
-  const [p, setP] = useState(0)
-
-  useEffect(() => {
-    const onScroll = () => {
-      const el = document.documentElement
-      const max = el.scrollHeight - el.clientHeight
-      setP(max > 0 ? Math.min(1, el.scrollTop / max) : 0)
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [])
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 200,
+    damping: 40,
+    restDelta: 0.001,
+  });
 
   return (
     <div
-      className="scroll-progress"
+      className="fixed top-0 left-0 right-0 z-210 h-[2px] pointer-events-none"
       role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuenow={Math.round(p * 100)}
       aria-label="Scroll progress"
     >
-      <div className="scroll-progress__fill" style={{ transform: `scaleX(${p})` }} />
+      <motion.div
+        className="h-full origin-left bg-(--ink)"
+        style={{ scaleX, opacity: 0.4 }}
+      />
     </div>
-  )
+  );
 }

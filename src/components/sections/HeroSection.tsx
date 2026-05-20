@@ -1,71 +1,263 @@
+import { motion } from 'framer-motion'
 import { ColorSwatches } from './ColorSwatches'
 import { HERO_STATS, PRODUCT } from '../../data/showcaseContent'
+import type { HeroStat } from '../../data/showcaseContent'
 import { useColorStore } from '../../store/useColorStore'
+import { CloverDecor } from '../CloverDecor'
 
-function CloverLeaf({ className, style }: { className?: string; style?: React.CSSProperties }) {
+/* ------------------------------------------------------------------ */
+/*  Icons                                                              */
+/* ------------------------------------------------------------------ */
+
+function BoltIcon() {
   return (
-    <svg viewBox="0 0 80 80" className={className} style={style} aria-hidden="true">
-      <g transform="translate(40,42)" fill="currentColor">
-        {[0, 90, 180, 270].map((deg) => (
-          <ellipse key={deg} cx="0" cy="-14" rx="11" ry="16" transform={`rotate(${deg})`} />
-        ))}
-        <circle cx="0" cy="0" r="4" />
-      </g>
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
     </svg>
   )
 }
 
+function PaletteIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="13.5" cy="6.5" r="0.5" fill="currentColor" />
+      <circle cx="17.5" cy="10.5" r="0.5" fill="currentColor" />
+      <circle cx="8.5" cy="7.5" r="0.5" fill="currentColor" />
+      <circle cx="6.5" cy="12.5" r="0.5" fill="currentColor" />
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-1 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-5.5-4.5-10-10-10z" />
+    </svg>
+  )
+}
+
+function SignalIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 17v4" />
+      <path d="M9 13v8" />
+      <path d="M13 9v12" />
+      <circle cx="19" cy="5" r="1" fill="currentColor" />
+    </svg>
+  )
+}
+
+function MouseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="5" y="2" width="14" height="20" rx="7" />
+      <path d="M12 6v4" />
+    </svg>
+  )
+}
+
+const iconMap: Record<HeroStat['icon'], () => React.ReactElement> = {
+  bolt: BoltIcon,
+  palette: PaletteIcon,
+  signal: SignalIcon,
+}
+
+/* ------------------------------------------------------------------ */
+/*  Decorative Watermarks                                              */
+/* ------------------------------------------------------------------ */
+
+function StarIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} style={style} aria-hidden="true">
+      <path
+        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                           */
+/* ------------------------------------------------------------------ */
+
 export function HeroSection() {
-  const { modelX, color, entry } = useColorStore()
-  const shift = -modelX * 10
+  const { color, entry } = useColorStore()
+
+  const gradientMap: Record<string, string> = {
+    green: "linear-gradient(135deg, #2E6F40 0%, #10b981 100%)",
+    blue: "linear-gradient(135deg, #2563eb 0%, #60a5fa 100%)",
+    red: "linear-gradient(135deg, #dc2626 0%, #f87171 100%)",
+    purple: "linear-gradient(135deg, #7c3aed 0%, #c084fc 100%)",
+    black: "linear-gradient(135deg, #0f172a 0%, #64748b 100%)",
+    yellow: "linear-gradient(135deg, #ca8a04 0%, #facc15 100%)",
+  }
+  const activeGradient = gradientMap[entry.id] || "var(--grad-clover)"
 
   return (
-    <section id="section-hero" className="page-section hero reveal" aria-label="Hero">
-      <CloverLeaf className="clover-bg-leaf" style={{ top: '8%', right: '5%', width: '320px', height: '320px', color }} />
-      <CloverLeaf className="clover-bg-leaf" style={{ bottom: '15%', left: '-3%', width: '200px', height: '200px', color, transform: 'rotate(45deg)' }} />
+    <section
+      id="section-hero"
+      className="page-section min-h-screen relative flex items-center overflow-hidden"
+      aria-label="Hero"
+    >
+      {/* Decorative Blur - Full bleed and smooth transitioning */}
+      <div className="absolute top-1/12 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-20 pointer-events-none transition-all duration-1000" style={{ background: color }} />
+      <div className="absolute bottom-1/10 -left-40 w-[500px] h-[500px] rounded-full blur-[120px] opacity-8 pointer-events-none transition-all duration-1000" style={{ background: 'var(--clover-mid)' }} />
 
-      <div className="hero__inner">
-        <div className="hero__copy" style={{ transform: `translateX(${shift}px)` }}>
-          <p className="hero__eyebrow" style={{ color }}>
-            {PRODUCT.name} · {entry.label}
-          </p>
-          <h1 className="hero__title">
-            Luck you can
-            <span className="hero__title-accent">
-              {' '}wear &amp; tap
-            </span>
-          </h1>
-          <p className="hero__tagline">{entry.tagline}</p>
-          <p className="hero__lead">
-            3D-printed leaf, polished white rim, and passive NFC — wake shortcuts on phones and
-            accessories with a tap. Drag the keychain in 3D, pick a finish, then scroll for story,
-            specs, and the interactive phone demo.
-          </p>
+      {/* Slowly rotating mega clover (right, watermark) */}
+      <motion.div
+        className="absolute z-0 pointer-events-none"
+        style={{ top: '-12%', right: '-10%', color, opacity: 0.055 }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 150, repeat: Infinity, ease: 'linear' }}
+      >
+        <CloverDecor style={{ width: '560px', height: '560px' }} color={color} />
+      </motion.div>
 
-          <ul className="hero__stats" aria-label="Product highlights">
-            {HERO_STATS.map((s) => (
-              <li key={s.k} className="hero__stat">
-                <span className="hero__stat-k">{s.k}</span>
-                <span className="hero__stat-v">{s.v}</span>
-              </li>
-            ))}
-          </ul>
+      {/* Small accent clover bottom-left */}
+      <CloverDecor
+        className="absolute z-0 pointer-events-none"
+        style={{
+          bottom: '6%',
+          left: '-3%',
+          width: '200px',
+          height: '200px',
+          opacity: 0.04,
+          transform: 'rotate(28deg)',
+        }}
+        color={color}
+      />
 
-          <div className="hero__panel">
-            <div className="hero__panel-head">
-              <p className="hero__swatches-label">&#x2618; Finish · live preview</p>
-              <span className="hero__sku" title="Dummy SKU">
-                {entry.sku}
+      {/* Floating star sparkles */}
+      <StarIcon
+        className="absolute z-0"
+        style={{ top: '11%', right: '27%', width: '14px', height: '14px', color, opacity: 0.22 }}
+      />
+      <StarIcon
+        className="absolute z-0"
+        style={{ top: '27%', right: '14%', width: '9px', height: '9px', color, opacity: 0.14 }}
+      />
+      <StarIcon
+        className="absolute z-0"
+        style={{ top: '61%', right: '21%', width: '12px', height: '12px', color, opacity: 0.16 }}
+      />
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 lg:gap-16 items-center">
+          
+          {/* Left Content */}
+          <motion.div
+            className="lg:col-span-8"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <motion.div 
+              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white shadow-sm border border-black/[0.05] mb-8"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: color }} />
+              <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-(--ink)">
+                {PRODUCT.name} <span className="opacity-40">/</span> {entry.label}
               </span>
-            </div>
-            <ColorSwatches />
-          </div>
+            </motion.div>
 
-          <p className="hero__hint" aria-hidden>
-            Scroll to explore · Drag the Clover to move it
-          </p>
+            <motion.h1 
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black mb-6 leading-[0.95] tracking-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Luck you <br className="hidden sm:inline" />
+              can <span 
+                className="text-transparent bg-clip-text transition-all duration-1000" 
+                style={{ backgroundImage: activeGradient }}
+              >
+                wear & tap.
+              </span>
+            </motion.h1>
+
+            <motion.p 
+              className="text-lg md:text-xl text-(--ink-muted) mb-10 max-w-xl font-medium leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <span className="text-(--ink) font-extrabold">{entry.tagline}</span> A 3D-printed masterpiece with passive NFC capabilities. No battery, no charging, just magic.
+            </motion.p>
+
+            {/* Swatches in Hero */}
+            <motion.div 
+              className="bg-white rounded-[32px] p-8 mb-12 w-full max-w-sm sm:max-w-fit shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-black/[0.03]"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <div className="flex flex-col gap-4 min-w-[280px]">
+                <span className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-(--ink-muted) flex items-center gap-2">
+                  <span>Select Finish</span>
+                  <span className="opacity-30">|</span>
+                  <span className="transition-colors duration-300" style={{ color: color }}>{entry.label}</span>
+                </span>
+                <ColorSwatches />
+              </div>
+            </motion.div>
+
+            {/* Features/Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              {HERO_STATS.map((stat, i) => {
+                const Icon = iconMap[stat.icon]
+                return (
+                  <motion.div
+                    key={stat.k}
+                    className="flex flex-col p-6 rounded-[24px] border border-black/[0.03] bg-white transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group shadow-sm hover:shadow-xl"
+                    style={{
+                      borderColor: 'rgba(0, 0, 0, 0.03)',
+                    }}
+                    whileHover={{
+                      borderColor: color,
+                      boxShadow: `0 12px 30px -10px ${entry.glow}`,
+                    }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 + i * 0.1 }}
+                  >
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <div 
+                        className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center transition-all duration-300 group-hover:scale-105"
+                        style={{ color: color, border: `1px solid ${color}20` }}
+                      >
+                        <Icon />
+                      </div>
+                      <span className="text-[0.58rem] font-black uppercase tracking-[0.15em] text-(--ink-muted)">
+                        {stat.k}
+                      </span>
+                    </div>
+                    
+                    <div className="text-[1.1rem] font-black text-(--ink) font-mono tracking-tight leading-none mb-1">
+                      {stat.v}
+                    </div>
+                    
+                    <p className="text-[0.75rem] text-(--ink-muted) leading-snug font-medium">
+                      {stat.sub}
+                    </p>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </motion.div>
+
+          {/* Right Space - Reserved for 3D model */}
+          <div className="hidden lg:flex items-center justify-center relative min-h-[600px] lg:col-span-2">
+             {/* This area is populated by the CloverOverlayScene in App.tsx */}
+             <motion.div 
+                className="absolute bottom-10 left-0 flex items-center gap-3 text-(--ink-muted)"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.5 }}
+                transition={{ delay: 1 }}
+             >
+                <MouseIcon />
+                <span className="text-[0.65rem] font-bold uppercase tracking-widest whitespace-nowrap">Drag to rotate</span>
+             </motion.div>
+          </div>
         </div>
       </div>
     </section>
   )
 }
+

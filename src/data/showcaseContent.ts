@@ -55,8 +55,15 @@ export const FOOTER_LINKS: { label: string; href: string }[] = [
   { label: 'Support', href: '#section-faq' },
 ]
 
-export const HERO_STATS: { k: string; v: string }[] = [
-  { k: 'Tap latency', v: '< 120 ms (lab)' },
-  { k: 'Finishes', v: '6 curated colours' },
-  { k: 'Battery', v: 'None — passive NFC' },
+export interface HeroStat {
+  k: string
+  v: string
+  sub: string
+  icon: 'bolt' | 'palette' | 'signal'
+}
+
+export const HERO_STATS: HeroStat[] = [
+  { k: 'Tap latency', v: '< 120 ms (lab)', sub: 'Snappy, reliable wake — under 120 ms.', icon: 'bolt' },
+  { k: 'Finishes', v: '6 curated colours', sub: 'Pick your vibe — six stunning options.', icon: 'palette' },
+  { k: 'Battery', v: 'None — passive NFC', sub: 'No charging. Ever. Always ready.', icon: 'signal' },
 ]

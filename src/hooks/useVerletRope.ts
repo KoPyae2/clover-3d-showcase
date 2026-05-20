@@ -10,18 +10,15 @@ const ITERS = 10
 const TAIL_CONSTRAINT_SOFT = 0.62
 /** Extra damping near free tail so attachment zone settles calmly */
 const TAIL_EXTRA_DAMP = 0.024
-/** Less wind impulse near free tail so ends don't whip */
-const TAIL_WIND_ATTENUATE = 0.42
 
 interface Node {
   pos: THREE.Vector3
   prev: THREE.Vector3
 }
 
-export function useVerletRope(segLen = 0.13, count = 18, windStrength = 0.002, windFreq = 0.3) {
+export function useVerletRope(segLen = 0.13, count = 18) {
   const nodes = useRef<Node[]>([])
   const ready = useRef(false)
-  const windTime = useRef(0)
 
   const _edgeDelta = useRef(new THREE.Vector3())
 
@@ -44,10 +41,6 @@ export function useVerletRope(segLen = 0.13, count = 18, windStrength = 0.002, w
     }
     const ns = nodes.current
 
-    windTime.current += 0.016
-    const windX = Math.sin(windTime.current * windFreq) * windStrength
-    const windZ = Math.cos(windTime.current * windFreq * 0.7) * windStrength * 0.5
-
     const denomTail = Math.max(count - 2, 1)
 
     for (let i = 1; i < count; i++) {
@@ -60,12 +53,6 @@ export function useVerletRope(segLen = 0.13, count = 18, windStrength = 0.002, w
       n.prev.copy(n.pos)
       n.pos.add(vel)
       n.pos.y -= GRAVITY
-
-      const windFalloff =
-        pinnedTail ? 1 : 1 - TAIL_WIND_ATTENUATE * tailProx * tailProx
-      const windFactor = (i / count) * Math.max(0.38, windFalloff)
-      n.pos.x += windX * windFactor
-      n.pos.z += windZ * windFactor
     }
 
     for (let iter = 0; iter < ITERS; iter++) {
