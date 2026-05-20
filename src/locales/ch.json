@@ -1,0 +1,189 @@
+{
+  "nav": {
+    "overview": "概览",
+    "story": "故事",
+    "specs": "规格",
+    "tapDemo": "点击演示",
+    "faq": "常见问题",
+    "activeFinish": "当前饰面"
+  },
+  "loading": {
+    "showcase": "3D 展示加载中…"
+  },
+  "hero": {
+    "title1": "好运",
+    "title2": "可以",
+    "title3": "佩戴 & 轻触。",
+    "subtitle": "精密 3D 打印配件，具备无源 NFC 功能。无需电池，无需充电，纯粹魔法。",
+    "selectFinish": "选择饰面",
+    "dragToRotate": "拖动以旋转"
+  },
+  "stats": {
+    "latency": {
+      "k": "触碰延迟",
+      "v": "< 120 毫秒（实验室）",
+      "sub": "每次轻触，快速可靠的连接。"
+    },
+    "finishes": {
+      "k": "饰面",
+      "v": "6 种精选颜色",
+      "sub": "选择你的风格 — 六种惊艳选择。"
+    },
+    "battery": {
+      "k": "电池",
+      "v": "无 — 无源 NFC",
+      "sub": "永不需要充电，随时待命。"
+    }
+  },
+  "product": {
+    "name": "Clover NFC 钥匙扣",
+    "edition": "A系列 — 3D 打印",
+    "msrp": "$34.00",
+    "msrpNote": "演示定价 · 非真实结账",
+    "inStock": "2–4 个工作日内发货",
+    "rating": "4.9",
+    "reviewCount": "128",
+    "badge": "NFC Forum Type 2 · NTAG216"
+  },
+  "storySection": {
+    "subtitle": "设计理念",
+    "titleLine1": "为注重细节的人",
+    "titleLine2": "匠心打造。",
+    "selectColor": "选择颜色"
+  },
+  "colors": {
+    "green": {
+      "label": "标志性绿色",
+      "tagline": "最初的 Clover 色调 — 平衡日常携带。",
+      "storyTitle": "永恒自然",
+      "storyBody": "我们的标志性 Clover 绿体现了成长与从容自信。精心打造，能与天然材料融合，同时在桌面与口袋中保持独特 — 低调致敬幸运，不喧宾夺主。",
+      "highlight1": "高级哑光饰面，搭配蒸汽抛光边缘",
+      "highlight2": "与大地色调和深色硬件完美搭配",
+      "highlight3": "日常携带中最受欢迎的饰面"
+    },
+    "blue": {
+      "label": "极地蓝",
+      "tagline": "适合极简工作空间的清爽冷调点缀。",
+      "storyTitle": "每次触碰，清晰明了",
+      "storyBody": "极地蓝适合喜爱工具精确且清晰的人。每次 NFC 触碰都充满意图，平滑连接物理触摸与数字操作。",
+      "highlight1": "引人注目的高对比度银色边缘搭配",
+      "highlight2": "自然光与棚灯下均呈现鲜艳清晰",
+      "highlight3": "非常适合触发专注模式与效率快捷方式"
+    },
+    "red": {
+      "label": "深红",
+      "tagline": "一款大胆、高辨识度的宣言单品。",
+      "storyTitle": "大胆设计",
+      "storyBody": "深红拒绝沦为背景摆设。当你想让科技彰显个性时，就是这款颜色的选择，融合惊艳美学与轻松智能交互。",
+      "highlight1": "动态创意工作室的活力强调色",
+      "highlight2": "非常适合触发‘勿扰模式’或深度工作状态",
+      "highlight3": "覆以微妙的高级珠光面漆"
+    },
+    "purple": {
+      "label": "薰衣草紫",
+      "tagline": "一种富有创意能量的淡雅科技感色调。",
+      "storyTitle": "静默力量",
+      "storyBody": "薰衣草紫承载创意能量而不浮夸。专为数字艺术家与创作者打造的精致现代色调，让实体工具映射想象力。",
+      "highlight1": "浓郁饱和度，与深色配件形成鲜明对比",
+      "highlight2": "常用于映射创意应用与音乐播放列表",
+      "highlight3": "优雅搭配银色或石墨色风格"
+    },
+    "black": {
+      "label": "曜石黑",
+      "tagline": "流畅、隐秘且精致。",
+      "storyTitle": "隐形智慧",
+      "storyBody": "曜石黑融入你的日常携带，直到边缘捕捉到光线。没有视觉噪点 — 只有纯粹功能与极简形态的完美平衡。",
+      "highlight1": "深哑光石板色搭配利落白色边缘",
+      "highlight2": "超低反射率，真正隐身外观",
+      "highlight3": "任何单色 EDC 装备的终极补充"
+    },
+    "yellow": {
+      "label": "蜂蜜黄",
+      "tagline": "温暖、乐观、一眼可辨。",
+      "storyTitle": "可触的温暖",
+      "storyBody": "蜂蜜黄慷慨而乐观。当你的装备需要多一点活力时，就选这款饰面，让每次数字交互都充满生机与灵动。",
+      "highlight1": "高可见度设计，适合深色背包或深邃口袋",
+      "highlight2": "为现代工作空间增添活力色彩",
+      "highlight3": "与暖光、黄铜和胡桃木纹理相得益彰"
+    }
+  },
+  "specs": {
+    "subtitle": "技术参数",
+    "titleLine1": "精心打造",
+    "titleLine2": "毫不费力。",
+    "labels": {
+      "manufacturing": "制造工艺",
+      "nfc_ic": "NFC 芯片",
+      "wireless": "无线标准",
+      "read_range": "读取距离",
+      "dimensions": "尺寸",
+      "cord": "挂绳",
+      "weight": "重量",
+      "ingress": "防护等级",
+      "warranty": "质保",
+      "certifications": "认证"
+    },
+    "values": {
+      "manufacturing": "FDM / PLA+ 材质机身，蒸汽抛光边缘",
+      "nfc_ic": "NXP NTAG216（用户内存 888 字节）",
+      "wireless": "ISO/IEC 14443 Type A，13.56 MHz",
+      "read_range": "现代智能手机上典型 2–4 厘米",
+      "dimensions": "30 × 38 × 3 毫米（±0.2 毫米）",
+      "cord": "优质编织涤纶，垂长 12 厘米",
+      "weight": "整机 3 克",
+      "ingress": "100% 防水 — NFC 芯片密封于 3D 打印机身内",
+      "warranty": "12 个月有限质保",
+      "certifications": "CE / RoHS 认证"
+    },
+    "standardTitle": "耐用标准",
+    "standardText": "专为 10 万次以上触碰循环而设计。"
+  },
+  "tapDemo": {
+    "subtitle": "交互",
+    "titleLine1": "轻触体验",
+    "titleLine2": "魔法。",
+    "description": "Clover 将精密 3D 打印设计与嵌入式 NFC 技术无缝融合。无需 App —— 只需轻轻一触，即可连通物理与数字世界。",
+    "reset": "重置演示状态",
+    "scanning": "扫描中…",
+    "tapToScan": "点击扫描",
+    "hint": "拖动钥匙扣或点击按钮进行扫描",
+    "steps": {
+      "step1Title": "装备您的 Clover",
+      "step1Desc": "将其挂在钥匙环、背包或挂绳上。精密 3D 打印，轻盈且高度耐用，轻松应对日常携带中的磕碰与刮擦。",
+      "step2Title": "贴近手机轻触",
+      "step2Desc": "将 Clover 靠近任何现代智能手机的 NFC 读取区域，即可瞬间唤醒并触发内嵌智能芯片。",
+      "step3Title": "触发数字操作",
+      "step3Desc": "即时分享您的联系人卡片、启动自定义自动化工作流、触发智能家居场景，或打开直达网站链接。"
+    }
+  },
+  "phone": {
+    "read": "标签已读取",
+    "closer": "请再靠近…",
+    "nfc": "NFC",
+    "detected": "检测到网站链接",
+    "tagLabel": "NFC 标签 · ",
+    "dismiss": "点击卡片关闭"
+  },
+  "faq": {
+    "subtitle": "支持",
+    "title": "常见问题。",
+    "q1": "我需要 App 吗？",
+    "a1": "不需要 App。Clover 使用所有现代智能手机标配的内置 NFC 技术。只需轻触即可。",
+    "q2": "我可以在标签上写入什么？",
+    "a2": "您可以写入 NTAG216 芯片支持的任何内容：网站链接、Wi-Fi 密码、数字名片（vCard），或自定义的智能家居自动化触发指令。",
+    "q3": "每个 Clover 都完全相同吗？",
+    "a3": "由于每个 Clover 都是精密 3D 打印的单件，您可能会注意到表面处理上非常细微、独一无二的差异，让您的钥匙扣成为独一无二的存在。",
+    "q4": "隔着手机壳能使用吗？",
+    "a4": "可以，Clover 能完美穿透大多数标准手机壳工作。只有极厚的手机壳或金属钱包可能会干扰 NFC 信号。"
+  },
+  "footer": {
+    "description": "用极简设计与交互科技重新定义日常携带。随身好运，一触即发。",
+    "product": "产品",
+    "resources": "资源",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "support": "支持",
+    "systemsActive": "系统运行中",
+    "copyright": "Clover Labs 保留所有权利。"
+  }
+}

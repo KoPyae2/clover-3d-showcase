@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { useColorStore } from '../../store/useColorStore'
 import { PhoneMockup } from '../PhoneMockup'
 
 export function TapMockupSection() {
+  const { t } = useTranslation()
   const { scanTriggered, resetScan, color, isAutoScanning, setIsAutoScanning } = useColorStore()
 
   return (
@@ -16,17 +18,16 @@ export function TapMockupSection() {
           
           {/* Left Content */}
           <motion.div
-            className="order-1 lg:order-2 lg:col-span-4 lg:col-start-5"
+            className="order-1 lg:order-2 lg:col-span-4 lg:col-start-5 pr-[20%] lg:pr-0"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-(--clover) mb-6">Interaction</h2>
-            <h3 className="text-4xl md:text-5xl font-black tracking-tight text-(--ink) mb-8">Tap to experience <br />the magic.</h3>
+            <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-(--clover) mb-6">{t('tapDemo.subtitle')}</h2>
+            <h3 className="text-4xl md:text-5xl font-black tracking-tight text-(--ink) mb-8">{t('tapDemo.titleLine1')} <br />{t('tapDemo.titleLine2')}</h3>
             
             <p className="text-lg text-(--ink-muted) leading-relaxed mb-10 max-w-lg">
-              Clover uses high-frequency NFC technology to trigger instant actions on your device. 
-              No app required. Just a simple, physical touch.
+              {t('tapDemo.description')}
             </p>
 
             <div className="space-y-8">
@@ -35,8 +36,8 @@ export function TapMockupSection() {
                      01
                   </div>
                   <div>
-                     <h4 className="text-[0.95rem] font-black text-(--ink) mb-1">Equip your Clover</h4>
-                     <p className="text-[0.82rem] text-(--ink-muted) leading-relaxed">Attach it to your key ring, backpack, or loop it through your belt. Made of grade-5 titanium to withstand daily wear.</p>
+                     <h4 className="text-[0.95rem] font-black text-(--ink) mb-1">{t('tapDemo.steps.step1Title')}</h4>
+                     <p className="text-[0.82rem] text-(--ink-muted) leading-relaxed">{t('tapDemo.steps.step1Desc')}</p>
                   </div>
                </div>
 
@@ -45,8 +46,8 @@ export function TapMockupSection() {
                      02
                   </div>
                   <div>
-                     <h4 className="text-[0.95rem] font-black text-(--ink) mb-1">Tap against phone</h4>
-                     <p className="text-[0.82rem] text-(--ink-muted) leading-relaxed">Bring the keychain close to the top-front of any modern iOS or Android phone to trigger the high-frequency NFC link.</p>
+                     <h4 className="text-[0.95rem] font-black text-(--ink) mb-1">{t('tapDemo.steps.step2Title')}</h4>
+                     <p className="text-[0.82rem] text-(--ink-muted) leading-relaxed">{t('tapDemo.steps.step2Desc')}</p>
                   </div>
                </div>
 
@@ -55,8 +56,8 @@ export function TapMockupSection() {
                      03
                   </div>
                   <div>
-                     <h4 className="text-[0.95rem] font-black text-(--ink) mb-1">Trigger digital actions</h4>
-                     <p className="text-[0.82rem] text-(--ink-muted) leading-relaxed">Instantly load social cards, launch custom shortcut recipes, execute smart home profiles, or load website links.</p>
+                     <h4 className="text-[0.95rem] font-black text-(--ink) mb-1">{t('tapDemo.steps.step3Title')}</h4>
+                     <p className="text-[0.82rem] text-(--ink-muted) leading-relaxed">{t('tapDemo.steps.step3Desc')}</p>
                   </div>
                </div>
             </div>
@@ -70,7 +71,7 @@ export function TapMockupSection() {
                      <path d="M23 4v6h-6" />
                      <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
                   </svg>
-                  Reset Demo State
+                  {t('tapDemo.reset')}
                </button>
             </div>
           </motion.div>
@@ -87,15 +88,14 @@ export function TapMockupSection() {
                style={{ background: color }}
              />
 
-             <div className="relative z-10 w-full max-w-[320px]">
+             <div className="relative z-10 w-60 mx-auto flex flex-col items-center">
                 <PhoneMockup />
                 
-
 
                 {/* Instructions hint */}
                 {!scanTriggered && (
                   <motion.div 
-                    className="absolute -bottom-14 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                    className="mt-6 flex flex-col items-center gap-2 w-full text-center"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
@@ -105,10 +105,10 @@ export function TapMockupSection() {
                       className="px-4 py-2 rounded-full border border-black/10 bg-white/90 backdrop-blur-md shadow-sm text-[0.68rem] font-black uppercase tracking-widest text-(--ink-muted) hover:text-black hover:border-black/25 active:scale-95 transition-all cursor-pointer flex items-center gap-2"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      {isAutoScanning ? 'Scanning...' : 'Tap to scan'}
+                      {isAutoScanning ? t('tapDemo.scanning') : t('tapDemo.tapToScan')}
                     </button>
-                    <p className="text-[0.58rem] font-bold text-(--ink-muted)/60 uppercase tracking-widest pointer-events-none mt-1">
-                      Drag keychain or click button to scan
+                    <p className="text-[0.58rem] font-bold text-(--ink-muted)/60 uppercase tracking-widest pointer-events-none mt-1 whitespace-nowrap">
+                      {t('tapDemo.hint')}
                     </p>
                   </motion.div>
                 )}

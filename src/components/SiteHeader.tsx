@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { useColorStore } from "../store/useColorStore";
 import { CloverDecor } from "./CloverDecor";
 
@@ -11,11 +12,23 @@ const NAV = [
   { label: "FAQ", id: "section-faq" },
 ] as const;
 
+const getNavLabelKey = (id: string) => {
+  if (id === 'section-hero') return 'overview';
+  if (id === 'section-story') return 'story';
+  if (id === 'section-specs') return 'specs';
+  if (id === 'section-tap') return 'tapDemo';
+  if (id === 'section-faq') return 'faq';
+  return '';
+};
+
 export function SiteHeader() {
+  const { t, i18n } = useTranslation();
   const entry = useColorStore((s) => s.entry);
+  const setLanguage = useColorStore((s) => s.setLanguage);
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("section-hero");
+  const [isOpen, setIsOpen] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 20);
@@ -114,7 +127,7 @@ export function SiteHeader() {
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
                 )}
-                <span className="relative z-10">{item.label}</span>
+                <span className="relative z-10">{t(`nav.${getNavLabelKey(item.id)}`)}</span>
               </a>
             );
           })}
@@ -122,12 +135,74 @@ export function SiteHeader() {
 
         {/* Finish Selector Status */}
         <div className="flex items-center gap-4">
+          {/* Language Switcher */}
+          <div className="relative">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/[0.03] border border-black/[0.04] text-[0.7rem] font-bold text-(--ink) hover:bg-black/[0.06] transition-colors cursor-pointer"
+              aria-label="Switch language"
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+              <span>{i18n.language.toUpperCase()}</span>
+              <svg
+                width="8"
+                height="8"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            {isOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+                <div className="absolute right-0 mt-1.5 w-24 bg-white/90 backdrop-blur-md border border-black/[0.05] rounded-xl shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] py-1 z-50 flex flex-col">
+                  {["en", "my", "zh"].map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => {
+                        setLanguage(l);
+                        setIsOpen(false);
+                      }}
+                      className={`px-3 py-1.5 text-left text-[0.7rem] font-bold transition-colors hover:bg-black/[0.04] cursor-pointer ${
+                        i18n.language === l ? "text-(--ink)" : "text-(--ink-muted)"
+                      }`}
+                    >
+                      {l === "en" && "English"}
+                      {l === "my" && "Myanmar"}
+                      {l === "zh" && "Chinese"}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
           <div className="hidden sm:flex flex-col items-end">
             <span className="text-[0.6rem] font-black uppercase tracking-widest text-(--ink-muted) leading-none mb-1">
-              Active Finish
+              {t("nav.activeFinish")}
             </span>
             <span className="text-[0.75rem] font-bold text-(--ink) leading-none">
-              {entry.label}
+              {t(`colors.${entry.id}.label`)}
             </span>
           </div>
           <motion.div 

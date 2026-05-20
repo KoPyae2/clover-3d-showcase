@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { FAQ_ITEMS } from '../../data/showcaseContent'
 
 export function FaqSection() {
+  const { t } = useTranslation()
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
@@ -11,7 +13,7 @@ export function FaqSection() {
       className="page-section py-32"
       aria-label="Frequently Asked Questions"
     >
-      <div className="container mx-auto px-6 max-w-6xl lg:pr-[20%]">
+      <div className="container mx-auto pl-6 pr-[20%] max-w-6xl lg:px-6 lg:pr-[20%]">
         <div className="w-full">
           
           <motion.div
@@ -20,12 +22,12 @@ export function FaqSection() {
             viewport={{ once: true }}
             className="text-left mb-16"
           >
-            <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-(--clover) mb-6">Support</h2>
-            <h3 className="text-4xl md:text-6xl font-black tracking-tight text-(--ink) leading-[1.1]">Common Questions.</h3>
+            <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-(--clover) mb-6">{t('faq.subtitle')}</h2>
+            <h3 className="text-4xl md:text-6xl font-black tracking-tight text-(--ink) leading-[1.1]">{t('faq.title')}</h3>
           </motion.div>
 
           <div className="space-y-4">
-            {FAQ_ITEMS.map((item, i) => {
+            {FAQ_ITEMS.map((_, i) => {
               const isOpen = openIndex === i
               return (
                 <motion.div
@@ -37,14 +39,14 @@ export function FaqSection() {
                   className={`rounded-[24px] border transition-all duration-500 overflow-hidden ${
                     isOpen 
                       ? 'bg-white border-black/[0.08] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)]' 
-                      : 'bg-white/60 backdrop-blur-md border-black/[0.04] hover:bg-white/90 hover:border-black/[0.08]'
+                      : 'bg-white/60 backdrop-blur-md border-black/[0.04] hover:bg-white/90 hover:border-black/[0.08] shadow-sm hover:shadow-md'
                   }`}
                 >
                   <button
                     className="w-full px-8 py-6 flex items-center justify-between text-left cursor-pointer"
                     onClick={() => setOpenIndex(isOpen ? null : i)}
                   >
-                    <span className="text-[1.05rem] font-bold text-(--ink)">{item.q}</span>
+                    <span className="text-[1.05rem] font-bold text-(--ink)">{t(`faq.q${i + 1}`)}</span>
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-300 ${isOpen ? 'bg-(--clover) text-white rotate-45' : 'bg-black/[0.03] text-(--ink)'}`}>
                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                           <line x1="12" y1="5" x2="12" y2="19" />
@@ -63,7 +65,7 @@ export function FaqSection() {
                         className="overflow-hidden"
                       >
                         <div className="px-8 pb-8 text-[0.95rem] text-(--ink-muted) leading-relaxed">
-                           {item.a}
+                           {t(`faq.a${i + 1}`)}
                         </div>
                       </motion.div>
                     )}

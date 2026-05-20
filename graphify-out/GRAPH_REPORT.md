@@ -1,23 +1,24 @@
-# Graph Report - clover  (2026-05-07)
+# Graph Report - clover  (2026-05-20)
 
 ## Corpus Check
-- 28 files · ~10,579 words
+- 29 files · ~15,187 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 103 nodes · 81 edges · 8 communities detected
-- Extraction: 81% EXTRACTED · 19% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.75)
+- 105 nodes · 83 edges · 9 communities detected
+- Extraction: 81% EXTRACTED · 19% INFERRED · 0% AMBIGUOUS · INFERRED: 16 edges (avg confidence: 0.75)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Community 0|Community 0]]
 - [[_COMMUNITY_Community 1|Community 1]]
 - [[_COMMUNITY_Community 2|Community 2]]
-- [[_COMMUNITY_Community 4|Community 4]]
-- [[_COMMUNITY_Community 6|Community 6]]
-- [[_COMMUNITY_Community 11|Community 11]]
-- [[_COMMUNITY_Community 12|Community 12]]
-- [[_COMMUNITY_Community 23|Community 23]]
+- [[_COMMUNITY_Community 3|Community 3]]
+- [[_COMMUNITY_Community 5|Community 5]]
+- [[_COMMUNITY_Community 7|Community 7]]
+- [[_COMMUNITY_Community 13|Community 13]]
+- [[_COMMUNITY_Community 14|Community 14]]
+- [[_COMMUNITY_Community 20|Community 20]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `SVG sprite sheet root` - 6 edges
@@ -34,6 +35,8 @@
 ## Surprising Connections (you probably didn't know these)
 - `App()` --calls--> `useScrollReveal()`  [INFERRED]
   src\App.tsx → src\hooks\useScrollReveal.ts
+- `updateRect()` --calls--> `setTapTargetRect()`  [INFERRED]
+  src\components\PhoneMockup.tsx → src\lib\tapTargetRect.ts
 
 ## Hyperedges (group relationships)
 - **All reusable symbol definitions in one sprite file** — icons_symbol_bluesky, icons_symbol_discord, icons_symbol_documentation, icons_symbol_github, icons_symbol_social, icons_symbol_x [EXTRACTED 1.00]
@@ -60,32 +63,38 @@ Nodes (10): Hot Module Replacement (HMR), eslint-plugin-react-dom, eslint-plugin
 Cohesion: 0.39
 Nodes (8): clipPath bluesky-clip masking Bluesky paths, SVG sprite sheet root, Bluesky butterfly mark (symbol bluesky-icon), Discord logo (symbol discord-icon), Documentation / open-book outline (symbol documentation-icon), GitHub Octocat mark (symbol github-icon), User + badge social outline (symbol social-icon), X (Twitter) logo (symbol x-icon)
 
-### Community 4 - "Community 4"
+### Community 3 - "Community 3"
+Cohesion: 0.29
+Nodes (2): updateRect(), setTapTargetRect()
+
+### Community 5 - "Community 5"
 Cohesion: 0.6
 Nodes (6): Solid black negative space background, Dashed vertical corner alignment guides, Isometric stacked rounded-square layers, Platform / modularity / stack marketing metaphor, Lower layer with purple neon extrusion, Upper wireframe rounded-square layer
 
-### Community 6 - "Community 6"
+### Community 7 - "Community 7"
 Cohesion: 0.4
 Nodes (2): useScrollReveal(), App()
 
-### Community 11 - "Community 11"
+### Community 13 - "Community 13"
 Cohesion: 0.67
 Nodes (3): React atom logo mark (orbits + nucleus), react.svg (React logo brand asset), React brand cyan (#00D8FF)
 
-### Community 12 - "Community 12"
+### Community 14 - "Community 14"
 Cohesion: 0.67
 Nodes (3): Vite, Vite lightning bolt (purple path), Vite logo SVG asset
 
-### Community 23 - "Community 23"
+### Community 20 - "Community 20"
 Cohesion: 1.0
 Nodes (2): React Compiler installation documentation (react.dev), React Compiler
 
 ## Knowledge Gaps
 - **16 isolated node(s):** `Hot Module Replacement (HMR)`, `Oxc`, `SWC`, `React Compiler`, `React Compiler installation documentation (react.dev)` (+11 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 6`** (5 nodes): `useScrollReveal()`, `App()`, `App.tsx`, `useScrollReveal.ts`, `main.tsx`
+- **Thin community `Community 3`** (7 nodes): `hexToRgba()`, `updateRect()`, `getTapTargetRect()`, `pointInTapTarget()`, `setTapTargetRect()`, `PhoneMockup.tsx`, `tapTargetRect.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 23`** (2 nodes): `React Compiler installation documentation (react.dev)`, `React Compiler`
+- **Thin community `Community 7`** (5 nodes): `useScrollReveal()`, `App()`, `App.tsx`, `useScrollReveal.ts`, `main.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 20`** (2 nodes): `React Compiler installation documentation (react.dev)`, `React Compiler`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions

@@ -16,10 +16,10 @@ export const GLOBAL_SPECS: { label: string; value: string }[] = [
   { label: 'NFC IC', value: 'NXP NTAG216 (user memory 888 B)' },
   { label: 'Wireless', value: 'ISO/IEC 14443 Type A, 13.56 MHz' },
   { label: 'Read range', value: 'Typ. 2–4 cm on phones (lab dummy)' },
-  { label: 'Dimensions', value: '42 × 38 × 4.2 mm (±0.2 mm)' },
+  { label: 'Dimensions', value: '30 × 38 × 3 mm (±0.2 mm)' },
   { label: 'Cord', value: 'Braided polyester, 12 cm hang (dummy)' },
-  { label: 'Weight', value: '8.4 g assembled' },
-  { label: 'Ingress', value: 'Not IP rated — avoid soaking' },
+  { label: 'Weight', value: '3 g assembled' },
+  { label: 'Ingress', value: '100% waterproof — NFC chip sealed inside 3D printed body' },
   { label: 'Warranty', value: '12 mo. limited (fictional)' },
   { label: 'Certifications', value: 'CE / RoHS (placeholder text)' },
 ]

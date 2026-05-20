@@ -17,6 +17,7 @@ const MAX_TILT_DEG = 25
 const SCAN_HOLD_FRAMES = 22
 const _projScratch = new THREE.Vector3()
 const _s2wScratch = new THREE.Vector3()
+const _spawnScratch = new THREE.Vector3()
 
 function worldToClient(
   wp: THREE.Vector3,
@@ -80,7 +81,7 @@ function Scene() {
   const setCloverScreenY = useColorStore((s) => s.setCloverScreenY)
   const isAutoScanning = useColorStore((s) => s.isAutoScanning)
   const setIsAutoScanning = useColorStore((s) => s.setIsAutoScanning)
-
+  const time = useRef(0)
   const autoScanProgress = useRef(0)
   const autoScanStartPos = useRef(new THREE.Vector3())
   const isAutoScanningPrev = useRef(false)
@@ -115,9 +116,9 @@ function Scene() {
   const bbDone = useRef(false)
   const modelPos = useRef(new THREE.Vector3(0, -1.0, 0))
   const modelTilt = useRef(0)
-  const prevX = useRef(0)
   const wasDragging = useRef(false)
   const scanFrames = useRef(0)
+  const releaseCooldown = useRef(0)
 
   useEffect(() => {
     bbDone.current = false
@@ -147,7 +148,8 @@ function Scene() {
     return () => clearTimeout(id)
   }, [])
 
-  useFrame(() => {
+  useFrame((_state, delta) => {
+    time.current += delta
     const dragging = drag.isDragging.current
 
     if (wasDragging.current && !dragging) {
@@ -166,6 +168,8 @@ function Scene() {
       ax = size.width - padding - dotCenterOffset
     }
     const ay = ropeSettings.anchorY
+
+    // Anchor is always at its default top-right location
     const anchor = s2w(ax, ay, camera, size.width, size.height, _s2wScratch)
     anchor.z += ropeSettings.anchorZ
 
@@ -178,6 +182,23 @@ function Scene() {
     eyeLocal.z += modelSettings.eyeletOffsetZ
 
     let tailPin: THREE.Vector3 | undefined
+    const SPAWN_DELAY = 0.15
+    const isSpawning = time.current < SPAWN_DELAY
+
+    if (isSpawning) {
+      s2w(size.width / 2, ropeSettings.anchorY - 240, camera, size.width, size.height, _spawnScratch)
+      tailPin = _spawnScratch
+      rope.teleportRoute(anchor, tailPin)
+      
+      if (g) {
+        const off = eyeOffWorld.current
+        off.copy(eyeLocal)
+        off.multiplyScalar(g.scale.x)
+        off.applyQuaternion(g.quaternion)
+        modelPos.current.copy(tailPin).sub(off)
+        g.position.copy(modelPos.current)
+      }
+    }
 
     if (isAutoScanning && !dragging) {
       if (!isAutoScanningPrev.current) {
@@ -186,7 +207,7 @@ function Scene() {
         autoScanStartPos.current.copy(modelPos.current)
       }
 
-      autoScanProgress.current = Math.min(autoScanProgress.current + 0.03, 1.2)
+      autoScanProgress.current = Math.min(autoScanProgress.current + delta / 0.7, 1.2)
 
       const r = getTapTargetRect()
       let tx = size.width / 2
@@ -199,13 +220,7 @@ function Scene() {
       const targetW = new THREE.Vector3()
       s2w(tx, ty, camera, size.width, size.height, targetW)
 
-      const off = eyeOffWorld.current
-      off.copy(eyeLocal)
-      if (g) {
-        off.multiplyScalar(g.scale.x)
-        off.applyQuaternion(g.quaternion)
-      }
-      const desiredModelPos = targetW.clone().sub(off)
+      const desiredModelPos = targetW.clone()
 
       let currentProgress = Math.min(autoScanProgress.current, 1)
       const t = currentProgress < 0.5 
@@ -232,6 +247,7 @@ function Scene() {
       if (autoScanProgress.current >= 1.2) {
         setIsAutoScanning(false)
         isAutoScanningPrev.current = false
+        releaseCooldown.current = 1.0 // 1 second of high-damped elegant slide back
       }
     } else {
       isAutoScanningPrev.current = false
@@ -269,20 +285,32 @@ function Scene() {
       tailPin = ew
     }
 
-    const dx = modelPos.current.x - prevX.current
-    prevX.current = modelPos.current.x
-    const targetTilt = THREE.MathUtils.clamp(
-      -dx * 60,
-      -THREE.MathUtils.degToRad(MAX_TILT_DEG),
-      THREE.MathUtils.degToRad(MAX_TILT_DEG)
-    )
-    modelTilt.current = THREE.MathUtils.lerp(modelTilt.current, targetTilt, 0.06)
     if (g) {
+      const angle = rope.tailAngle()
+      const targetTilt = THREE.MathUtils.clamp(
+        angle,
+        -THREE.MathUtils.degToRad(MAX_TILT_DEG),
+        THREE.MathUtils.degToRad(MAX_TILT_DEG)
+      )
+      modelTilt.current = THREE.MathUtils.lerp(modelTilt.current, targetTilt, 0.15)
       g.rotation.z = modelTilt.current
     }
 
     // Run the rope physics simulation
-    rope.simulate(anchor, tailPin)
+    if (!isSpawning) {
+      let dampingOverride: number | undefined = undefined
+      if (time.current < SPAWN_DELAY + 2.0) {
+        const progress = (time.current - SPAWN_DELAY) / 2.0
+        // Smoothly scale damping back from 0.955 to 0.990 to settle swing gracefully
+        dampingOverride = THREE.MathUtils.lerp(0.955, 0.990, progress)
+      } else if (releaseCooldown.current > 0) {
+        releaseCooldown.current = Math.max(0, releaseCooldown.current - delta)
+        const progress = 1 - releaseCooldown.current // 0 to 1
+        // Smoothly lerp damping from 0.92 (thick air resistance) to 0.990 (free swing)
+        dampingOverride = THREE.MathUtils.lerp(0.92, 0.990, progress)
+      }
+      rope.simulate(anchor, tailPin, dampingOverride)
+    }
 
     ropeMeshRef.current?.updateStrands(rope.positions(), color, ropeSettings.ropeStroke)
 
@@ -370,7 +398,7 @@ function CloverOverlayCanvas() {
         position: 'fixed',
         inset: 0,
         width: '100%',
-        height: '100%',
+        height: '100dvh',
         zIndex: Z_CANVAS,
         background: 'transparent',
         pointerEvents: 'none',

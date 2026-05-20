@@ -5,16 +5,20 @@ export function ColorSwatches() {
   const { activeId, setColor } = useColorStore()
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-4" role="radiogroup" aria-label="Finish colour">
+    <div 
+      className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 py-1" 
+      role="radiogroup" 
+      aria-label="Finish colour"
+    >
       {COLOR_PALETTE.map((paletteEntry) => {
         const isActive = activeId === paletteEntry.id
         return (
-          <div key={paletteEntry.id} className="relative group">
+          <div key={paletteEntry.id} className="relative group shrink-0">
             <motion.button
               type="button"
-              className={`relative w-10 h-10 rounded-2xl cursor-pointer transition-all duration-300 flex items-center justify-center ${
+              className={`relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 flex items-center justify-center ${
                 isActive
-                  ? 'shadow-lg scale-110'
+                  ? 'shadow-md scale-115 ring-2 ring-black/[0.08]'
                   : 'hover:scale-105 bg-white shadow-sm border border-black/[0.05]'
               }`}
               style={{
@@ -27,8 +31,8 @@ export function ColorSwatches() {
               whileTap={{ scale: 0.95 }}
             >
               <div 
-                className={`w-4 h-4 rounded-full transition-transform duration-300 ${
-                  isActive ? 'bg-white scale-125' : 'scale-100 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]'
+                className={`w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full transition-transform duration-300 ${
+                  isActive ? 'bg-white scale-110' : 'scale-100 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]'
                 }`}
                 style={{
                   backgroundColor: isActive ? 'white' : paletteEntry.hex,
@@ -38,10 +42,10 @@ export function ColorSwatches() {
               {isActive && (
                 <motion.div
                   layoutId="swatch-glow"
-                  className="absolute -inset-1 rounded-[20px] blur-md opacity-40 z-[-1]"
+                  className="absolute -inset-1 rounded-[14px] sm:rounded-[20px] blur-md opacity-45 z-[-1]"
                   style={{ backgroundColor: paletteEntry.hex }}
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.4 }}
+                  animate={{ opacity: 0.45 }}
                   transition={{ duration: 0.4 }}
                 />
               )}

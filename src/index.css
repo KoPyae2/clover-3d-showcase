@@ -239,3 +239,101 @@ p {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* ============================================================ */
+/* Myanmar (Burmese) Language Overrides                          */
+/* Applied when <html lang="my"> is set by i18n switcher         */
+/* ============================================================ */
+html[lang="my"],
+html[lang="my"] body {
+  font-family: 'Noto Sans Myanmar', 'Pyidaungsu', 'Myanmar3', sans-serif;
+}
+
+/* Headings: reduce weight + increase line-height for Burmese script */
+html[lang="my"] h1,
+html[lang="my"] h2,
+html[lang="my"] h3,
+html[lang="my"] h4,
+html[lang="my"] h5,
+html[lang="my"] h6 {
+  font-family: 'Noto Sans Myanmar', 'Pyidaungsu', 'Myanmar3', sans-serif;
+  font-weight: 700 !important;   /* Burmese glyphs are too dense at 900 */
+  line-height: 1.5 !important;   /* Stack vowels need breathing room */
+  letter-spacing: 0 !important;  /* Myanmar doesn't benefit from tracking */
+}
+
+/* Hero h1: the massive title needs extra breathing */
+html[lang="my"] section#section-hero h1 {
+  line-height: 1.55 !important;
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+}
+
+/* Body copy: comfortable reading for stacked Myanmar glyphs */
+html[lang="my"] p {
+  font-family: 'Noto Sans Myanmar', 'Pyidaungsu', 'Myanmar3', sans-serif;
+  line-height: 1.9 !important;
+  font-weight: 400;
+}
+
+/* Small labels / uppercase tracking — remove letter-spacing for Myanmar */
+html[lang="my"] span,
+html[lang="my"] a,
+html[lang="my"] button {
+  font-family: 'Noto Sans Myanmar', 'Pyidaungsu', 'Myanmar3', sans-serif;
+  letter-spacing: 0 !important;
+}
+
+/* Nav: allow graceful wrapping instead of clipping */
+html[lang="my"] nav {
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px 6px !important;
+  border-radius: 20px !important;
+}
+
+html[lang="my"] nav a {
+  font-size: 0.65rem !important;
+  padding: 4px 8px !important;
+  white-space: nowrap;
+}
+
+/* Active Finish label — truncate gracefully on narrow space */
+html[lang="my"] .hidden.sm\:flex.flex-col.items-end span {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Stat cards: ensure labels don't overflow */
+html[lang="my"] .font-mono {
+  font-family: 'Noto Sans Myanmar', sans-serif !important;
+  font-size: 0.9rem !important;
+  line-height: 1.4 !important;
+}
+
+/* Reduce uppercase tracking on all small caps labels */
+html[lang="my"] .tracking-widest,
+html[lang="my"] .tracking-\[0\.2em\],
+html[lang="my"] .tracking-\[0\.3em\],
+html[lang="my"] .tracking-\[0\.15em\] {
+  letter-spacing: 0.02em !important;
+}
+
+/* Story section card content */
+html[lang="my"] .text-2xl,
+html[lang="my"] .text-3xl {
+  line-height: 1.5 !important;
+}
+
+/* FAQ content */
+html[lang="my"] .text-\[1\.05rem\] {
+  line-height: 1.6 !important;
+}
+
+/* Footer */
+html[lang="my"] footer p,
+html[lang="my"] footer span,
+html[lang="my"] footer a {
+  line-height: 1.8 !important;
+}

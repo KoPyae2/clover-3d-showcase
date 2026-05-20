@@ -1,6 +1,8 @@
 import { useRef, useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { useColorStore } from '../store/useColorStore'
+import { setTapTargetRect } from '../lib/tapTargetRect'
 
 type ProximityLevel = 'far' | 'near' | 'inside'
 
@@ -22,6 +24,7 @@ const CONFETTI = Array.from({ length: 16 }, (_, i) => ({
 }))
 
 export function PhoneMockup() {
+  const { t } = useTranslation()
   const scanZoneRef = useRef<HTMLDivElement>(null)
   const {
     cloverScreenX,
@@ -48,10 +51,10 @@ export function PhoneMockup() {
   }, [entry.hex, scanTriggered, proximityLevel])
 
   const labelText = scanTriggered
-    ? 'Tag read'
+    ? t('phone.read')
     : proximityLevel === 'near'
-      ? 'Bring closer...'
-      : 'NFC'
+      ? t('phone.closer')
+      : t('phone.nfc')
 
   useEffect(() => {
     if (!scanZoneRef.current || scanTriggered) return
@@ -73,6 +76,90 @@ export function PhoneMockup() {
       }
     }
   }, [cloverScreenX, cloverScreenY, scanTriggered, setScanTriggered])
+
+  // Track the notch client rect in the viewport to let R3F coordinate helper map it to 3D world space
+  useEffect(() => {
+    const updateRect = () => {
+      if (scanZoneRef.current) {
+        const rect = scanZoneRef.current.getBoundingClientRect()
+        setTapTargetRect({
+          left: rect.left,
+          top: rect.top,
+          right: rect.right,
+          bottom: rect.bottom,
+          width: rect.width,
+          height: rect.height,
+        })
+      }
+    }
+
+    // Settle timeout to ensure browser layout is complete
+    const t = setTimeout(updateRect, 100)
+
+    window.addEventListener('resize', updateRect, { passive: true })
+    window.addEventListener('scroll', updateRect, { passive: true })
+    
+    return () => {
+      clearTimeout(t)
+      window.removeEventListener('resize', updateRect)
+      window.removeEventListener('scroll', updateRect)
+      setTapTargetRect(null)
+    }
+  }, [])
+
+  // Play NFC chime sound and trigger haptic vibration on successful scan
+  useEffect(() => {
+    if (scanTriggered) {
+      // 1. Trigger haptic vibration on mobile
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try {
+          navigator.vibrate(60) // Short 60ms click vibration
+        } catch (e) {
+          console.warn('Vibration failed', e)
+        }
+      }
+      
+      // 2. Play synthesized premium NFC chime sound
+      try {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext
+        if (AudioContextClass) {
+          const ctx = new AudioContextClass()
+          
+          // First note (A5, 880Hz)
+          const osc1 = ctx.createOscillator()
+          const gain1 = ctx.createGain()
+          osc1.connect(gain1)
+          gain1.connect(ctx.destination)
+          
+          osc1.type = 'sine'
+          osc1.frequency.setValueAtTime(880, ctx.currentTime)
+          gain1.gain.setValueAtTime(0, ctx.currentTime)
+          gain1.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 0.02)
+          gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15)
+          
+          osc1.start(ctx.currentTime)
+          osc1.stop(ctx.currentTime + 0.15)
+          
+          // Second note (D6, 1174.66Hz) - starts slightly later for a gorgeous double beep
+          const osc2 = ctx.createOscillator()
+          const gain2 = ctx.createGain()
+          osc2.connect(gain2)
+          gain2.connect(ctx.destination)
+          
+          osc2.type = 'sine'
+          osc2.frequency.setValueAtTime(1174.66, ctx.currentTime + 0.08)
+          gain2.gain.setValueAtTime(0, ctx.currentTime + 0.08)
+          gain2.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.10)
+          gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3)
+          
+          osc2.start(ctx.currentTime + 0.08)
+          osc2.stop(ctx.currentTime + 0.3)
+        }
+      } catch (e) {
+        console.warn('Web Audio synthesis failed', e)
+      }
+    }
+  }, [scanTriggered])
 
 
   return (
@@ -243,8 +330,8 @@ export function PhoneMockup() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[0.62rem] font-black uppercase tracking-wider text-sky-500 leading-none mb-0.5">Website Link Detected</p>
-                  <p className="text-[0.55rem] font-bold text-(--ink-muted) leading-none">NFC Tag · {entry.label}</p>
+                  <p className="text-[0.62rem] font-black uppercase tracking-wider text-sky-500 leading-none mb-0.5">{t('phone.detected')}</p>
+                  <p className="text-[0.55rem] font-bold text-(--ink-muted) leading-none">{t('phone.tagLabel')}{t(`colors.${entry.id}.label`)}</p>
                 </div>
               </div>
 
@@ -253,7 +340,7 @@ export function PhoneMockup() {
                   https://clover.ly/{entry.id}
                 </p>
                 <p className="text-[0.58rem] font-bold text-black/35 mt-2 flex items-center gap-1.5">
-                  Tap card to dismiss
+                  {t('phone.dismiss')}
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M18 6L6 18M6 6l12 12" />
                   </svg>

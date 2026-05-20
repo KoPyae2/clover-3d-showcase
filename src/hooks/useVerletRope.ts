@@ -2,14 +2,14 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
 // Frame-based Verlet (gravity/damping are per-frame constants, not dt-scaled)
-const GRAVITY = 0.0045
-const DAMPING = 0.994
+const GRAVITY = 0.003
+const DAMPING = 0.990
 /** Fewer iterations = slightly less rigid rope overall */
 const ITERS = 10
-/** Softer constraint correction on segments closer to the tail (when tail is not pinned). */
-const TAIL_CONSTRAINT_SOFT = 0.62
-/** Extra damping near free tail so attachment zone settles calmly */
-const TAIL_EXTRA_DAMP = 0.024
+/** Softer constraint correction on segments closer to the tail (when tail is not pinned). Set to 0 for a rigid cord. */
+const TAIL_CONSTRAINT_SOFT = 0.0
+/** Extra damping near free tail. Set to 0 for uniform rope dynamics. */
+const TAIL_EXTRA_DAMP = 0.0
 
 interface Node {
   pos: THREE.Vector3
@@ -34,7 +34,7 @@ export function useVerletRope(segLen = 0.13, count = 18) {
     ready.current = true
   }
 
-  function simulate(anchor: THREE.Vector3, pinnedTail?: THREE.Vector3) {
+  function simulate(anchor: THREE.Vector3, pinnedTail?: THREE.Vector3, dampingOverride?: number) {
     if (!ready.current) {
       init(anchor)
       return
@@ -42,12 +42,13 @@ export function useVerletRope(segLen = 0.13, count = 18) {
     const ns = nodes.current
 
     const denomTail = Math.max(count - 2, 1)
+    const activeDamping = dampingOverride !== undefined ? dampingOverride : DAMPING
 
     for (let i = 1; i < count; i++) {
       if (pinnedTail && i === count - 1) continue
       const n = ns[i]
       const tailProx = (count - 1 - i) / denomTail
-      const damp = DAMPING - tailProx * tailProx * TAIL_EXTRA_DAMP
+      const damp = activeDamping - tailProx * tailProx * TAIL_EXTRA_DAMP
 
       const vel = _edgeDelta.current.copy(n.pos).sub(n.prev).multiplyScalar(damp)
       n.prev.copy(n.pos)
@@ -111,5 +112,45 @@ export function useVerletRope(segLen = 0.13, count = 18) {
     ready.current = false
   }
 
-  return { simulate, positions, tail, injectTailVelocity, reset }
+  function teleportRoute(start: THREE.Vector3, end: THREE.Vector3) {
+    if (!ready.current) {
+      nodes.current = Array.from({ length: count }, (_, i) => {
+        const p = new THREE.Vector3().lerpVectors(start, end, i / (count - 1))
+        return { pos: p.clone(), prev: p.clone() }
+      })
+      ready.current = true
+      return
+    }
+    const ns = nodes.current
+    for (let i = 0; i < count; i++) {
+      ns[i].pos.lerpVectors(start, end, i / (count - 1))
+      ns[i].prev.copy(ns[i].pos)
+    }
+  }
+
+  function slideRoute(start: THREE.Vector3, end: THREE.Vector3) {
+    if (!ready.current) {
+      nodes.current = Array.from({ length: count }, (_, i) => {
+        const p = new THREE.Vector3().lerpVectors(start, end, i / (count - 1))
+        return { pos: p.clone(), prev: p.clone() }
+      })
+      ready.current = true
+      return
+    }
+    const ns = nodes.current
+    for (let i = 0; i < count; i++) {
+      ns[i].prev.copy(ns[i].pos)
+      ns[i].pos.lerpVectors(start, end, i / (count - 1))
+    }
+  }
+
+  function tailAngle(): number {
+    if (!ready.current || count < 2) return 0
+    const ns = nodes.current
+    const last = ns[count - 1].pos
+    const prev = ns[count - 2].pos
+    return -Math.atan2(last.x - prev.x, prev.y - last.y)
+  }
+
+  return { simulate, positions, tail, injectTailVelocity, reset, teleportRoute, slideRoute, tailAngle }
 }

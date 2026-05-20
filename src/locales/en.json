@@ -1,0 +1,189 @@
+{
+  "nav": {
+    "overview": "Overview",
+    "story": "Story",
+    "specs": "Specs",
+    "tapDemo": "Tap demo",
+    "faq": "FAQ",
+    "activeFinish": "Active Finish"
+  },
+  "loading": {
+    "showcase": "Loading 3D Showcase"
+  },
+  "hero": {
+    "title1": "Luck you",
+    "title2": "can",
+    "title3": "wear & tap.",
+    "subtitle": "A precision 3D-printed accessory with passive NFC capabilities. No battery, no charging, just magic.",
+    "selectFinish": "Select Finish",
+    "dragToRotate": "Drag to rotate"
+  },
+  "stats": {
+    "latency": {
+      "k": "Tap latency",
+      "v": "< 120 ms (lab)",
+      "sub": "Snappy, reliable connection on every tap."
+    },
+    "finishes": {
+      "k": "Finishes",
+      "v": "6 curated colours",
+      "sub": "Pick your vibe — six stunning options."
+    },
+    "battery": {
+      "k": "Battery",
+      "v": "None — passive NFC",
+      "sub": "No charging. Ever. Always ready."
+    }
+  },
+  "product": {
+    "name": "Clover NFC Keychain",
+    "edition": "Series A — 3D printed",
+    "msrp": "$34.00",
+    "msrpNote": "Demo pricing · not a live checkout",
+    "inStock": "Ships in 2–4 business days",
+    "rating": "4.9",
+    "reviewCount": "128",
+    "badge": "NFC Forum Type 2 · NTAG216"
+  },
+  "storySection": {
+    "subtitle": "The Philosophy",
+    "titleLine1": "Crafted for those who",
+    "titleLine2": "value the details.",
+    "selectColor": "Select Color"
+  },
+  "colors": {
+    "green": {
+      "label": "Signature Green",
+      "tagline": "The original Clover tone — balanced for everyday carry.",
+      "storyTitle": "Timeless & Natural",
+      "storyBody": "Our signature Clover Green embodies growth and calm confidence. Crafted to blend with natural materials while staying distinct on desks and in pockets—a quiet nod to luck without shouting for attention.",
+      "highlight1": "Premium matte finish with a vapor-honed rim",
+      "highlight2": "Seamlessly complements earth tones and dark hardware",
+      "highlight3": "Our most requested finish for everyday carry"
+    },
+    "blue": {
+      "label": "Arctic Blue",
+      "tagline": "A crisp, cool accent for minimalist workspaces.",
+      "storyTitle": "Clarity in Every Touch",
+      "storyBody": "Arctic Blue is for those who prefer their tools precise and legible. Every NFC tap feels intentional, smoothly bridging the gap between physical touch and digital action.",
+      "highlight1": "Striking high-contrast silver rim pairing",
+      "highlight2": "Vibrant clarity under both natural and studio lighting",
+      "highlight3": "Perfect for triggering focus modes and productivity shortcuts"
+    },
+    "red": {
+      "label": "Crimson Red",
+      "tagline": "A bold, high-visibility statement piece.",
+      "storyTitle": "Bold by Design",
+      "storyBody": "Crimson Red refuses to be background furniture. It is the color you choose when you want your tech to make a statement, combining striking aesthetics with effortless smart-device interaction.",
+      "highlight1": "Vibrant accent color for dynamic creative studios",
+      "highlight2": "Ideal for triggering 'Do Not Disturb' or deep work states",
+      "highlight3": "Finished with a subtle, premium pearlescent topcoat"
+    },
+    "purple": {
+      "label": "Lavender",
+      "tagline": "A subtle, tech-forward hue with creative energy.",
+      "storyTitle": "Quiet Power",
+      "storyBody": "Lavender carries creative energy without theatrics. It is a sophisticated, modern shade designed for digital artists and creators who want their physical tools to reflect their imagination.",
+      "highlight1": "Rich saturation that pops against dark accessories",
+      "highlight2": "Popular for mapping to creative apps and music playlists",
+      "highlight3": "Pairs elegantly with silver or graphite aesthetics"
+    },
+    "black": {
+      "label": "Obsidian Black",
+      "tagline": "Sleek, stealthy, and sophisticated.",
+      "storyTitle": "Invisible Intelligence",
+      "storyBody": "Obsidian Black disappears into your everyday carry until the rim catches the light. No visual noise—just pure function and minimalist form operating in perfect balance.",
+      "highlight1": "Deep matte slate paired with a sharp white rim",
+      "highlight2": "Ultra-low reflectance for a true stealth profile",
+      "highlight3": "The ultimate addition to any monochrome EDC setup"
+    },
+    "yellow": {
+      "label": "Honey Yellow",
+      "tagline": "Warm, optimistic, and instantly recognizable.",
+      "storyTitle": "Warmth You Can Feel",
+      "storyBody": "Honey Yellow is generous and optimistic. It is the finish you pick when your setup could use a little more energy, making every digital interaction feel vibrant and alive.",
+      "highlight1": "High-visibility design, perfect for dark bags or deep pockets",
+      "highlight2": "An energetic pop of color for modern workspaces",
+      "highlight3": "Complements warm lighting, brass, and walnut textures"
+    }
+  },
+  "specs": {
+    "subtitle": "Technical Data",
+    "titleLine1": "Engineered to",
+    "titleLine2": "be effortless.",
+    "labels": {
+      "manufacturing": "Manufacturing",
+      "nfc_ic": "NFC IC",
+      "wireless": "Wireless",
+      "read_range": "Read range",
+      "dimensions": "Dimensions",
+      "cord": "Cord",
+      "weight": "Weight",
+      "ingress": "Ingress",
+      "warranty": "Warranty",
+      "certifications": "Certifications"
+    },
+    "values": {
+      "manufacturing": "FDM / PLA+ body, vapor-smoothed rim",
+      "nfc_ic": "NXP NTAG216 (user memory 888 B)",
+      "wireless": "ISO/IEC 14443 Type A, 13.56 MHz",
+      "read_range": "Typ. 2–4 cm on modern smartphones",
+      "dimensions": "30 × 38 × 3 mm (±0.2 mm)",
+      "cord": "Premium braided polyester, 12 cm drop",
+      "weight": "3 g assembled",
+      "ingress": "100% waterproof — NFC chip sealed inside 3D printed body",
+      "warranty": "12-month limited warranty",
+      "certifications": "CE / RoHS certified"
+    },
+    "standardTitle": "Durability Standard",
+    "standardText": "Engineered for 100,000+ tap cycles."
+  },
+  "tapDemo": {
+    "subtitle": "Interaction",
+    "titleLine1": "Tap to experience",
+    "titleLine2": "the magic.",
+    "description": "Clover seamlessly blends precision 3D-printed design with embedded NFC technology. No app required—just a simple, physical touch to connect the physical and digital worlds.",
+    "reset": "Reset Demo State",
+    "scanning": "Scanning...",
+    "tapToScan": "Tap to scan",
+    "hint": "Drag keychain or click button to scan",
+    "steps": {
+      "step1Title": "Equip your Clover",
+      "step1Desc": "Attach it to your keyring, backpack, or lanyard. Precision 3D-printed for a lightweight yet highly durable finish that easily handles the bumps and scrapes of daily wear.",
+      "step2Title": "Tap against phone",
+      "step2Desc": "Bring the Clover close to the NFC reader on any modern smartphone to instantly wake and trigger the embedded smart chip.",
+      "step3Title": "Trigger digital actions",
+      "step3Desc": "Instantly share your contact card, launch custom automated workflows, trigger smart home profiles, or open direct website links."
+    }
+  },
+  "phone": {
+    "read": "Tag read",
+    "closer": "Bring closer...",
+    "nfc": "NFC",
+    "detected": "Website Link Detected",
+    "tagLabel": "NFC Tag · ",
+    "dismiss": "Tap card to dismiss"
+  },
+  "faq": {
+    "subtitle": "Support",
+    "title": "Common Questions.",
+    "q1": "Do I need an app?",
+    "a1": "No app required. Clover uses the built-in NFC technology that comes standard on all modern smartphones. Just tap and go.",
+    "q2": "What can I write to the tag?",
+    "a2": "You can write anything the NTAG216 chip supports: website URLs, Wi-Fi passwords, digital business cards (vCard), or custom smart home automation triggers.",
+    "q3": "Is every Clover identical?",
+    "a3": "Since every Clover is precision 3D-printed individually, you might notice very slight, unique variations in the surface finish that make your keychain one-of-a-kind.",
+    "q4": "Will it work through a phone case?",
+    "a4": "Yes, Clover works perfectly through most standard phone cases. Only extremely thick cases or metal wallets might interfere with the NFC signal."
+  },
+  "footer": {
+    "description": "Redefining everyday carry with minimal design and interactive technology. Luck you can wear and tap.",
+    "product": "Product",
+    "resources": "Resources",
+    "privacy": "Privacy",
+    "terms": "Terms ",
+    "support": "Support",
+    "systemsActive": "Systems Active",
+    "copyright": "Clover Labs. All rights reserved."
+  }
+}

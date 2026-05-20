@@ -56,7 +56,7 @@ export interface CloverModelProps {
   rotation?: [number, number, number]
   scale?: number | [number, number, number]
   color?: string
-  swingVelocity?: number
+
   onPointerDown?: (e: ThreeEvent<PointerEvent>) => void
   /** Sample shadow maps on surfaces — off by default so curved shells avoid shadow‑map stripe artifacts. */
   receiveSceneShadow?: boolean
@@ -78,7 +78,6 @@ export const CloverModel = forwardRef<THREE.Group, CloverModelProps>(function Cl
     rotation = [Math.PI / 2, 0, 0],
     scale = 2.4,
     color = '#4caf82',
-    swingVelocity = 0,
     onPointerDown,
     receiveSceneShadow = false,
   },
@@ -104,14 +103,12 @@ export const CloverModel = forwardRef<THREE.Group, CloverModelProps>(function Cl
       const m = materials[name]
       if (m) stripBakedLineMaps(m)
     }
-  }, [materials])
 
-  useEffect(() => {
+    // Static PBR configuration for leaf and frame materials
     const leafNames = ['3DPrint_Green_Leaf.001', 'Material.002'] as const
     for (const name of leafNames) {
       const mat = materials[name]
       if (mat instanceof THREE.MeshStandardMaterial) {
-        mat.color.set(color)
         mat.roughness = 1
         mat.metalness = 0
         mat.envMapIntensity = 0
@@ -124,6 +121,33 @@ export const CloverModel = forwardRef<THREE.Group, CloverModelProps>(function Cl
       frame.metalness = 0.05
       frame.envMapIntensity = 0
       frame.needsUpdate = true
+    }
+  }, [materials])
+
+  const targetColorRef = useRef(new THREE.Color(color))
+  const initialColorAppliedRef = useRef(false)
+  const scaleBounceRef = useRef(1.0)
+
+  const shakeAngleRef = useRef(0)
+  const shakeVelocityRef = useRef(0)
+  const shakeGroupRef = useRef<THREE.Group>(null)
+
+  useEffect(() => {
+    targetColorRef.current.set(color)
+    if (!initialColorAppliedRef.current) {
+      const leafNames = ['3DPrint_Green_Leaf.001', 'Material.002'] as const
+      for (const name of leafNames) {
+        const mat = materials[name]
+        if (mat instanceof THREE.MeshStandardMaterial) {
+          mat.color.set(color)
+        }
+      }
+      initialColorAppliedRef.current = true
+    } else {
+      // Trigger a subtle, elegant scale pop on color change
+      scaleBounceRef.current = 1.06
+      // Trigger a subtle high-frequency rotational shake — ±2.2 rad/s gives ~9° max with k=220
+      shakeVelocityRef.current = Math.random() > 0.5 ? 2.2 : -2.2
     }
   }, [color, materials])
 
@@ -157,14 +181,41 @@ export const CloverModel = forwardRef<THREE.Group, CloverModelProps>(function Cl
     setColliderRadius(r)
   }, [nodes, scale])
 
-  useFrame(() => {
+  useFrame((_state, delta) => {
     const g = groupRef.current
     if (!g) return
-    const targetZ = (Array.isArray(rotation) ? rotation[2] : 0) + swingVelocity * 0.15
-    g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, targetZ, 0.08)
 
+    // Cap delta to avoid huge jumps after tab-switching
+    const dt = Math.min(delta, 0.06)
+
+    // Smoothly decay scale bounce back to 1.0
+    scaleBounceRef.current = THREE.MathUtils.lerp(scaleBounceRef.current, 1.0, 0.12)
+    const s = typeof scale === 'number' ? scale : scale[0]
+    g.scale.set(s * scaleBounceRef.current, s * scaleBounceRef.current, s * scaleBounceRef.current)
+
+    // Lock x/y axes — z rotation is owned by CloverOverlayScene (rope tilt), don't override it here
     g.rotation.x = Array.isArray(rotation) ? rotation[0] : Math.PI / 2
     g.rotation.y = Array.isArray(rotation) ? rotation[1] : 0
+
+    // ── Inner shake group spring-damper ──────────────────────────────────
+    // k=220 (stiff/snappy), d=14 (slightly underdamped), settles in ~0.3s
+    const k = 220
+    const d = 14
+    const force = -k * shakeAngleRef.current - d * shakeVelocityRef.current
+    shakeVelocityRef.current += force * dt
+    shakeAngleRef.current  += shakeVelocityRef.current * dt
+    if (shakeGroupRef.current) {
+      shakeGroupRef.current.rotation.z = shakeAngleRef.current
+    }
+
+    // Smoothly animate leaf material color changes
+    const leafNames = ['3DPrint_Green_Leaf.001', 'Material.002'] as const
+    for (const name of leafNames) {
+      const mat = materials[name]
+      if (mat instanceof THREE.MeshStandardMaterial) {
+        mat.color.lerp(targetColorRef.current, 0.08)
+      }
+    }
   })
 
   return (
@@ -176,33 +227,36 @@ export const CloverModel = forwardRef<THREE.Group, CloverModelProps>(function Cl
       dispose={null}
     >
       <group position={INNER_POS} rotation={INNER_ROT}>
-        {nodes.Curve003 && (
-          <mesh
-            geometry={nodes.Curve003.geometry}
-            material={materials['3DPrint_Green_Leaf.001']}
-            castShadow
-            receiveShadow={receiveSceneShadow}
-            onPointerDown={onPointerDown}
-          />
-        )}
-        {nodes.Curve003_1 && (
-          <mesh
-            geometry={nodes.Curve003_1.geometry}
-            material={materials['3DPrint_White_Frame.001']}
-            castShadow
-            receiveShadow={receiveSceneShadow}
-            onPointerDown={onPointerDown}
-          />
-        )}
-        {nodes.Curve003_2 && (
-          <mesh
-            geometry={nodes.Curve003_2.geometry}
-            material={materials['Material.002']}
-            castShadow
-            receiveShadow={receiveSceneShadow}
-            onPointerDown={onPointerDown}
-          />
-        )}
+        {/* shakeGroupRef receives the spring-damper jiggle on color change */}
+        <group ref={shakeGroupRef}>
+          {nodes.Curve003 && (
+            <mesh
+              geometry={nodes.Curve003.geometry}
+              material={materials['3DPrint_Green_Leaf.001']}
+              castShadow
+              receiveShadow={receiveSceneShadow}
+              onPointerDown={onPointerDown}
+            />
+          )}
+          {nodes.Curve003_1 && (
+            <mesh
+              geometry={nodes.Curve003_1.geometry}
+              material={materials['3DPrint_White_Frame.001']}
+              castShadow
+              receiveShadow={receiveSceneShadow}
+              onPointerDown={onPointerDown}
+            />
+          )}
+          {nodes.Curve003_2 && (
+            <mesh
+              geometry={nodes.Curve003_2.geometry}
+              material={materials['Material.002']}
+              castShadow
+              receiveShadow={receiveSceneShadow}
+              onPointerDown={onPointerDown}
+            />
+          )}
+        </group>
       </group>
 
       <mesh

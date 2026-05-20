@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { COLOR_PALETTE, useColorStore } from '../../store/useColorStore'
 import { CloverDecor } from '../CloverDecor'
 
 export function StorySection() {
+  const { t } = useTranslation()
   const { activeId, setColor } = useColorStore()
   
   // Find current active finish details
@@ -93,26 +95,69 @@ export function StorySection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="text-left mb-20 lg:max-w-[80%]"
+          className="text-left mb-20 pr-[20%] lg:pr-0 lg:max-w-[80%]"
         >
-          <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-(--clover) mb-6">The Philosophy</h2>
+          <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-(--clover) mb-6">{t('storySection.subtitle')}</h2>
           <h3 className="text-4xl md:text-6xl font-black tracking-tight text-(--ink) leading-[1.05]">
-            Crafted for those who <br />
-            <span className="text-black/30">value the details.</span>
+            {t('storySection.titleLine1')} <br />
+            <span className="text-black/30">{t('storySection.titleLine2')}</span>
           </h3>
+        </motion.div>
+
+        {/* Mobile Swatch Selector (Shown only on mobile to fit screen cleanly without scrolling) */}
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="lg:hidden flex flex-col gap-3 items-start justify-start w-full mb-8 pr-[20%]"
+        >
+          <span className="text-[0.62rem] sm:text-[0.65rem] font-black uppercase tracking-[0.2em] text-(--ink-muted) mb-1 text-left block">
+            {t('storySection.selectColor')}: <span className="font-black ml-1 block sm:inline transition-colors duration-300" style={{ color: activeEntry.hex }}>{t(`colors.${activeEntry.id}.label`)}</span>
+          </span>
+          <div className="flex flex-wrap items-center justify-start gap-2.5 sm:gap-3.5 w-full">
+            {COLOR_PALETTE.map((item) => {
+              const isActive = item.id === activeId
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setColor(item.id)}
+                  className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full cursor-pointer focus:outline-none transition-transform active:scale-95 select-none animate-none"
+                  style={{
+                    border: isActive ? `2px solid ${item.hex}` : '2px solid transparent',
+                    padding: '2px'
+                  }}
+                  aria-label={`Select ${item.label}`}
+                >
+                  <div 
+                    className="w-full h-full rounded-full shadow-sm"
+                    style={{ 
+                      backgroundColor: item.hex,
+                      boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.2)'
+                    }}
+                  />
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeStorySwatchRing"
+                      className="absolute -inset-[4px] rounded-full border border-black/15"
+                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                    />
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </motion.div>
 
         {/* Master Selector and Details Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 items-start">
           
-          {/* Left Column: Interactive Finish List */}
+          {/* Left Column: Interactive Finish List (Desktop only) */}
           <motion.div 
             variants={tabContainerVariants}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="lg:col-span-3 flex flex-row lg:flex-col gap-3 overflow-x-auto pb-4 lg:pb-0 lg:overflow-x-visible no-scrollbar shrink-0 w-full"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="hidden lg:flex lg:col-span-3 flex-col gap-3 w-full"
           >
             {COLOR_PALETTE.map((item) => {
               const isActive = item.id === activeId
@@ -129,7 +174,7 @@ export function StorySection() {
                   }`}
                   role="tab"
                   aria-selected={isActive}
-                  aria-label={`View ${item.label} design story`}
+                  aria-label={`View ${t(`colors.${item.id}.label`)} design story`}
                 >
                   {/* Dynamic Color indicator */}
                   <div className="relative flex items-center justify-center shrink-0 w-10 h-10 rounded-xl overflow-hidden shadow-sm">
@@ -146,10 +191,7 @@ export function StorySection() {
                   {/* Sku & Labels */}
                   <div className="flex-1 min-w-0">
                     <span className="font-bold text-(--ink) text-base block truncate transition-colors duration-300">
-                      {item.label}
-                    </span>
-                    <span className="font-mono text-[0.6rem] font-bold opacity-45 block tracking-wider uppercase truncate mt-0.5">
-                      {item.sku}
+                      {t(`colors.${item.id}.label`)}
                     </span>
                   </div>
 
@@ -198,11 +240,11 @@ export function StorySection() {
                 initial="hidden"
                 animate="show"
                 exit="exit"
-                className="w-full grid grid-cols-1 md:grid-cols-12 gap-8 bg-white rounded-[32px] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-black/[0.03] p-6 md:p-10 relative items-center"
+                className="w-auto mr-[20%] md:mr-0 md:w-full grid grid-cols-1 md:grid-cols-12 gap-8 bg-white rounded-[32px] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-black/[0.03] p-5 md:p-10 relative items-center"
               >
                 
-                {/* 2.1 Card Visual Part: SVG Clover */}
-                <div className="md:col-span-5 flex items-center justify-center p-4 min-h-[280px] relative rounded-[24px] overflow-hidden bg-[#FDFBF7] border border-black/[0.03]">
+                {/* 2.1 Card Visual Part: SVG Clover (Hidden on mobile to let the 3D dangling model be the hero visual, avoiding clutter) */}
+                <div className="hidden md:flex md:col-span-5 items-center justify-center p-4 min-h-[280px] relative rounded-[24px] overflow-hidden bg-[#FDFBF7] border border-black/[0.03]">
                   {/* Rotating breathing layer in background */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <motion.div
@@ -239,19 +281,19 @@ export function StorySection() {
                     variants={textItemVariants}
                     className="text-2xl md:text-3xl font-black text-(--ink) mb-4 tracking-tight"
                   >
-                    {activeEntry.story.title}
+                    {t(`colors.${activeEntry.id}.storyTitle`)}
                   </motion.h4>
                   
                   <motion.p 
                     variants={textItemVariants}
                     className="text-base text-(--ink-muted) leading-relaxed mb-6"
                   >
-                    {activeEntry.story.body}
+                    {t(`colors.${activeEntry.id}.storyBody`)}
                   </motion.p>
                   
                   {/* Highlights checklist */}
                   <ul className="space-y-3.5 mb-8">
-                    {activeEntry.highlights.map((h, i) => (
+                    {Array.from({ length: 3 }).map((_, i) => (
                       <motion.li 
                         key={i}
                         custom={i}
@@ -263,24 +305,11 @@ export function StorySection() {
                             <polyline points="20 6 9 17 4 12" />
                           </svg>
                         </div>
-                        <span className="opacity-90">{h}</span>
+                        <span className="opacity-90">{t(`colors.${activeEntry.id}.highlight${i + 1}`)}</span>
                       </motion.li>
                     ))}
                   </ul>
 
-                  {/* Futuristic NFC specification stats bar */}
-                  <motion.div 
-                    variants={textItemVariants}
-                    className="flex flex-wrap gap-2.5 pt-5 border-t border-black/[0.05]"
-                  >
-                    <div className="px-3 py-1.5 rounded-full bg-black/[0.03] border border-black/[0.04] text-[0.65rem] font-bold text-(--ink) font-mono uppercase tracking-wider">
-                      SKU: <span className="opacity-60">{activeEntry.sku}</span>
-                    </div>
-                    <div className="px-3 py-1.5 rounded-full bg-black/[0.03] border border-black/[0.04] text-[0.65rem] font-bold text-(--ink) font-mono uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full animate-pulse shrink-0" style={{ backgroundColor: activeEntry.hex }} />
-                      NFC: <span className="opacity-60">{activeEntry.nfcUid}</span>
-                    </div>
-                  </motion.div>
                 </motion.div>
 
               </motion.div>
