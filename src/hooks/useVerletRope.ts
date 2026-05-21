@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
+const IS_MOBILE = typeof window !== 'undefined' && Math.min(screen.width, screen.height) < 768
+
 // Frame-based Verlet (gravity/damping are per-frame constants, not dt-scaled)
 const GRAVITY = 0.003
 const DAMPING = 0.990
 /** Fewer iterations = slightly less rigid rope overall */
-const ITERS = 10
+const ITERS = IS_MOBILE ? 6 : 10
 /** Softer constraint correction on segments closer to the tail (when tail is not pinned). Set to 0 for a rigid cord. */
 const TAIL_CONSTRAINT_SOFT = 0.0
 /** Extra damping near free tail. Set to 0 for uniform rope dynamics. */
@@ -101,11 +103,13 @@ export function useVerletRope(segLen = 0.13, count = 18) {
   }
 
   function positions(): THREE.Vector3[] {
-    return nodes.current.map((n) => n.pos.clone())
+    // Return direct references — callers clone before mutating
+    return nodes.current.map((n) => n.pos)
   }
 
   function tail(): THREE.Vector3 {
-    return ready.current ? nodes.current[count - 1].pos.clone() : new THREE.Vector3()
+    // Return direct reference — caller uses .copy() which reads only
+    return ready.current ? nodes.current[count - 1].pos : new THREE.Vector3()
   }
 
   function reset() {

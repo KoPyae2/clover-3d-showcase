@@ -12,12 +12,16 @@ import { useVerletRope } from '../../hooks/useVerletRope'
 import { useDrag } from '../../hooks/useDrag'
 import { useColorStore } from '../../store/useColorStore'
 import { pointInTapTarget, getTapTargetRect } from '../../lib/tapTargetRect'
+
+const IS_MOBILE = typeof window !== 'undefined' && Math.min(screen.width, screen.height) < 768
 const MAX_TILT_DEG = 25
 
 const SCAN_HOLD_FRAMES = 22
 const _projScratch = new THREE.Vector3()
 const _s2wScratch = new THREE.Vector3()
 const _spawnScratch = new THREE.Vector3()
+const _autoTargetW = new THREE.Vector3()
+const _autoDesiredPos = new THREE.Vector3()
 
 function worldToClient(
   wp: THREE.Vector3,
@@ -58,9 +62,9 @@ const ropeSettings = {
   anchorY: 30,
   anchorZ: 0,
   ropeTwinSpreadPx: 3,
-  ropeStroke: 0.011,
+  ropeStroke: IS_MOBILE ? 0.009 : 0.011,
   ropeSpan: 1.28,
-  ropeNodes: 10,
+  ropeNodes: IS_MOBILE ? 8 : 10,
 }
 
 const modelSettings = {
@@ -217,10 +221,9 @@ function Scene() {
         ty = r.top + r.height / 2
       }
 
-      const targetW = new THREE.Vector3()
-      s2w(tx, ty, camera, size.width, size.height, targetW)
+      s2w(tx, ty, camera, size.width, size.height, _autoTargetW)
 
-      const desiredModelPos = targetW.clone()
+      const desiredModelPos = _autoDesiredPos.copy(_autoTargetW)
 
       let currentProgress = Math.min(autoScanProgress.current, 1)
       const t = currentProgress < 0.5 
@@ -353,15 +356,15 @@ function Scene() {
         intensity={0.92}
         color="#fff8f2"
         castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
+        shadow-mapSize-width={IS_MOBILE ? 512 : 2048}
+        shadow-mapSize-height={IS_MOBILE ? 512 : 2048}
         shadow-bias={-0.00012}
         shadow-normalBias={0.028}
       />
       {/* Fill — cool, opposite side (opens shadows) */}
-      <directionalLight position={[-3.2, 2.4, 1.2]} intensity={0.34} color="#d6e4ff" />
+      {!IS_MOBILE && <directionalLight position={[-3.2, 2.4, 1.2]} intensity={0.34} color="#d6e4ff" />}
       {/* Rim — edge read against page background */}
-      <directionalLight position={[-1.2, 3.5, -4]} intensity={0.2} color="#ffffff" />
+      {!IS_MOBILE && <directionalLight position={[-1.2, 3.5, -4]} intensity={0.2} color="#ffffff" />}
       {/* Brand kiss — subtle, near camera side */}
       <pointLight position={[2.2, 0.8, 4.2]} intensity={0.32} color={color} distance={14} decay={2} />
 
@@ -391,8 +394,8 @@ function CloverOverlayCanvas() {
 
   return (
     <Canvas
-      shadows
-      dpr={[1, 1.5]}
+      shadows={IS_MOBILE ? 'basic' : true}
+      dpr={[1, 2]}
       camera={{ position: [0, 0.5, 5], fov: 50 }}
       style={{
         position: 'fixed',
@@ -406,7 +409,7 @@ function CloverOverlayCanvas() {
       }}
       onCreated={({ gl }) => {
         gl.shadowMap.enabled = true
-        gl.shadowMap.type = THREE.PCFSoftShadowMap
+        gl.shadowMap.type = IS_MOBILE ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap
         gl.toneMapping = THREE.ACESFilmicToneMapping
         gl.toneMappingExposure = 1.06
         const el = gl.domElement

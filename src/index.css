@@ -139,6 +139,10 @@ html.lenis {
   mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
   -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
 }
+/* Remove grid overlay on mobile — saves a full compositing layer competing with WebGL */
+@media (max-width: 767px) {
+  #root::before { display: none; }
+}
 
 /* Glassmorphism Utility */
 .glass-panel {

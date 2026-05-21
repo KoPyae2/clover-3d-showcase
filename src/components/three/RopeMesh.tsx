@@ -5,7 +5,8 @@
 import { useRef, forwardRef, useImperativeHandle } from 'react'
 import * as THREE from 'three'
 
-const TUBE_SEGS_R = 6
+const IS_MOBILE = typeof window !== 'undefined' && Math.min(screen.width, screen.height) < 768
+const TUBE_SEGS_R = IS_MOBILE ? 4 : 6
 /** Max lateral half-separation between strands (world units), strongest mid-span */
 const MAX_SPREAD = 0.013
 
@@ -35,9 +36,12 @@ function buildTubeFromPts(
     return p.clone().add(new THREE.Vector3(u, 0, 0))
   })
   const curve = new THREE.CatmullRomCurve3(shifted, false, 'catmullrom', 0.38)
-  const tubular = Math.max(52, Math.max(pts.length - 1, 1) * 12)
+  const segs = Math.max(pts.length - 1, 1)
+  const tubular = IS_MOBILE
+    ? Math.max(16, segs * 4)   // ~24 on mobile (vs 108 desktop)
+    : Math.max(52, segs * 12)
   const r = Math.max(0.001, tubeRadius)
-  return new THREE.TubeGeometry(curve, tubular, r, Math.max(8, TUBE_SEGS_R), false)
+  return new THREE.TubeGeometry(curve, tubular, r, TUBE_SEGS_R, false)
 }
 
 function ptsMatch(a: THREE.Vector3[], b: THREE.Vector3[]) {
@@ -62,8 +66,10 @@ export const RopeMesh = forwardRef<RopeMeshHandle, object>(function RopeMesh(_pr
   const meshA = useRef(new THREE.Mesh(new THREE.BufferGeometry(), mat.current))
   const meshB = useRef(new THREE.Mesh(new THREE.BufferGeometry(), mat.current))
 
-  meshA.current.castShadow = true
-  meshB.current.castShadow = true
+  meshA.current.castShadow = !IS_MOBILE
+  meshB.current.castShadow = !IS_MOBILE
+
+  const frameCounter = useRef(0)
 
   const prevPts = useRef<THREE.Vector3[]>([])
   const prevColorHex = useRef<string>('')
@@ -72,6 +78,12 @@ export const RopeMesh = forwardRef<RopeMeshHandle, object>(function RopeMesh(_pr
   useImperativeHandle(ref, () => ({
     updateStrands(pts: THREE.Vector3[], color: string, ropeStroke: number) {
       if (pts.length < 2) return
+
+      // On mobile, only rebuild geometry every 2nd frame
+      if (IS_MOBILE) {
+        frameCounter.current++
+        if (frameCounter.current % 2 !== 0) return
+      }
 
       const geomSame =
         ptsMatch(pts, prevPts.current) && prevColorHex.current === color && prevStroke.current === ropeStroke
