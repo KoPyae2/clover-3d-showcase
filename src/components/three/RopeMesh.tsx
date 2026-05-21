@@ -2,120 +2,100 @@
  * RopeMesh — two visual strands driven by one physics polyline.
  * Top and bottom offsets vanish so strands meet at anchor and eyelet.
  */
-import { useRef, forwardRef, useImperativeHandle } from 'react'
+import { useRef, forwardRef, useImperativeHandle, useEffect } from 'react'
 import * as THREE from 'three'
+// Import line classes for a lightweight rope band
+import { Line2 } from 'three/examples/jsm/lines/Line2'
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 
+// Detect mobile devices to reduce update frequency
 const IS_MOBILE = typeof window !== 'undefined' && Math.min(screen.width, screen.height) < 768
-const TUBE_SEGS_R = IS_MOBILE ? 4 : 6
-/** Max lateral half-separation between strands (world units), strongest mid-span */
-const MAX_SPREAD = 0.013
 
+/** Helper to darken a hex color for the rope material */
 function darken(hex: string, factor = 0.68): THREE.Color {
   return new THREE.Color(hex).multiplyScalar(factor)
 }
 
-/** Per-sample lateral offset: 0 at top & bottom, sine braid mid-span (strand A/B π apart). */
-function strandLateralOffsets(n: number, strand: 0 | 1): number[] {
-  const phase = strand * Math.PI
-  return Array.from({ length: n }, (_, i) => {
-    const t = i / Math.max(n - 1, 1)
-    const mergeTop = Math.min(1, t / 0.1)
-    const mergeBot = t > 0.72 ? 1 - (t - 0.72) / 0.28 : 1
-    const envelope = mergeTop * mergeBot
-    return Math.sin(Math.PI * t + phase) * MAX_SPREAD * envelope
-  })
-}
-
-function buildTubeFromPts(
-  pts: THREE.Vector3[],
-  tubeRadius: number,
-  lateralOffsets: number[]
-): THREE.TubeGeometry {
-  const shifted = pts.map((p, i) => {
-    const u = lateralOffsets[i] ?? 0
-    return p.clone().add(new THREE.Vector3(u, 0, 0))
-  })
-  const curve = new THREE.CatmullRomCurve3(shifted, false, 'catmullrom', 0.38)
-  const segs = Math.max(pts.length - 1, 1)
-  const tubular = IS_MOBILE
-    ? Math.max(16, segs * 4)   // ~24 on mobile (vs 108 desktop)
-    : Math.max(52, segs * 12)
-  const r = Math.max(0.001, tubeRadius)
-  return new THREE.TubeGeometry(curve, tubular, r, TUBE_SEGS_R, false)
-}
-
-function ptsMatch(a: THREE.Vector3[], b: THREE.Vector3[]) {
-  if (a.length !== b.length) return false
-  return !a.some((p, i) => !p.equals(b[i]))
-}
-
 export interface RopeMeshHandle {
-  /** Single physics backbone; two tubes branch visually mid-rope only */
+  /** Update rope geometry based on physics points */
   updateStrands(pts: THREE.Vector3[], color: string, ropeStroke: number): void
 }
 
 export const RopeMesh = forwardRef<RopeMeshHandle, object>(function RopeMesh(_props, ref) {
-  const mat = useRef(
-    new THREE.MeshStandardMaterial({
-      roughness: 0.68,
-      metalness: 0.22,
+  // Line material – color and width are updated per frame
+  const lineMaterial = useRef(
+    new LineMaterial({
       color: new THREE.Color('#6b7280'),
+      linewidth: 5, // default pixel width; will be adjusted dynamically
+      // resolution must be set for correct screen‑space width handling
     })
   )
 
-  const meshA = useRef(new THREE.Mesh(new THREE.BufferGeometry(), mat.current))
-  const meshB = useRef(new THREE.Mesh(new THREE.BufferGeometry(), mat.current))
+  // Geometry for the line – we reuse the same instance and update its positions
+  const lineGeometry = useRef(new LineGeometry())
+  // The Line2 object that combines geometry + material
+  const line = useRef(new Line2(lineGeometry.current, lineMaterial.current))
 
-  meshA.current.castShadow = !IS_MOBILE
-  meshB.current.castShadow = !IS_MOBILE
+  // Ensure the material knows the canvas resolution (required by LineMaterial)
+  useEffect(() => {
+    const setResolution = () => {
+      lineMaterial.current.resolution.set(window.innerWidth, window.innerHeight)
+    }
+    setResolution()
+    window.addEventListener('resize', setResolution)
+    return () => window.removeEventListener('resize', setResolution)
+  }, [])
 
+  // Mobile: limit geometry rebuilds to every other frame to save work
   const frameCounter = useRef(0)
-
+  // Cache last parameters to avoid redundant updates
   const prevPts = useRef<THREE.Vector3[]>([])
-  const prevColorHex = useRef<string>('')
+  const prevColor = useRef<string>('')
   const prevStroke = useRef<number>(-1)
 
   useImperativeHandle(ref, () => ({
     updateStrands(pts: THREE.Vector3[], color: string, ropeStroke: number) {
       if (pts.length < 2) return
 
-      // On mobile, only rebuild geometry every 2nd frame
       if (IS_MOBILE) {
         frameCounter.current++
-        if (frameCounter.current % 2 !== 0) return
+        if (frameCounter.current % 2 !== 0) return // skip this frame on mobile
       }
 
-      const geomSame =
-        ptsMatch(pts, prevPts.current) && prevColorHex.current === color && prevStroke.current === ropeStroke
-      if (geomSame) return
+      // Quick equality check – if nothing changed we can skip
+      const same =
+        pts.length === prevPts.current.length &&
+        pts.every((p, i) => p.equals(prevPts.current[i])) &&
+        prevColor.current === color &&
+        prevStroke.current === ropeStroke
 
+      if (same) return
+
+      // Update caches
       prevPts.current = pts.map((p) => p.clone())
-      if (prevColorHex.current !== color) {
-        prevColorHex.current = color
-        const c = darken(color)
-        mat.current.color.copy(c)
-      }
+      prevColor.current = color
       prevStroke.current = ropeStroke
 
-      mat.current.roughness = 0.66
-      mat.current.metalness = 0.24
+      // Update line material color (darkened for visual consistency)
+      lineMaterial.current.color.copy(darken(color))
+      // Convert ropeStroke (world units) to a reasonable pixel width
+      const pixelWidth = Math.max(1, ropeStroke * 800) // scaling factor tuned for visibility
+      lineMaterial.current.linewidth = pixelWidth
 
-      const offsA = strandLateralOffsets(pts.length, 0)
-      const offsB = strandLateralOffsets(pts.length, 1)
-
-      const oldGeoms = [meshA.current.geometry, meshB.current.geometry]
-      meshA.current.geometry = buildTubeFromPts(pts, ropeStroke, offsA)
-      meshB.current.geometry = buildTubeFromPts(pts, ropeStroke, offsB)
-      oldGeoms.forEach((g) => {
-        if (g && g !== meshA.current.geometry && g !== meshB.current.geometry) g.dispose()
-      })
+      // Build flat Float32Array of point positions (x, y, z for each point)
+      const positions = new Float32Array(pts.length * 3)
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i]
+        positions[3 * i] = p.x
+        positions[3 * i + 1] = p.y
+        positions[3 * i + 2] = p.z
+      }
+      // Update geometry – setPositions replaces the attribute data
+      lineGeometry.current.setPositions(positions)
     },
   }))
 
-  return (
-    <>
-      <primitive object={meshA.current} />
-      <primitive object={meshB.current} />
-    </>
-  )
+  // Render the line primitive. The <primitive> wrapper lets React Three Fiber handle the object.
+  return <primitive object={line.current} />
 })
