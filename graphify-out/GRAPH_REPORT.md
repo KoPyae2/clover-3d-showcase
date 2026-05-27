@@ -1,7 +1,7 @@
 # Graph Report - clover  (2026-05-27)
 
 ## Corpus Check
-- 28 files · ~14,856 words
+- 28 files · ~14,978 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
