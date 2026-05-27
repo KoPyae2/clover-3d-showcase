@@ -65,7 +65,7 @@ const ropeSettings = {
   ropeTwinSpreadPx: 3,
   ropeStroke: IS_MOBILE ? 0.009 : 0.011,
   ropeSpan: 1.28,
-  ropeNodes: IS_MOBILE ? 8 : 16,
+  ropeNodes: IS_MOBILE ? 12 : 16,
 }
 
 const modelSettings = {

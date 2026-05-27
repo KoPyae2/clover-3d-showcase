@@ -7,43 +7,44 @@ export function SiteFooter() {
   return (
     <footer className="relative mt-20 border-t border-black/[0.05] bg-white/50 backdrop-blur-sm" aria-label="Site footer">
       <div className="max-w-[1200px] mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="flex flex-col md:flex-row justify-between gap-12 md:gap-24">
           {/* Brand */}
-          <div className="md:col-span-2">
+          <div className="flex-1 max-w-md">
             <div className="flex items-center gap-3 mb-6">
               <CloverDecor className="w-8 h-8" color="var(--clover)" />
-              <span className="text-xl font-black tracking-tight text-(--ink)">Clover</span>
+              <span className="text-xl font-black tracking-tighter text-(--ink)">Clover</span>
             </div>
-            <p className="text-[0.95rem] text-(--ink-muted) leading-relaxed max-w-sm mb-8">
+            <p className="text-[0.95rem] text-(--ink-muted) leading-relaxed mb-8">
               {t('footer.description')}
             </p>
           </div>
 
-          {/* Product Links */}
-          <div>
-            <h4 className="text-[0.7rem] font-black uppercase tracking-widest text-(--ink) mb-6">{t('footer.product')}</h4>
-            <ul className="space-y-4">
-              <li><a href="#section-hero" className="text-[0.85rem] text-(--ink-muted) hover:text-(--clover) transition-colors font-medium">{t('nav.overview')}</a></li>
-              <li><a href="#section-story" className="text-[0.85rem] text-(--ink-muted) hover:text-(--clover) transition-colors font-medium">{t('nav.story')}</a></li>
-              <li><a href="#section-specs" className="text-[0.85rem] text-(--ink-muted) hover:text-(--clover) transition-colors font-medium">{t('nav.specs')}</a></li>
-            </ul>
-          </div>
+          {/* Links Grid */}
+          <div className="flex gap-16 md:gap-24">
+            <div>
+              <h4 className="text-[0.7rem] font-black uppercase tracking-widest text-(--ink) mb-6">{t('footer.product')}</h4>
+              <ul className="space-y-4">
+                <li><a href="#section-hero" className="text-[0.85rem] text-(--ink-muted) hover:text-(--clover) transition-colors font-medium">{t('nav.overview')}</a></li>
+                <li><a href="#section-story" className="text-[0.85rem] text-(--ink-muted) hover:text-(--clover) transition-colors font-medium">{t('nav.story')}</a></li>
+                <li><a href="#section-specs" className="text-[0.85rem] text-(--ink-muted) hover:text-(--clover) transition-colors font-medium">{t('nav.specs')}</a></li>
+              </ul>
+            </div>
 
-          {/* Resources */}
-          <div>
-            <h4 className="text-[0.7rem] font-black uppercase tracking-widest text-(--ink) mb-6">{t('footer.resources')}</h4>
-            <ul className="space-y-4">
-              {FOOTER_LINKS.map((l, i) => {
-                const keys = ['privacy', 'terms', 'support'] as const;
-                return (
-                  <li key={l.label}>
-                    <a href={l.href} className="text-[0.85rem] text-(--ink-muted) hover:text-(--clover) transition-colors font-medium">
-                      {t(`footer.${keys[i]}`)}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
+            <div>
+              <h4 className="text-[0.7rem] font-black uppercase tracking-widest text-(--ink) mb-6">{t('footer.resources')}</h4>
+              <ul className="space-y-4">
+                {FOOTER_LINKS.map((l, i) => {
+                  const keys = ['privacy', 'terms', 'support'] as const;
+                  return (
+                    <li key={l.label}>
+                      <a href={l.href} className="text-[0.85rem] text-(--ink-muted) hover:text-(--clover) transition-colors font-medium">
+                        {t(`footer.${keys[i]}`)}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
 

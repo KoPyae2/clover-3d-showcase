@@ -26,7 +26,7 @@ export function SpecsSection() {
             <h2 className="text-[0.65rem] sm:text-[0.7rem] font-black uppercase tracking-[0.25em] text-(--clover) mb-6">
               {t('specs.subtitle')}
             </h2>
-            <h3 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight text-(--ink) leading-[1.05]">
+            <h3 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter text-(--ink) leading-[1.05] [text-wrap:balance]">
               {t('specs.titleLine1')}{' '}
               {t('specs.titleLine2')}
             </h3>
@@ -54,7 +54,7 @@ export function SpecsSection() {
                     <span className="text-[0.6rem] font-black uppercase tracking-widest text-(--ink-muted) group-hover:text-(--clover) transition-colors duration-200">
                       {t(`specs.labels.${key}`)}
                     </span>
-                    <span className="text-[0.88rem] font-bold text-(--ink) group-hover:translate-x-1 transition-transform duration-300 inline-block">
+                    <span className="text-[0.88rem] font-bold text-(--ink) group-hover:translate-x-1 transition-transform duration-300 inline-block tabular-nums">
                       {t(`specs.values.${key}`)}
                     </span>
                   </div>
@@ -68,7 +68,7 @@ export function SpecsSection() {
                         {t(`specs.labels.${key}`)}
                       </span>
                     </div>
-                    <span className="text-[0.95rem] font-bold text-(--ink) text-right ml-4 group-hover:text-(--clover) transition-colors duration-200">
+                    <span className="text-[0.95rem] font-bold text-(--ink) text-right ml-4 group-hover:text-(--clover) transition-colors duration-200 tabular-nums">
                       {t(`specs.values.${key}`)}
                     </span>
                   </div>

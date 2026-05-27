@@ -154,7 +154,7 @@ export function HeroSection() {
             {/* Headline */}
             <motion.h1
               variants={fadeUp}
-              className="text-4xl sm:text-6xl md:text-7xl xl:text-7xl 2xl:text-8xl font-black mb-6 leading-[0.95] tracking-tight lg:pr-0"
+              className="text-4xl sm:text-6xl md:text-7xl xl:text-7xl 2xl:text-8xl font-black mb-6 leading-[0.95] tracking-tighter lg:pr-0 [text-wrap:balance]"
             >
               {t('hero.title1')}{' '}
               {t('hero.title2')}{' '}
@@ -178,7 +178,8 @@ export function HeroSection() {
             {/* Color Swatches Panel */}
             <motion.div
               variants={fadeUp}
-              className="bg-white rounded-[28px] sm:rounded-[32px] p-4 sm:p-5 mb-10 w-full max-w-[360px] sm:max-w-[400px] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-black/[0.03]"
+              className="bg-white rounded-[28px] sm:rounded-[32px] p-4 sm:p-5 mb-10 w-full max-w-[360px] sm:max-w-[400px] border border-black/[0.03]"
+              style={{ boxShadow: `0 20px 40px -15px ${entry.glow}` }}
             >
               <div className="flex flex-col gap-3 min-w-0">
                 <div className="flex flex-col gap-0.5 min-w-0">

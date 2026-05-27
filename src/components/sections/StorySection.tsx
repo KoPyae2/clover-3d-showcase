@@ -57,7 +57,7 @@ export function StorySection() {
           <h2 className="text-[0.65rem] sm:text-[0.7rem] font-black uppercase tracking-[0.25em] text-(--clover) mb-6">
             {t('storySection.subtitle')}
           </h2>
-          <h3 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight text-(--ink) leading-[1.05]">
+          <h3 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter text-(--ink) leading-[1.05] [text-wrap:balance]">
             {t('storySection.titleLine1')}{' '}
             <span className="text-black/30">{t('storySection.titleLine2')}</span>
           </h3>
@@ -198,7 +198,8 @@ export function StorySection() {
                 initial="hidden"
                 animate="show"
                 exit="exit"
-                className="w-full grid grid-cols-1 md:grid-cols-12 gap-8 bg-white rounded-[32px] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-black/[0.03] p-5 md:p-10 relative items-center"
+                className="w-full grid grid-cols-1 md:grid-cols-12 gap-8 bg-white rounded-[32px] border border-black/[0.03] p-5 md:p-10 relative items-center"
+                style={{ boxShadow: `0 20px 40px -15px ${activeEntry.hex}33` }}
               >
                 {/* Visual Side - Clover SVG */}
                 <div className="hidden md:flex md:col-span-5 items-center justify-center p-4 min-h-[280px] relative rounded-[24px] overflow-hidden bg-[#FDFBF7] border border-black/[0.03]">
