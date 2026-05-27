@@ -140,8 +140,6 @@ interface AppStore {
   setColor: (id: string) => void;
   language: string;
   setLanguage: (lang: string) => void;
-  modelX: number;
-  setModelX: (x: number) => void;
   scanTriggered: boolean;
   setScanTriggered: (v: boolean) => void;
   resetScan: () => void;
@@ -149,10 +147,6 @@ interface AppStore {
   setIsAutoScanning: (v: boolean) => void;
   modelDragActive: boolean;
   setModelDragActive: (v: boolean) => void;
-  cloverScreenX: number;
-  setCloverScreenX: (x: number) => void;
-  cloverScreenY: number;
-  setCloverScreenY: (y: number) => void;
 }
 
 export const useColorStore = create<AppStore>()(
@@ -170,8 +164,6 @@ export const useColorStore = create<AppStore>()(
         set({ language: lang });
         i18n.changeLanguage(lang);
       },
-      modelX: 0,
-      setModelX: (x) => set({ modelX: x }),
       scanTriggered: false,
       setScanTriggered: (v) => set({ scanTriggered: v }),
       resetScan: () => set({ scanTriggered: false, isAutoScanning: false }),
@@ -179,10 +171,6 @@ export const useColorStore = create<AppStore>()(
       setIsAutoScanning: (v) => set({ isAutoScanning: v }),
       modelDragActive: false,
       setModelDragActive: (v) => set({ modelDragActive: v }),
-      cloverScreenX: 0,
-      setCloverScreenX: (x) => set({ cloverScreenX: x }),
-      cloverScreenY: 0,
-      setCloverScreenY: (y) => set({ cloverScreenY: y }),
     }),
     {
       name: "clover-app-store",

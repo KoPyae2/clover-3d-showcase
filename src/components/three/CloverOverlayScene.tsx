@@ -12,6 +12,7 @@ import { useVerletRope } from '../../hooks/useVerletRope'
 import { useDrag } from '../../hooks/useDrag'
 import { useColorStore } from '../../store/useColorStore'
 import { pointInTapTarget, getTapTargetRect } from '../../lib/tapTargetRect'
+import { modelPosition } from '../../lib/modelPosition'
 
 const IS_MOBILE = typeof window !== 'undefined' && Math.min(screen.width, screen.height) < 768
 const MAX_TILT_DEG = 25
@@ -59,18 +60,18 @@ function s2w(localX: number, localY: number, cam: THREE.Camera, w: number, h: nu
 const Z_CANVAS = 140
 
 const ropeSettings = {
-  anchorY: 30,
+  anchorY: 32,
   anchorZ: 0,
   ropeTwinSpreadPx: 3,
   ropeStroke: IS_MOBILE ? 0.009 : 0.011,
   ropeSpan: 1.28,
-  ropeNodes: IS_MOBILE ? 8 : 10,
+  ropeNodes: IS_MOBILE ? 8 : 16,
 }
 
 const modelSettings = {
-  eyeletOffsetX: -0.0001,
+  eyeletOffsetX: -0.000,
   eyeletOffsetY: 0,
-  eyeletOffsetZ: 0.001,
+  eyeletOffsetZ: 0,
   modelScale: 12.5,
 }
 
@@ -78,11 +79,8 @@ function Scene() {
   const { camera, size } = useThree()
   const color = useColorStore((s) => s.color)
   const scanTriggered = useColorStore((s) => s.scanTriggered)
-  const setModelX = useColorStore((s) => s.setModelX)
   const setScanTriggered = useColorStore((s) => s.setScanTriggered)
   const setModelDragActive = useColorStore((s) => s.setModelDragActive)
-  const setCloverScreenX = useColorStore((s) => s.setCloverScreenX)
-  const setCloverScreenY = useColorStore((s) => s.setCloverScreenY)
   const isAutoScanning = useColorStore((s) => s.isAutoScanning)
   const setIsAutoScanning = useColorStore((s) => s.setIsAutoScanning)
   const time = useRef(0)
@@ -225,7 +223,7 @@ function Scene() {
 
       const desiredModelPos = _autoDesiredPos.copy(_autoTargetW)
 
-      let currentProgress = Math.min(autoScanProgress.current, 1)
+      const currentProgress = Math.min(autoScanProgress.current, 1)
       const t = currentProgress < 0.5 
         ? 4 * currentProgress * currentProgress * currentProgress 
         : 1 - Math.pow(-2 * currentProgress + 2, 3) / 2
@@ -317,7 +315,7 @@ function Scene() {
 
     ropeMeshRef.current?.updateStrands(rope.positions(), color, ropeSettings.ropeStroke)
 
-    setModelX(THREE.MathUtils.lerp(0, modelPos.current.x, 1))
+    modelPosition.x = modelPos.current.x
 
     // Model-center → screen (tap target / PhoneMockup proximity)
     if (g && bbDone.current) {
@@ -328,8 +326,8 @@ function Scene() {
       tw.add(g.position)
       
       const { x, y } = worldToClient(tw, camera, size.width, size.height)
-      setCloverScreenX(x)
-      setCloverScreenY(y)
+      modelPosition.screenX = x
+      modelPosition.screenY = y
 
       if (!scanTriggered) {
         const inZone = pointInTapTarget(x, y, 28)

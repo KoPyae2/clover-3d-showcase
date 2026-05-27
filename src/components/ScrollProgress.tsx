@@ -10,7 +10,7 @@ export function ScrollProgress() {
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-210 h-[2px] pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-[80] h-[2px] pointer-events-none"
       role="progressbar"
       aria-label="Scroll progress"
     >

@@ -1,139 +1,7 @@
 {
   "directed": false,
   "multigraph": false,
-  "graph": {
-    "hyperedges": [
-      {
-        "id": "icons_hyper_sprite_symbol_set",
-        "label": "All reusable symbol definitions in one sprite file",
-        "nodes": [
-          "icons_symbol_bluesky",
-          "icons_symbol_discord",
-          "icons_symbol_documentation",
-          "icons_symbol_github",
-          "icons_symbol_social",
-          "icons_symbol_x"
-        ],
-        "relation": "participate_in",
-        "confidence": "EXTRACTED",
-        "confidence_score": 1.0,
-        "source_file": "public/icons.svg"
-      },
-      {
-        "id": "icons_hyper_solid_fill_brand_marks",
-        "label": "Brand marks using solid fill #08060d",
-        "nodes": [
-          "icons_symbol_bluesky",
-          "icons_symbol_discord",
-          "icons_symbol_github",
-          "icons_symbol_x"
-        ],
-        "relation": "form",
-        "confidence": "INFERRED",
-        "confidence_score": 0.78,
-        "source_file": "public/icons.svg"
-      },
-      {
-        "id": "icons_hyper_stroke_ui_icons",
-        "label": "Outlined UI icons sharing purple stroke styling",
-        "nodes": [
-          "icons_svg_sprite_root",
-          "icons_symbol_documentation",
-          "icons_symbol_social"
-        ],
-        "relation": "form",
-        "confidence": "INFERRED",
-        "confidence_score": 0.71,
-        "source_file": "public/icons.svg"
-      },
-      {
-        "id": "hero_hg_layer_stack_geometry",
-        "label": "Two-layer isometric stack with corner guides",
-        "nodes": [
-          "hero_wireframe_top_plate",
-          "hero_purple_glow_base",
-          "hero_dashed_corner_connectors"
-        ],
-        "relation": "form",
-        "confidence": "EXTRACTED",
-        "confidence_score": 1.0,
-        "source_file": "src/assets/hero.png"
-      },
-      {
-        "id": "hero_hg_neon_on_black_identity",
-        "label": "Purple neon glow on black minimalist shell",
-        "nodes": [
-          "hero_purple_glow_base",
-          "hero_black_background",
-          "hero_isometric_layer_stack"
-        ],
-        "relation": "participate_in",
-        "confidence": "INFERRED",
-        "confidence_score": 0.78,
-        "source_file": "src/assets/hero.png"
-      },
-      {
-        "id": "hero_hg_wireframe_to_solid_contrast",
-        "label": "Wireframe blueprint layer above powered solid base",
-        "nodes": [
-          "hero_wireframe_top_plate",
-          "hero_purple_glow_base",
-          "hero_platform_stack_metaphor"
-        ],
-        "relation": "form",
-        "confidence": "INFERRED",
-        "confidence_score": 0.66,
-        "source_file": "src/assets/hero.png"
-      },
-      {
-        "id": "hyper_rope_keychain_stack",
-        "label": "Verlet rope + drag tail + tubes + Clover transform",
-        "nodes": [
-          "heroscene_scene_inner",
-          "hook_useverletrope",
-          "hook_usedrag",
-          "ropemesh_component",
-          "clovermodel_component"
-        ],
-        "relation": "implement",
-        "confidence": "EXTRACTED",
-        "confidence_score": 0.95,
-        "source_file": "src/components/three/HeroScene.tsx"
-      },
-      {
-        "id": "hyper_zustand_theme_bus",
-        "label": "Palette store fans out to 3D and marketing UI",
-        "nodes": [
-          "store_usecolorstore",
-          "heroscene_scene_inner",
-          "clovermodel_component",
-          "ui_hero_text",
-          "ui_color_switcher",
-          "ui_story_panel",
-          "ui_phone_mockup",
-          "ui_scan_modal"
-        ],
-        "relation": "participate_in",
-        "confidence": "INFERRED",
-        "confidence_score": 0.87,
-        "source_file": "src/store/useColorStore.ts"
-      },
-      {
-        "id": "hyper_nfc_scan_coupling",
-        "label": "Bottom-center scan zone ties canvas detection to phone affordance + modal",
-        "nodes": [
-          "heroscene_scene_inner",
-          "ui_phone_mockup",
-          "ui_scan_modal",
-          "store_usecolorstore"
-        ],
-        "relation": "form",
-        "confidence": "INFERRED",
-        "confidence_score": 0.86,
-        "source_file": "src/components/three/HeroScene.tsx"
-      }
-    ]
-  },
+  "graph": {},
   "nodes": [
     {
       "label": "eslint.config.js",
@@ -141,7 +9,7 @@
       "source_file": "eslint.config.js",
       "source_location": "L1",
       "id": "eslint_config_js",
-      "community": 21,
+      "community": 16,
       "norm_label": "eslint.config.js"
     },
     {
@@ -150,7 +18,7 @@
       "source_file": "vite.config.ts",
       "source_location": "L1",
       "id": "vite_config_ts",
-      "community": 22,
+      "community": 17,
       "norm_label": "vite.config.ts"
     },
     {
@@ -159,7 +27,7 @@
       "source_file": "src\\App.tsx",
       "source_location": "L1",
       "id": "src_app_tsx",
-      "community": 7,
+      "community": 4,
       "norm_label": "app.tsx"
     },
     {
@@ -168,7 +36,7 @@
       "source_file": "src\\App.tsx",
       "source_location": "L13",
       "id": "src_app_app",
-      "community": 7,
+      "community": 4,
       "norm_label": "app()"
     },
     {
@@ -177,7 +45,7 @@
       "source_file": "src\\i18n.ts",
       "source_location": "L1",
       "id": "src_i18n_ts",
-      "community": 10,
+      "community": 5,
       "norm_label": "i18n.ts"
     },
     {
@@ -186,7 +54,7 @@
       "source_file": "src\\i18n.ts",
       "source_location": "L19",
       "id": "src_i18n_getsavedlanguage",
-      "community": 10,
+      "community": 5,
       "norm_label": "getsavedlanguage()"
     },
     {
@@ -195,7 +63,7 @@
       "source_file": "src\\i18n.ts",
       "source_location": "L47",
       "id": "src_i18n_synchtmllang",
-      "community": 10,
+      "community": 5,
       "norm_label": "synchtmllang()"
     },
     {
@@ -204,7 +72,7 @@
       "source_file": "src\\main.tsx",
       "source_location": "L1",
       "id": "src_main_tsx",
-      "community": 7,
+      "community": 4,
       "norm_label": "main.tsx"
     },
     {
@@ -213,7 +81,7 @@
       "source_file": "src\\components\\AccentVars.tsx",
       "source_location": "L1",
       "id": "src_components_accentvars_tsx",
-      "community": 15,
+      "community": 9,
       "norm_label": "accentvars.tsx"
     },
     {
@@ -222,7 +90,7 @@
       "source_file": "src\\components\\AccentVars.tsx",
       "source_location": "L4",
       "id": "components_accentvars_accentvars",
-      "community": 15,
+      "community": 9,
       "norm_label": "accentvars()"
     },
     {
@@ -231,7 +99,7 @@
       "source_file": "src\\components\\CloverDecor.tsx",
       "source_location": "L1",
       "id": "src_components_cloverdecor_tsx",
-      "community": 16,
+      "community": 10,
       "norm_label": "cloverdecor.tsx"
     },
     {
@@ -240,7 +108,7 @@
       "source_file": "src\\components\\CloverDecor.tsx",
       "source_location": "L3",
       "id": "components_cloverdecor_cloverdecor",
-      "community": 16,
+      "community": 10,
       "norm_label": "cloverdecor()"
     },
     {
@@ -249,7 +117,7 @@
       "source_file": "src\\components\\LoadingScreen.tsx",
       "source_location": "L1",
       "id": "src_components_loadingscreen_tsx",
-      "community": 23,
+      "community": 18,
       "norm_label": "loadingscreen.tsx"
     },
     {
@@ -258,7 +126,7 @@
       "source_file": "src\\components\\PhoneMockup.tsx",
       "source_location": "L1",
       "id": "src_components_phonemockup_tsx",
-      "community": 3,
+      "community": 0,
       "norm_label": "phonemockup.tsx"
     },
     {
@@ -267,16 +135,16 @@
       "source_file": "src\\components\\PhoneMockup.tsx",
       "source_location": "L9",
       "id": "components_phonemockup_hextorgba",
-      "community": 3,
+      "community": 0,
       "norm_label": "hextorgba()"
     },
     {
       "label": "updateRect()",
       "file_type": "code",
       "source_file": "src\\components\\PhoneMockup.tsx",
-      "source_location": "L82",
+      "source_location": "L85",
       "id": "components_phonemockup_updaterect",
-      "community": 3,
+      "community": 0,
       "norm_label": "updaterect()"
     },
     {
@@ -285,7 +153,7 @@
       "source_file": "src\\components\\ScrollProgress.tsx",
       "source_location": "L1",
       "id": "src_components_scrollprogress_tsx",
-      "community": 17,
+      "community": 11,
       "norm_label": "scrollprogress.tsx"
     },
     {
@@ -294,7 +162,7 @@
       "source_file": "src\\components\\ScrollProgress.tsx",
       "source_location": "L3",
       "id": "components_scrollprogress_scrollprogress",
-      "community": 17,
+      "community": 11,
       "norm_label": "scrollprogress()"
     },
     {
@@ -303,7 +171,7 @@
       "source_file": "src\\components\\SiteFooter.tsx",
       "source_location": "L1",
       "id": "src_components_sitefooter_tsx",
-      "community": 24,
+      "community": 19,
       "norm_label": "sitefooter.tsx"
     },
     {
@@ -312,7 +180,7 @@
       "source_file": "src\\components\\SiteHeader.tsx",
       "source_location": "L1",
       "id": "src_components_siteheader_tsx",
-      "community": 11,
+      "community": 6,
       "norm_label": "siteheader.tsx"
     },
     {
@@ -321,7 +189,7 @@
       "source_file": "src\\components\\SiteHeader.tsx",
       "source_location": "L15",
       "id": "components_siteheader_getnavlabelkey",
-      "community": 11,
+      "community": 6,
       "norm_label": "getnavlabelkey()"
     },
     {
@@ -330,7 +198,7 @@
       "source_file": "src\\components\\SiteHeader.tsx",
       "source_location": "L24",
       "id": "components_siteheader_siteheader",
-      "community": 11,
+      "community": 6,
       "norm_label": "siteheader()"
     },
     {
@@ -339,17 +207,8 @@
       "source_file": "src\\components\\sections\\ColorSwatches.tsx",
       "source_location": "L1",
       "id": "src_components_sections_colorswatches_tsx",
-      "community": 25,
+      "community": 20,
       "norm_label": "colorswatches.tsx"
-    },
-    {
-      "label": "EndingLineupSection.tsx",
-      "file_type": "code",
-      "source_file": "src\\components\\sections\\EndingLineupSection.tsx",
-      "source_location": "L1",
-      "id": "src_components_sections_endinglineupsection_tsx",
-      "community": 26,
-      "norm_label": "endinglineupsection.tsx"
     },
     {
       "label": "FaqSection.tsx",
@@ -357,17 +216,8 @@
       "source_file": "src\\components\\sections\\FaqSection.tsx",
       "source_location": "L1",
       "id": "src_components_sections_faqsection_tsx",
-      "community": 27,
+      "community": 21,
       "norm_label": "faqsection.tsx"
-    },
-    {
-      "label": "FinaleSection.tsx",
-      "file_type": "code",
-      "source_file": "src\\components\\sections\\FinaleSection.tsx",
-      "source_location": "L1",
-      "id": "src_components_sections_finalesection_tsx",
-      "community": 28,
-      "norm_label": "finalesection.tsx"
     },
     {
       "label": "HeroSection.tsx",
@@ -375,52 +225,52 @@
       "source_file": "src\\components\\sections\\HeroSection.tsx",
       "source_location": "L1",
       "id": "src_components_sections_herosection_tsx",
-      "community": 4,
+      "community": 1,
       "norm_label": "herosection.tsx"
     },
     {
       "label": "BoltIcon()",
       "file_type": "code",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L13",
+      "source_location": "L21",
       "id": "sections_herosection_bolticon",
-      "community": 4,
+      "community": 1,
       "norm_label": "bolticon()"
     },
     {
       "label": "PaletteIcon()",
       "file_type": "code",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L21",
+      "source_location": "L29",
       "id": "sections_herosection_paletteicon",
-      "community": 4,
+      "community": 1,
       "norm_label": "paletteicon()"
     },
     {
       "label": "SignalIcon()",
       "file_type": "code",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L33",
+      "source_location": "L41",
       "id": "sections_herosection_signalicon",
-      "community": 4,
+      "community": 1,
       "norm_label": "signalicon()"
     },
     {
       "label": "MouseIcon()",
       "file_type": "code",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L44",
+      "source_location": "L52",
       "id": "sections_herosection_mouseicon",
-      "community": 4,
+      "community": 1,
       "norm_label": "mouseicon()"
     },
     {
       "label": "StarIcon()",
       "file_type": "code",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L63",
+      "source_location": "L67",
       "id": "sections_herosection_staricon",
-      "community": 4,
+      "community": 1,
       "norm_label": "staricon()"
     },
     {
@@ -429,7 +279,7 @@
       "source_file": "src\\components\\sections\\SpecsSection.tsx",
       "source_location": "L1",
       "id": "src_components_sections_specssection_tsx",
-      "community": 29,
+      "community": 22,
       "norm_label": "specssection.tsx"
     },
     {
@@ -438,8 +288,17 @@
       "source_file": "src\\components\\sections\\StorySection.tsx",
       "source_location": "L1",
       "id": "src_components_sections_storysection_tsx",
-      "community": 30,
+      "community": 12,
       "norm_label": "storysection.tsx"
+    },
+    {
+      "label": "highlightItem()",
+      "file_type": "code",
+      "source_file": "src\\components\\sections\\StorySection.tsx",
+      "source_location": "L28",
+      "id": "sections_storysection_highlightitem",
+      "community": 12,
+      "norm_label": "highlightitem()"
     },
     {
       "label": "TapMockupSection.tsx",
@@ -447,7 +306,7 @@
       "source_file": "src\\components\\sections\\TapMockupSection.tsx",
       "source_location": "L1",
       "id": "src_components_sections_tapmockupsection_tsx",
-      "community": 31,
+      "community": 23,
       "norm_label": "tapmockupsection.tsx"
     },
     {
@@ -456,25 +315,25 @@
       "source_file": "src\\components\\three\\CloverModel.tsx",
       "source_location": "L1",
       "id": "src_components_three_clovermodel_tsx",
-      "community": 12,
+      "community": 7,
       "norm_label": "clovermodel.tsx"
     },
     {
       "label": "stripBakedLineMaps()",
       "file_type": "code",
       "source_file": "src\\components\\three\\CloverModel.tsx",
-      "source_location": "L24",
+      "source_location": "L26",
       "id": "three_clovermodel_stripbakedlinemaps",
-      "community": 12,
+      "community": 7,
       "norm_label": "stripbakedlinemaps()"
     },
     {
       "label": "setRef()",
       "file_type": "code",
       "source_file": "src\\components\\three\\CloverModel.tsx",
-      "source_location": "L96",
+      "source_location": "L97",
       "id": "three_clovermodel_setref",
-      "community": 12,
+      "community": 7,
       "norm_label": "setref()"
     },
     {
@@ -483,34 +342,34 @@
       "source_file": "src\\components\\three\\CloverOverlayScene.tsx",
       "source_location": "L1",
       "id": "src_components_three_cloveroverlayscene_tsx",
-      "community": 8,
+      "community": 2,
       "norm_label": "cloveroverlayscene.tsx"
     },
     {
       "label": "worldToClient()",
       "file_type": "code",
       "source_file": "src\\components\\three\\CloverOverlayScene.tsx",
-      "source_location": "L22",
+      "source_location": "L26",
       "id": "three_cloveroverlayscene_worldtoclient",
-      "community": 8,
+      "community": 2,
       "norm_label": "worldtoclient()"
     },
     {
       "label": "s2w()",
       "file_type": "code",
       "source_file": "src\\components\\three\\CloverOverlayScene.tsx",
-      "source_location": "L34",
+      "source_location": "L38",
       "id": "three_cloveroverlayscene_s2w",
-      "community": 8,
+      "community": 2,
       "norm_label": "s2w()"
     },
     {
       "label": "run()",
       "file_type": "code",
       "source_file": "src\\components\\three\\CloverOverlayScene.tsx",
-      "source_location": "L137",
+      "source_location": "L129",
       "id": "three_cloveroverlayscene_run",
-      "community": 8,
+      "community": 2,
       "norm_label": "run()"
     },
     {
@@ -519,44 +378,26 @@
       "source_file": "src\\components\\three\\RopeMesh.tsx",
       "source_location": "L1",
       "id": "src_components_three_ropemesh_tsx",
-      "community": 6,
+      "community": 8,
       "norm_label": "ropemesh.tsx"
     },
     {
-      "label": "darken()",
+      "label": "setResolution()",
       "file_type": "code",
       "source_file": "src\\components\\three\\RopeMesh.tsx",
-      "source_location": "L12",
-      "id": "three_ropemesh_darken",
-      "community": 6,
-      "norm_label": "darken()"
+      "source_location": "L37",
+      "id": "three_ropemesh_setresolution",
+      "community": 8,
+      "norm_label": "setresolution()"
     },
     {
-      "label": "strandLateralOffsets()",
+      "label": "updateStrands()",
       "file_type": "code",
       "source_file": "src\\components\\three\\RopeMesh.tsx",
-      "source_location": "L17",
-      "id": "three_ropemesh_strandlateraloffsets",
-      "community": 6,
-      "norm_label": "strandlateraloffsets()"
-    },
-    {
-      "label": "buildTubeFromPts()",
-      "file_type": "code",
-      "source_file": "src\\components\\three\\RopeMesh.tsx",
-      "source_location": "L28",
-      "id": "three_ropemesh_buildtubefrompts",
-      "community": 6,
-      "norm_label": "buildtubefrompts()"
-    },
-    {
-      "label": "ptsMatch()",
-      "file_type": "code",
-      "source_file": "src\\components\\three\\RopeMesh.tsx",
-      "source_location": "L43",
-      "id": "three_ropemesh_ptsmatch",
-      "community": 6,
-      "norm_label": "ptsmatch()"
+      "source_location": "L55",
+      "id": "three_ropemesh_updatestrands",
+      "community": 8,
+      "norm_label": "updatestrands()"
     },
     {
       "label": "showcaseContent.ts",
@@ -564,7 +405,7 @@
       "source_file": "src\\data\\showcaseContent.ts",
       "source_location": "L1",
       "id": "src_data_showcasecontent_ts",
-      "community": 32,
+      "community": 24,
       "norm_label": "showcasecontent.ts"
     },
     {
@@ -573,7 +414,7 @@
       "source_file": "src\\hooks\\useDrag.ts",
       "source_location": "L1",
       "id": "src_hooks_usedrag_ts",
-      "community": 9,
+      "community": 3,
       "norm_label": "usedrag.ts"
     },
     {
@@ -582,7 +423,7 @@
       "source_file": "src\\hooks\\useDrag.ts",
       "source_location": "L10",
       "id": "hooks_usedrag_isinteractivetarget",
-      "community": 9,
+      "community": 3,
       "norm_label": "isinteractivetarget()"
     },
     {
@@ -591,7 +432,7 @@
       "source_file": "src\\hooks\\useDrag.ts",
       "source_location": "L28",
       "id": "hooks_usedrag_canvastoworld",
-      "community": 9,
+      "community": 3,
       "norm_label": "canvastoworld()"
     },
     {
@@ -600,7 +441,7 @@
       "source_file": "src\\hooks\\useDrag.ts",
       "source_location": "L45",
       "id": "hooks_usedrag_usedrag",
-      "community": 9,
+      "community": 3,
       "norm_label": "usedrag()"
     },
     {
@@ -609,7 +450,7 @@
       "source_file": "src\\hooks\\useScrollReveal.ts",
       "source_location": "L1",
       "id": "src_hooks_usescrollreveal_ts",
-      "community": 7,
+      "community": 13,
       "norm_label": "usescrollreveal.ts"
     },
     {
@@ -618,7 +459,7 @@
       "source_file": "src\\hooks\\useScrollReveal.ts",
       "source_location": "L3",
       "id": "hooks_usescrollreveal_usescrollreveal",
-      "community": 7,
+      "community": 13,
       "norm_label": "usescrollreveal()"
     },
     {
@@ -627,16 +468,16 @@
       "source_file": "src\\hooks\\useVerletRope.ts",
       "source_location": "L1",
       "id": "src_hooks_useverletrope_ts",
-      "community": 18,
+      "community": 14,
       "norm_label": "useverletrope.ts"
     },
     {
       "label": "useVerletRope()",
       "file_type": "code",
       "source_file": "src\\hooks\\useVerletRope.ts",
-      "source_location": "L19",
+      "source_location": "L21",
       "id": "hooks_useverletrope_useverletrope",
-      "community": 18,
+      "community": 14,
       "norm_label": "useverletrope()"
     },
     {
@@ -645,7 +486,7 @@
       "source_file": "src\\lib\\tapTargetRect.ts",
       "source_location": "L1",
       "id": "src_lib_taptargetrect_ts",
-      "community": 3,
+      "community": 0,
       "norm_label": "taptargetrect.ts"
     },
     {
@@ -654,7 +495,7 @@
       "source_file": "src\\lib\\tapTargetRect.ts",
       "source_location": "L14",
       "id": "lib_taptargetrect_settaptargetrect",
-      "community": 3,
+      "community": 0,
       "norm_label": "settaptargetrect()"
     },
     {
@@ -663,7 +504,7 @@
       "source_file": "src\\lib\\tapTargetRect.ts",
       "source_location": "L18",
       "id": "lib_taptargetrect_gettaptargetrect",
-      "community": 3,
+      "community": 0,
       "norm_label": "gettaptargetrect()"
     },
     {
@@ -672,7 +513,7 @@
       "source_file": "src\\lib\\tapTargetRect.ts",
       "source_location": "L23",
       "id": "lib_taptargetrect_pointintaptarget",
-      "community": 3,
+      "community": 0,
       "norm_label": "pointintaptarget()"
     },
     {
@@ -681,7 +522,7 @@
       "source_file": "src\\store\\useColorStore.ts",
       "source_location": "L1",
       "id": "src_store_usecolorstore_ts",
-      "community": 19,
+      "community": 15,
       "norm_label": "usecolorstore.ts"
     },
     {
@@ -690,569 +531,8 @@
       "source_file": "src\\store\\useColorStore.ts",
       "source_location": "L115",
       "id": "store_usecolorstore_getsavedstate",
-      "community": 19,
+      "community": 15,
       "norm_label": "getsavedstate()"
-    },
-    {
-      "label": "React + TypeScript + Vite template",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "rationale": "Provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-      "community": 1,
-      "norm_label": "react + typescript + vite template",
-      "id": "readme_template_stack"
-    },
-    {
-      "label": "Hot Module Replacement (HMR)",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "hot module replacement (hmr)",
-      "id": "readme_feature_hmr"
-    },
-    {
-      "label": "ESLint",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "eslint",
-      "id": "readme_tool_eslint"
-    },
-    {
-      "label": "@vitejs/plugin-react",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "@vitejs/plugin-react",
-      "id": "readme_plugin_vite_react"
-    },
-    {
-      "label": "Oxc",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "oxc",
-      "id": "readme_tool_oxc"
-    },
-    {
-      "label": "@vitejs/plugin-react-swc",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "@vitejs/plugin-react-swc",
-      "id": "readme_plugin_vite_react_swc"
-    },
-    {
-      "label": "SWC",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "swc",
-      "id": "readme_tool_swc"
-    },
-    {
-      "label": "React Compiler",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "rationale": "Not enabled on this template because of its impact on dev and build performance; README points to React documentation for installation.",
-      "community": 20,
-      "norm_label": "react compiler",
-      "id": "readme_feature_react_compiler"
-    },
-    {
-      "label": "React Compiler installation documentation (react.dev)",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": "https://react.dev/learn/react-compiler/installation",
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 20,
-      "norm_label": "react compiler installation documentation (react.dev)",
-      "id": "readme_citation_react_compiler_install"
-    },
-    {
-      "label": "Type-aware ESLint lint rules",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "type-aware eslint lint rules",
-      "id": "readme_practice_type_aware_lint"
-    },
-    {
-      "label": "eslint-plugin-react-x",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "eslint-plugin-react-x",
-      "id": "readme_plugin_eslint_react_x"
-    },
-    {
-      "label": "eslint-plugin-react-dom",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "eslint-plugin-react-dom",
-      "id": "readme_plugin_eslint_react_dom"
-    },
-    {
-      "label": "Favicon SVG asset (48\u00d746 viewport)",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": "svg@viewBox,width,height",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "favicon svg asset (48\u00d746 viewport)",
-      "id": "favicon_favicon_svg_asset"
-    },
-    {
-      "label": "Angular purple outer glyph (primary mark)",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": "path@fill=#863bff",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "angular purple outer glyph (primary mark)",
-      "id": "favicon_purple_outer_glyph"
-    },
-    {
-      "label": "Brand purple fill (#863bff)",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": "path fill",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "brand purple fill (#863bff)",
-      "id": "favicon_brand_purple_863bff"
-    },
-    {
-      "label": "Alpha mask clipping interior artwork",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": "mask#id=a",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "alpha mask clipping interior artwork",
-      "id": "favicon_alpha_mask_clip"
-    },
-    {
-      "label": "Interior blurred ellipse streaks (feGaussianBlur)",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": "g mask=url(#a);defs filter",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "interior blurred ellipse streaks (fegaussianblur)",
-      "id": "favicon_blurred_ellipse_interior"
-    },
-    {
-      "label": "Lavender mist highlight (#ede6ff)",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": "ellipse fill",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "lavender mist highlight (#ede6ff)",
-      "id": "favicon_palette_lavender_mist"
-    },
-    {
-      "label": "Deep violet streaks (#7e14ff)",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": "ellipse fill",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "deep violet streaks (#7e14ff)",
-      "id": "favicon_palette_deep_violet"
-    },
-    {
-      "label": "Sky cyan accent (#47bfff)",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": "ellipse fill",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "sky cyan accent (#47bfff)",
-      "id": "favicon_palette_sky_cyan"
-    },
-    {
-      "label": "Display-P3 color function hints in inline styles",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": "style fill:color(display-p3 ...)",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "display-p3 color function hints in inline styles",
-      "id": "favicon_display_p3_style_hints"
-    },
-    {
-      "label": "Browser tab / bookmark brand touchpoint",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "browser tab / bookmark brand touchpoint",
-      "id": "favicon_browser_brand_touchpoint"
-    },
-    {
-      "label": "Glossy depth design (masked glow + multi-tone purple/cyan)",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "glossy depth design (masked glow + multi-tone purple/cyan)",
-      "id": "favicon_glossy_depth_design"
-    },
-    {
-      "label": "SVG sprite sheet root",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 2,
-      "norm_label": "svg sprite sheet root",
-      "id": "icons_svg_sprite_root"
-    },
-    {
-      "label": "Bluesky butterfly mark (symbol bluesky-icon)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "symbol#bluesky-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 2,
-      "norm_label": "bluesky butterfly mark (symbol bluesky-icon)",
-      "id": "icons_symbol_bluesky"
-    },
-    {
-      "label": "Discord logo (symbol discord-icon)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "symbol#discord-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 2,
-      "norm_label": "discord logo (symbol discord-icon)",
-      "id": "icons_symbol_discord"
-    },
-    {
-      "label": "Documentation / open-book outline (symbol documentation-icon)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "symbol#documentation-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 2,
-      "norm_label": "documentation / open-book outline (symbol documentation-icon)",
-      "id": "icons_symbol_documentation"
-    },
-    {
-      "label": "GitHub Octocat mark (symbol github-icon)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "symbol#github-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 2,
-      "norm_label": "github octocat mark (symbol github-icon)",
-      "id": "icons_symbol_github"
-    },
-    {
-      "label": "User + badge social outline (symbol social-icon)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "symbol#social-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 2,
-      "norm_label": "user + badge social outline (symbol social-icon)",
-      "id": "icons_symbol_social"
-    },
-    {
-      "label": "X (Twitter) logo (symbol x-icon)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "symbol#x-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 2,
-      "norm_label": "x (twitter) logo (symbol x-icon)",
-      "id": "icons_symbol_x"
-    },
-    {
-      "label": "clipPath bluesky-clip masking Bluesky paths",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "defs clipPath#bluesky-clip",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 2,
-      "norm_label": "clippath bluesky-clip masking bluesky paths",
-      "id": "icons_bluesky_clip_path"
-    },
-    {
-      "label": "Isometric stacked rounded-square layers",
-      "file_type": "image",
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "isometric stacked rounded-square layers",
-      "id": "hero_isometric_layer_stack"
-    },
-    {
-      "label": "Upper wireframe rounded-square layer",
-      "file_type": "image",
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "upper wireframe rounded-square layer",
-      "id": "hero_wireframe_top_plate"
-    },
-    {
-      "label": "Lower layer with purple neon extrusion",
-      "file_type": "image",
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "lower layer with purple neon extrusion",
-      "id": "hero_purple_glow_base"
-    },
-    {
-      "label": "Dashed vertical corner alignment guides",
-      "file_type": "image",
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "dashed vertical corner alignment guides",
-      "id": "hero_dashed_corner_connectors"
-    },
-    {
-      "label": "Solid black negative space background",
-      "file_type": "image",
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "solid black negative space background",
-      "id": "hero_black_background"
-    },
-    {
-      "label": "Platform / modularity / stack marketing metaphor",
-      "file_type": "image",
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "platform / modularity / stack marketing metaphor",
-      "id": "hero_platform_stack_metaphor"
-    },
-    {
-      "label": "react.svg (React logo brand asset)",
-      "file_type": "image",
-      "source_file": "src/assets/react.svg",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 13,
-      "norm_label": "react.svg (react logo brand asset)",
-      "id": "reactsvg_brand_asset"
-    },
-    {
-      "label": "React atom logo mark (orbits + nucleus)",
-      "file_type": "image",
-      "source_file": "src/assets/react.svg",
-      "source_location": "svg:path[fill=#00D8FF]",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 13,
-      "norm_label": "react atom logo mark (orbits + nucleus)",
-      "id": "reactsvg_atom_logo_mark"
-    },
-    {
-      "label": "React brand cyan (#00D8FF)",
-      "file_type": "image",
-      "source_file": "src/assets/react.svg",
-      "source_location": "path@fill",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 13,
-      "norm_label": "react brand cyan (#00d8ff)",
-      "id": "reactsvg_brand_cyan"
-    },
-    {
-      "label": "Vite logo SVG asset",
-      "file_type": "image",
-      "source_file": "src/assets/vite.svg",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 14,
-      "norm_label": "vite logo svg asset",
-      "id": "vite_logo_svg"
-    },
-    {
-      "label": "Vite lightning bolt (purple path)",
-      "file_type": "image",
-      "source_file": "src/assets/vite.svg",
-      "source_location": "path[fill=#9135ff]",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 14,
-      "norm_label": "vite lightning bolt (purple path)",
-      "id": "vite_lightning_glyph"
-    },
-    {
-      "label": "Vite",
-      "file_type": "image",
-      "source_file": "src/assets/vite.svg",
-      "source_location": "title#vite-logo-title",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 14,
-      "norm_label": "vite",
-      "id": "vite_accessible_title"
     }
   ],
   "links": [
@@ -1279,18 +559,6 @@
       "source": "src_app_tsx",
       "target": "src_main_tsx",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src\\App.tsx",
-      "source_location": "L17",
-      "weight": 1.0,
-      "_src": "src_app_app",
-      "_tgt": "hooks_usescrollreveal_usescrollreveal",
-      "source": "src_app_app",
-      "target": "hooks_usescrollreveal_usescrollreveal"
     },
     {
       "relation": "contains",
@@ -1356,7 +624,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\PhoneMockup.tsx",
-      "source_location": "L82",
+      "source_location": "L85",
       "weight": 1.0,
       "_src": "src_components_phonemockup_tsx",
       "_tgt": "components_phonemockup_updaterect",
@@ -1369,7 +637,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src\\components\\PhoneMockup.tsx",
-      "source_location": "L85",
+      "source_location": "L88",
       "weight": 1.0,
       "_src": "components_phonemockup_updaterect",
       "_tgt": "lib_taptargetrect_settaptargetrect",
@@ -1416,7 +684,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L13",
+      "source_location": "L21",
       "weight": 1.0,
       "_src": "src_components_sections_herosection_tsx",
       "_tgt": "sections_herosection_bolticon",
@@ -1428,7 +696,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L21",
+      "source_location": "L29",
       "weight": 1.0,
       "_src": "src_components_sections_herosection_tsx",
       "_tgt": "sections_herosection_paletteicon",
@@ -1440,7 +708,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L33",
+      "source_location": "L41",
       "weight": 1.0,
       "_src": "src_components_sections_herosection_tsx",
       "_tgt": "sections_herosection_signalicon",
@@ -1452,7 +720,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L44",
+      "source_location": "L52",
       "weight": 1.0,
       "_src": "src_components_sections_herosection_tsx",
       "_tgt": "sections_herosection_mouseicon",
@@ -1464,7 +732,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\sections\\HeroSection.tsx",
-      "source_location": "L63",
+      "source_location": "L67",
       "weight": 1.0,
       "_src": "src_components_sections_herosection_tsx",
       "_tgt": "sections_herosection_staricon",
@@ -1475,8 +743,20 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "src\\components\\sections\\StorySection.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_src": "src_components_sections_storysection_tsx",
+      "_tgt": "sections_storysection_highlightitem",
+      "source": "src_components_sections_storysection_tsx",
+      "target": "sections_storysection_highlightitem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "src\\components\\three\\CloverModel.tsx",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0,
       "_src": "src_components_three_clovermodel_tsx",
       "_tgt": "three_clovermodel_stripbakedlinemaps",
@@ -1488,7 +768,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\three\\CloverModel.tsx",
-      "source_location": "L96",
+      "source_location": "L97",
       "weight": 1.0,
       "_src": "src_components_three_clovermodel_tsx",
       "_tgt": "three_clovermodel_setref",
@@ -1500,7 +780,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\three\\CloverOverlayScene.tsx",
-      "source_location": "L22",
+      "source_location": "L26",
       "weight": 1.0,
       "_src": "src_components_three_cloveroverlayscene_tsx",
       "_tgt": "three_cloveroverlayscene_worldtoclient",
@@ -1512,7 +792,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\three\\CloverOverlayScene.tsx",
-      "source_location": "L34",
+      "source_location": "L38",
       "weight": 1.0,
       "_src": "src_components_three_cloveroverlayscene_tsx",
       "_tgt": "three_cloveroverlayscene_s2w",
@@ -1524,7 +804,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\three\\CloverOverlayScene.tsx",
-      "source_location": "L137",
+      "source_location": "L129",
       "weight": 1.0,
       "_src": "src_components_three_cloveroverlayscene_tsx",
       "_tgt": "three_cloveroverlayscene_run",
@@ -1536,48 +816,24 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\three\\RopeMesh.tsx",
-      "source_location": "L12",
+      "source_location": "L37",
       "weight": 1.0,
       "_src": "src_components_three_ropemesh_tsx",
-      "_tgt": "three_ropemesh_darken",
+      "_tgt": "three_ropemesh_setresolution",
       "source": "src_components_three_ropemesh_tsx",
-      "target": "three_ropemesh_darken",
+      "target": "three_ropemesh_setresolution",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\components\\three\\RopeMesh.tsx",
-      "source_location": "L17",
+      "source_location": "L55",
       "weight": 1.0,
       "_src": "src_components_three_ropemesh_tsx",
-      "_tgt": "three_ropemesh_strandlateraloffsets",
+      "_tgt": "three_ropemesh_updatestrands",
       "source": "src_components_three_ropemesh_tsx",
-      "target": "three_ropemesh_strandlateraloffsets",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src\\components\\three\\RopeMesh.tsx",
-      "source_location": "L28",
-      "weight": 1.0,
-      "_src": "src_components_three_ropemesh_tsx",
-      "_tgt": "three_ropemesh_buildtubefrompts",
-      "source": "src_components_three_ropemesh_tsx",
-      "target": "three_ropemesh_buildtubefrompts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src\\components\\three\\RopeMesh.tsx",
-      "source_location": "L43",
-      "weight": 1.0,
-      "_src": "src_components_three_ropemesh_tsx",
-      "_tgt": "three_ropemesh_ptsmatch",
-      "source": "src_components_three_ropemesh_tsx",
-      "target": "three_ropemesh_ptsmatch",
+      "target": "three_ropemesh_updatestrands",
       "confidence_score": 1.0
     },
     {
@@ -1632,7 +888,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src\\hooks\\useVerletRope.ts",
-      "source_location": "L19",
+      "source_location": "L21",
       "weight": 1.0,
       "_src": "src_hooks_useverletrope_ts",
       "_tgt": "hooks_useverletrope_useverletrope",
@@ -1687,701 +943,7 @@
       "source": "src_store_usecolorstore_ts",
       "target": "store_usecolorstore_getsavedstate",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_template_stack",
-      "_tgt": "readme_feature_hmr",
-      "source": "readme_template_stack",
-      "target": "readme_feature_hmr"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_template_stack",
-      "_tgt": "readme_tool_eslint",
-      "source": "readme_template_stack",
-      "target": "readme_tool_eslint"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_template_stack",
-      "_tgt": "readme_plugin_vite_react",
-      "source": "readme_template_stack",
-      "target": "readme_plugin_vite_react"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_template_stack",
-      "_tgt": "readme_plugin_vite_react_swc",
-      "source": "readme_template_stack",
-      "target": "readme_plugin_vite_react_swc"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_tool_eslint",
-      "_tgt": "readme_practice_type_aware_lint",
-      "source": "readme_tool_eslint",
-      "target": "readme_practice_type_aware_lint"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_plugin_vite_react",
-      "_tgt": "readme_tool_oxc",
-      "source": "readme_plugin_vite_react",
-      "target": "readme_tool_oxc"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.84,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_plugin_vite_react",
-      "_tgt": "readme_plugin_vite_react_swc",
-      "source": "readme_plugin_vite_react",
-      "target": "readme_plugin_vite_react_swc"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_plugin_vite_react_swc",
-      "_tgt": "readme_tool_swc",
-      "source": "readme_plugin_vite_react_swc",
-      "target": "readme_tool_swc"
-    },
-    {
-      "relation": "cites",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_feature_react_compiler",
-      "_tgt": "readme_citation_react_compiler_install",
-      "source": "readme_feature_react_compiler",
-      "target": "readme_citation_react_compiler_install"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.71,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_practice_type_aware_lint",
-      "_tgt": "readme_plugin_eslint_react_x",
-      "source": "readme_practice_type_aware_lint",
-      "target": "readme_plugin_eslint_react_x"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.71,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_practice_type_aware_lint",
-      "_tgt": "readme_plugin_eslint_react_dom",
-      "source": "readme_practice_type_aware_lint",
-      "target": "readme_plugin_eslint_react_dom"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.79,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "readme_plugin_eslint_react_x",
-      "_tgt": "readme_plugin_eslint_react_dom",
-      "source": "readme_plugin_eslint_react_x",
-      "target": "readme_plugin_eslint_react_dom"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/favicon.svg",
-      "source_location": "svg child path",
-      "weight": 1.0,
-      "_src": "favicon_favicon_svg_asset",
-      "_tgt": "favicon_purple_outer_glyph",
-      "source": "favicon_favicon_svg_asset",
-      "target": "favicon_purple_outer_glyph"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/favicon.svg",
-      "source_location": "mask element",
-      "weight": 1.0,
-      "_src": "favicon_favicon_svg_asset",
-      "_tgt": "favicon_alpha_mask_clip",
-      "source": "favicon_favicon_svg_asset",
-      "target": "favicon_alpha_mask_clip"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/favicon.svg",
-      "source_location": "g mask=url(#a)",
-      "weight": 1.0,
-      "_src": "favicon_favicon_svg_asset",
-      "_tgt": "favicon_blurred_ellipse_interior",
-      "source": "favicon_favicon_svg_asset",
-      "target": "favicon_blurred_ellipse_interior"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.82,
-      "source_file": "public/favicon.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "favicon_favicon_svg_asset",
-      "_tgt": "favicon_browser_brand_touchpoint",
-      "source": "favicon_favicon_svg_asset",
-      "target": "favicon_browser_brand_touchpoint"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.72,
-      "source_file": "public/favicon.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "favicon_favicon_svg_asset",
-      "_tgt": "favicon_glossy_depth_design",
-      "source": "favicon_favicon_svg_asset",
-      "target": "favicon_glossy_depth_design"
-    },
-    {
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/favicon.svg",
-      "source_location": "path@fill",
-      "weight": 1.0,
-      "_src": "favicon_purple_outer_glyph",
-      "_tgt": "favicon_brand_purple_863bff",
-      "source": "favicon_purple_outer_glyph",
-      "target": "favicon_brand_purple_863bff"
-    },
-    {
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/favicon.svg",
-      "source_location": "path style",
-      "weight": 1.0,
-      "_src": "favicon_brand_purple_863bff",
-      "_tgt": "favicon_display_p3_style_hints",
-      "source": "favicon_brand_purple_863bff",
-      "target": "favicon_display_p3_style_hints"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/favicon.svg",
-      "source_location": "ellipse@fill=#ede6ff",
-      "weight": 1.0,
-      "_src": "favicon_blurred_ellipse_interior",
-      "_tgt": "favicon_palette_lavender_mist",
-      "source": "favicon_blurred_ellipse_interior",
-      "target": "favicon_palette_lavender_mist"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/favicon.svg",
-      "source_location": "ellipse@fill=#7e14ff",
-      "weight": 1.0,
-      "_src": "favicon_blurred_ellipse_interior",
-      "_tgt": "favicon_palette_deep_violet",
-      "source": "favicon_blurred_ellipse_interior",
-      "target": "favicon_palette_deep_violet"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/favicon.svg",
-      "source_location": "ellipse@fill=#47bfff",
-      "weight": 1.0,
-      "_src": "favicon_blurred_ellipse_interior",
-      "_tgt": "favicon_palette_sky_cyan",
-      "source": "favicon_blurred_ellipse_interior",
-      "target": "favicon_palette_sky_cyan"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.78,
-      "source_file": "public/favicon.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "favicon_blurred_ellipse_interior",
-      "_tgt": "favicon_glossy_depth_design",
-      "source": "favicon_blurred_ellipse_interior",
-      "target": "favicon_glossy_depth_design"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_svg_sprite_root",
-      "_tgt": "icons_symbol_bluesky",
-      "source": "icons_svg_sprite_root",
-      "target": "icons_symbol_bluesky"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_svg_sprite_root",
-      "_tgt": "icons_symbol_discord",
-      "source": "icons_svg_sprite_root",
-      "target": "icons_symbol_discord"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_svg_sprite_root",
-      "_tgt": "icons_symbol_documentation",
-      "source": "icons_svg_sprite_root",
-      "target": "icons_symbol_documentation"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_svg_sprite_root",
-      "_tgt": "icons_symbol_github",
-      "source": "icons_svg_sprite_root",
-      "target": "icons_symbol_github"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_svg_sprite_root",
-      "_tgt": "icons_symbol_social",
-      "source": "icons_svg_sprite_root",
-      "target": "icons_symbol_social"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_svg_sprite_root",
-      "_tgt": "icons_symbol_x",
-      "source": "icons_svg_sprite_root",
-      "target": "icons_symbol_x"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": "g clip-path url(#bluesky-clip)",
-      "weight": 1.0,
-      "_src": "icons_symbol_bluesky",
-      "_tgt": "icons_bluesky_clip_path",
-      "source": "icons_symbol_bluesky",
-      "target": "icons_bluesky_clip_path"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.68,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_symbol_bluesky",
-      "_tgt": "icons_symbol_x",
-      "source": "icons_symbol_bluesky",
-      "target": "icons_symbol_x"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.72,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_symbol_discord",
-      "_tgt": "icons_symbol_github",
-      "source": "icons_symbol_discord",
-      "target": "icons_symbol_github"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.82,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_symbol_documentation",
-      "_tgt": "icons_symbol_social",
-      "source": "icons_symbol_documentation",
-      "target": "icons_symbol_social"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.64,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "icons_symbol_github",
-      "_tgt": "icons_symbol_x",
-      "source": "icons_symbol_github",
-      "target": "icons_symbol_x"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "hero_isometric_layer_stack",
-      "_tgt": "hero_wireframe_top_plate",
-      "source": "hero_isometric_layer_stack",
-      "target": "hero_wireframe_top_plate"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "hero_isometric_layer_stack",
-      "_tgt": "hero_purple_glow_base",
-      "source": "hero_isometric_layer_stack",
-      "target": "hero_purple_glow_base"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "hero_isometric_layer_stack",
-      "_tgt": "hero_black_background",
-      "source": "hero_isometric_layer_stack",
-      "target": "hero_black_background"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.72,
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "hero_isometric_layer_stack",
-      "_tgt": "hero_platform_stack_metaphor",
-      "source": "hero_isometric_layer_stack",
-      "target": "hero_platform_stack_metaphor"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "hero_wireframe_top_plate",
-      "_tgt": "hero_purple_glow_base",
-      "source": "hero_wireframe_top_plate",
-      "target": "hero_purple_glow_base"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "hero_wireframe_top_plate",
-      "_tgt": "hero_dashed_corner_connectors",
-      "source": "hero_wireframe_top_plate",
-      "target": "hero_dashed_corner_connectors"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.64,
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "hero_wireframe_top_plate",
-      "_tgt": "hero_platform_stack_metaphor",
-      "source": "hero_wireframe_top_plate",
-      "target": "hero_platform_stack_metaphor"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "hero_purple_glow_base",
-      "_tgt": "hero_dashed_corner_connectors",
-      "source": "hero_purple_glow_base",
-      "target": "hero_dashed_corner_connectors"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/hero.png",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "hero_purple_glow_base",
-      "_tgt": "hero_black_background",
-      "source": "hero_purple_glow_base",
-      "target": "hero_black_background"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.84,
-      "source_file": "src/assets/react.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "reactsvg_brand_asset",
-      "_tgt": "reactsvg_atom_logo_mark",
-      "source": "reactsvg_brand_asset",
-      "target": "reactsvg_atom_logo_mark"
-    },
-    {
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/react.svg",
-      "source_location": "path fill attribute",
-      "weight": 1.0,
-      "_src": "reactsvg_atom_logo_mark",
-      "_tgt": "reactsvg_brand_cyan",
-      "source": "reactsvg_atom_logo_mark",
-      "target": "reactsvg_brand_cyan"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/vite.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "_src": "vite_logo_svg",
-      "_tgt": "vite_lightning_glyph",
-      "source": "vite_logo_svg",
-      "target": "vite_lightning_glyph"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/vite.svg",
-      "source_location": "aria-labelledby=vite-logo-title",
-      "weight": 1.0,
-      "_src": "vite_logo_svg",
-      "_tgt": "vite_accessible_title",
-      "source": "vite_logo_svg",
-      "target": "vite_accessible_title"
     }
   ],
-  "hyperedges": [
-    {
-      "id": "icons_hyper_sprite_symbol_set",
-      "label": "All reusable symbol definitions in one sprite file",
-      "nodes": [
-        "icons_symbol_bluesky",
-        "icons_symbol_discord",
-        "icons_symbol_documentation",
-        "icons_symbol_github",
-        "icons_symbol_social",
-        "icons_symbol_x"
-      ],
-      "relation": "participate_in",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg"
-    },
-    {
-      "id": "icons_hyper_solid_fill_brand_marks",
-      "label": "Brand marks using solid fill #08060d",
-      "nodes": [
-        "icons_symbol_bluesky",
-        "icons_symbol_discord",
-        "icons_symbol_github",
-        "icons_symbol_x"
-      ],
-      "relation": "form",
-      "confidence": "INFERRED",
-      "confidence_score": 0.78,
-      "source_file": "public/icons.svg"
-    },
-    {
-      "id": "icons_hyper_stroke_ui_icons",
-      "label": "Outlined UI icons sharing purple stroke styling",
-      "nodes": [
-        "icons_svg_sprite_root",
-        "icons_symbol_documentation",
-        "icons_symbol_social"
-      ],
-      "relation": "form",
-      "confidence": "INFERRED",
-      "confidence_score": 0.71,
-      "source_file": "public/icons.svg"
-    },
-    {
-      "id": "hero_hg_layer_stack_geometry",
-      "label": "Two-layer isometric stack with corner guides",
-      "nodes": [
-        "hero_wireframe_top_plate",
-        "hero_purple_glow_base",
-        "hero_dashed_corner_connectors"
-      ],
-      "relation": "form",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/assets/hero.png"
-    },
-    {
-      "id": "hero_hg_neon_on_black_identity",
-      "label": "Purple neon glow on black minimalist shell",
-      "nodes": [
-        "hero_purple_glow_base",
-        "hero_black_background",
-        "hero_isometric_layer_stack"
-      ],
-      "relation": "participate_in",
-      "confidence": "INFERRED",
-      "confidence_score": 0.78,
-      "source_file": "src/assets/hero.png"
-    },
-    {
-      "id": "hero_hg_wireframe_to_solid_contrast",
-      "label": "Wireframe blueprint layer above powered solid base",
-      "nodes": [
-        "hero_wireframe_top_plate",
-        "hero_purple_glow_base",
-        "hero_platform_stack_metaphor"
-      ],
-      "relation": "form",
-      "confidence": "INFERRED",
-      "confidence_score": 0.66,
-      "source_file": "src/assets/hero.png"
-    },
-    {
-      "id": "hyper_rope_keychain_stack",
-      "label": "Verlet rope + drag tail + tubes + Clover transform",
-      "nodes": [
-        "heroscene_scene_inner",
-        "hook_useverletrope",
-        "hook_usedrag",
-        "ropemesh_component",
-        "clovermodel_component"
-      ],
-      "relation": "implement",
-      "confidence": "EXTRACTED",
-      "confidence_score": 0.95,
-      "source_file": "src/components/three/HeroScene.tsx"
-    },
-    {
-      "id": "hyper_zustand_theme_bus",
-      "label": "Palette store fans out to 3D and marketing UI",
-      "nodes": [
-        "store_usecolorstore",
-        "heroscene_scene_inner",
-        "clovermodel_component",
-        "ui_hero_text",
-        "ui_color_switcher",
-        "ui_story_panel",
-        "ui_phone_mockup",
-        "ui_scan_modal"
-      ],
-      "relation": "participate_in",
-      "confidence": "INFERRED",
-      "confidence_score": 0.87,
-      "source_file": "src/store/useColorStore.ts"
-    },
-    {
-      "id": "hyper_nfc_scan_coupling",
-      "label": "Bottom-center scan zone ties canvas detection to phone affordance + modal",
-      "nodes": [
-        "heroscene_scene_inner",
-        "ui_phone_mockup",
-        "ui_scan_modal",
-        "store_usecolorstore"
-      ],
-      "relation": "form",
-      "confidence": "INFERRED",
-      "confidence_score": 0.86,
-      "source_file": "src/components/three/HeroScene.tsx"
-    }
-  ]
+  "hyperedges": []
 }

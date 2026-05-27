@@ -5,17 +5,12 @@
 import { useRef, forwardRef, useImperativeHandle, useEffect } from 'react'
 import * as THREE from 'three'
 // Import line classes for a lightweight rope band
-import { Line2 } from 'three/examples/jsm/lines/Line2'
-import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
-import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
+import { Line2 } from 'three/addons/lines/Line2.js'
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js'
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js'
 
 // Detect mobile devices to reduce update frequency
 const IS_MOBILE = typeof window !== 'undefined' && Math.min(screen.width, screen.height) < 768
-
-/** Helper to darken a hex color for the rope material */
-function darken(hex: string, factor = 0.68): THREE.Color {
-  return new THREE.Color(hex).multiplyScalar(factor)
-}
 
 export interface RopeMeshHandle {
   /** Update rope geometry based on physics points */
@@ -77,8 +72,9 @@ export const RopeMesh = forwardRef<RopeMeshHandle, object>(function RopeMesh(_pr
       prevColor.current = color
       prevStroke.current = ropeStroke
 
-      // Update line material color (darkened for visual consistency)
-      lineMaterial.current.color.copy(darken(color))
+      // Update line material color to match model (darkened by a factor because LineMaterial is unlit)
+      const c = new THREE.Color(color).multiplyScalar(0.58)
+      lineMaterial.current.color.copy(c)
       // Convert ropeStroke (world units) to a reasonable pixel width
       const pixelWidth = Math.max(1, ropeStroke * 800) // scaling factor tuned for visibility
       lineMaterial.current.linewidth = pixelWidth

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useColorStore } from '../store/useColorStore'
 import { setTapTargetRect } from '../lib/tapTargetRect'
+import { modelPosition } from '../lib/modelPosition'
 
 type ProximityLevel = 'far' | 'near' | 'inside'
 
@@ -25,10 +26,8 @@ const CONFETTI = Array.from({ length: 16 }, (_, i) => ({
 
 export function PhoneMockup() {
   const { t } = useTranslation()
-  const scanZoneRef = useRef<HTMLDivElement>(null)
+  const scanZoneRef = useRef<HTMLButtonElement>(null)
   const {
-    cloverScreenX,
-    cloverScreenY,
     scanTriggered,
     entry,
     setScanTriggered,
@@ -38,6 +37,8 @@ export function PhoneMockup() {
   } = useColorStore()
   const [proximityLevel, setProximityLevel] = useState<ProximityLevel>('far')
   const [isRippling, setIsRippling] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(true)
+  const dateStr = useMemo(() => new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }), [])
 
   const islandGlowStyle = useMemo(() => {
     const h = entry.hex
@@ -57,27 +58,38 @@ export function PhoneMockup() {
       : t('phone.nfc')
 
   useEffect(() => {
-    if (!scanZoneRef.current || scanTriggered) return
-    const rect = scanZoneRef.current.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    const dist = Math.hypot(cloverScreenX - cx, cloverScreenY - cy)
+    if (scanTriggered) return
+    let rafId = 0
+    let last = 0
+    const POLL_INTERVAL = 100 // ~10fps instead of 60fps
+    const tick = (now: number) => {
+      rafId = requestAnimationFrame(tick)
+      if (now - last < POLL_INTERVAL) return
+      last = now
+      if (!scanZoneRef.current) return
+      const rect = scanZoneRef.current.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const dist = Math.hypot(modelPosition.screenX - cx, modelPosition.screenY - cy)
 
-    if (dist > 120) {
-      setProximityLevel('far')
-    } else if (dist > 40) {
-      setProximityLevel('near')
-    } else {
-      setProximityLevel('inside')
-      if (!scanTriggered) {
+      if (dist > 120) {
+        setProximityLevel('far')
+      } else if (dist > 40) {
+        setProximityLevel('near')
+      } else {
+        setProximityLevel('inside')
         setScanTriggered(true)
-        setIsRippling(true)
-        setTimeout(() => setIsRippling(false), 1200)
+        setTimeout(() => {
+          setShowTooltip(false)
+          setIsRippling(true)
+          setTimeout(() => setIsRippling(false), 1200)
+        }, 0)
       }
     }
-  }, [cloverScreenX, cloverScreenY, scanTriggered, setScanTriggered])
+    rafId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafId)
+  }, [scanTriggered, setScanTriggered])
 
-  // Track the notch client rect in the viewport to let R3F coordinate helper map it to 3D world space
   useEffect(() => {
     const updateRect = () => {
       if (scanZoneRef.current) {
@@ -93,12 +105,10 @@ export function PhoneMockup() {
       }
     }
 
-    // Settle timeout to ensure browser layout is complete
     const t = setTimeout(updateRect, 100)
-
     window.addEventListener('resize', updateRect, { passive: true })
     window.addEventListener('scroll', updateRect, { passive: true })
-    
+
     return () => {
       clearTimeout(t)
       window.removeEventListener('resize', updateRect)
@@ -107,60 +117,49 @@ export function PhoneMockup() {
     }
   }, [])
 
-  // Play NFC chime sound and trigger haptic vibration on successful scan
+  const audioCtxRef = useRef<AudioContext | null>(null)
+
   useEffect(() => {
     if (scanTriggered) {
-      // 1. Trigger haptic vibration on mobile
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        try {
-          navigator.vibrate(60) // Short 60ms click vibration
-        } catch (e) {
-          console.warn('Vibration failed', e)
-        }
+        try { navigator.vibrate(60) } catch { /* noop */ }
       }
-      
-      // 2. Play synthesized premium NFC chime sound
+
       try {
-        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext
+        const AudioContextClass = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
         if (AudioContextClass) {
-          const ctx = new AudioContextClass()
-          
-          // First note (A5, 880Hz)
+          if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
+            audioCtxRef.current = new AudioContextClass()
+          }
+          const ctx = audioCtxRef.current
+
           const osc1 = ctx.createOscillator()
           const gain1 = ctx.createGain()
           osc1.connect(gain1)
           gain1.connect(ctx.destination)
-          
           osc1.type = 'sine'
           osc1.frequency.setValueAtTime(880, ctx.currentTime)
           gain1.gain.setValueAtTime(0, ctx.currentTime)
           gain1.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 0.02)
           gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15)
-          
           osc1.start(ctx.currentTime)
           osc1.stop(ctx.currentTime + 0.15)
-          
-          // Second note (D6, 1174.66Hz) - starts slightly later for a gorgeous double beep
+
           const osc2 = ctx.createOscillator()
           const gain2 = ctx.createGain()
           osc2.connect(gain2)
           gain2.connect(ctx.destination)
-          
           osc2.type = 'sine'
           osc2.frequency.setValueAtTime(1174.66, ctx.currentTime + 0.08)
           gain2.gain.setValueAtTime(0, ctx.currentTime + 0.08)
           gain2.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.10)
           gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3)
-          
           osc2.start(ctx.currentTime + 0.08)
           osc2.stop(ctx.currentTime + 0.3)
         }
-      } catch (e) {
-        console.warn('Web Audio synthesis failed', e)
-      }
+      } catch { /* noop */ }
     }
   }, [scanTriggered])
-
 
   return (
     <motion.div
@@ -176,32 +175,35 @@ export function PhoneMockup() {
       <div className="absolute w-[3px] h-8 bg-[#d4d4d8] rounded-full -left-[3px] top-[144px]" aria-hidden />
       <div className="absolute w-[3px] h-10 bg-[#d4d4d8] rounded-full -right-[3px] top-[118px]" aria-hidden />
 
-      {/* === FLOATING "Tap here" TOOLTIP (outside screen, above phone) === */}
-      <motion.div
-        className="absolute -top-[38px] left-1/2 -translate-x-1/2 z-40 flex flex-col items-center pointer-events-none"
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <motion.div
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center"
-        >
-          <div className="relative bg-[#1a1a1a] text-white text-xs font-semibold py-1.5 px-4 rounded-full shadow-lg whitespace-nowrap">
-            Tap here
-            {/* Down arrow */}
+      {/* Floating "Tap here" tooltip */}
+      <AnimatePresence>
+        {showTooltip && !scanTriggered && (
+          <motion.div
+            className="absolute -top-[38px] left-1/2 -translate-x-1/2 z-40 flex flex-col items-center pointer-events-none"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ delay: 1.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
             <div
-              className="absolute left-1/2 -translate-x-1/2 -bottom-[6px] w-0 h-0"
-              style={{
-                borderLeft: '6px solid transparent',
-                borderRight: '6px solid transparent',
-                borderTop: '6px solid #1a1a1a',
-              }}
-            />
-          </div>
-        </motion.div>
-      </motion.div>
+              className="flex flex-col items-center"
+              style={{ animation: 'css-float-y 2.5s ease-in-out infinite' }}
+            >
+              <div className="relative bg-[#1a1a1a] text-white text-xs font-semibold py-1.5 px-4 rounded-full shadow-lg whitespace-nowrap">
+                Tap here
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 -bottom-[6px] w-0 h-0"
+                  style={{
+                    borderLeft: '6px solid transparent',
+                    borderRight: '6px solid transparent',
+                    borderTop: '6px solid #1a1a1a',
+                  }}
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Screen */}
       <div className="relative w-full h-full bg-[#fafafc] rounded-[34px] overflow-hidden flex flex-col">
@@ -212,17 +214,18 @@ export function PhoneMockup() {
         </div>
 
         {/* Dynamic Island / NFC zone */}
-        <motion.div
+        <motion.button
           ref={scanZoneRef}
           onClick={() => {
             if (!scanTriggered && !isAutoScanning) {
+              setShowTooltip(false)
               setIsAutoScanning(true)
             }
           }}
           className="absolute top-2 left-1/2 -translate-x-1/2 w-[72px] h-6 bg-[#1a1a1a] rounded-full z-20 cursor-pointer"
           style={islandGlowStyle}
           animate={scanTriggered ? { scale: [1, 1.05, 1] } : proximityLevel === 'near' ? { scale: [1, 1.03, 1] } : { scale: 1 }}
-          transition={scanTriggered || proximityLevel === 'near' ? { duration: 1.2, repeat: Infinity, ease: "easeInOut" } : {}}
+          transition={scanTriggered || proximityLevel === 'near' ? { duration: 1.2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
           aria-label="NFC scan zone"
         />
 
@@ -238,24 +241,39 @@ export function PhoneMockup() {
         </div>
 
         {/* Label below island */}
-        <div className="absolute top-9 left-1/2 -translate-x-1/2 text-[8px] font-bold tracking-[0.12em] uppercase text-(--ink-muted) whitespace-nowrap z-20 transition-opacity duration-300">
-          {labelText}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={labelText}
+            className="absolute top-9 left-1/2 -translate-x-1/2 text-[8px] font-bold tracking-[0.12em] uppercase text-(--ink-muted) whitespace-nowrap z-20"
+            initial={{ opacity: 0, y: -2 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 2 }}
+            transition={{ duration: 0.15 }}
+          >
+            {labelText}
+          </motion.div>
+        </AnimatePresence>
 
         {/* Ripple on scan */}
         <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[72px] h-6 pointer-events-none z-10">
-          {isRippling &&
-            [0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="absolute inset-0 rounded-full border-[1.5px] border-solid opacity-0 animate-[nfc-ripple_900ms_ease-out_forwards]"
-                style={{ borderColor: entry.hex, animationDelay: `${i * 200}ms` }}
-              />
-            ))}
+          <AnimatePresence>
+            {isRippling &&
+              [0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  className="absolute inset-0 rounded-full border-[1.5px]"
+                  style={{ borderColor: entry.hex }}
+                  initial={{ scale: 1, opacity: 0.8 }}
+                  animate={{ scale: 2.5, opacity: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.9, delay: i * 0.2, ease: "easeOut" }}
+                />
+              ))}
+          </AnimatePresence>
         </div>
 
-        {/* Background gradient container */}
-        <div 
+        {/* Background gradient */}
+        <div
           className="absolute inset-0 z-0 transition-all duration-700"
           style={{
             background: `radial-gradient(circle at 50% 30%, ${hexToRgba(entry.hex, 0.16)} 0%, #fafafc 75%)`
@@ -265,10 +283,10 @@ export function PhoneMockup() {
         {/* Lockscreen Clock */}
         <div className="absolute top-16 left-0 right-0 flex flex-col items-center pointer-events-none select-none z-10 text-center">
           <span className="text-[2.6rem] font-light text-(--ink) tracking-tight leading-none">9:41</span>
-          <span className="text-[0.62rem] font-bold text-(--ink-muted) uppercase tracking-widest mt-1.5">Wednesday, May 20</span>
+          <span className="text-[0.62rem] font-bold text-(--ink-muted) uppercase tracking-widest mt-1.5">{dateStr}</span>
         </div>
 
-        {/* Lockscreen Breathing prompt */}
+        {/* Ready to scan prompt */}
         <AnimatePresence>
           {!scanTriggered && (
             <motion.div
@@ -277,11 +295,9 @@ export function PhoneMockup() {
               exit={{ opacity: 0 }}
               className="absolute bottom-16 left-0 right-0 flex flex-col items-center pointer-events-none select-none z-10 text-center"
             >
-              <motion.div
+              <div
                 className="w-2 h-2 rounded-full mb-2"
-                style={{ backgroundColor: entry.hex }}
-                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                style={{ backgroundColor: entry.hex, animation: 'css-breathe-dot 2s ease-in-out infinite' }}
               />
               <span className="text-[0.65rem] font-black uppercase tracking-widest text-(--ink-muted)">Ready to scan</span>
               <span className="text-[0.55rem] text-(--ink-muted)/60 mt-0.5">Hold Clover near top</span>
@@ -289,7 +305,7 @@ export function PhoneMockup() {
           )}
         </AnimatePresence>
 
-        {/* Simulated iOS Scan Result Card */}
+        {/* Scan Result Card */}
         <AnimatePresence>
           {scanTriggered && (
             <motion.div
@@ -297,12 +313,10 @@ export function PhoneMockup() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-x-3 top-28 z-30 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-black/[0.04] text-left cursor-pointer hover:bg-white transition-colors"
-              onClick={() => {
-                resetScan()
-              }}
+              className="absolute inset-x-3 top-28 z-30 bg-white rounded-2xl p-4 shadow-xl border border-black/[0.04] text-left cursor-pointer hover:bg-white transition-colors"
+              onClick={() => { resetScan(); setShowTooltip(true) }}
             >
-              {/* Confetti effect inside the screen */}
+              {/* Confetti */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
                 {CONFETTI.map((c, i) => (
                   <span

@@ -21,5 +21,5 @@ export function useScrollReveal(ref: RefObject<HTMLElement | null>) {
     elements.forEach((el) => observer.observe(el))
 
     return () => observer.disconnect()
-  }, [])
+  }, [ref])
 }

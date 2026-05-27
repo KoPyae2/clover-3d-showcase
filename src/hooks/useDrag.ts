@@ -184,7 +184,7 @@ export function useDrag(
         endDrag()
       }
     }
-  }, [moveRoot, captureEl, toWorld])
+  }, [moveRoot, captureEl, toWorld, beginDrag, endDrag, mode])
 
   const onGrabWorldRef = useRef(opts?.onGrabWorld)
   useLayoutEffect(() => {

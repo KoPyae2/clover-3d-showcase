@@ -6,9 +6,17 @@ import type { HeroStat } from '../../data/showcaseContent'
 import { useColorStore } from '../../store/useColorStore'
 import { CloverDecor } from '../CloverDecor'
 
-/* ------------------------------------------------------------------ */
-/*  Icons                                                              */
-/* ------------------------------------------------------------------ */
+const stagger = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+  },
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } },
+}
 
 function BoltIcon() {
   return (
@@ -56,10 +64,6 @@ const iconMap: Record<HeroStat['icon'], () => React.ReactElement> = {
   signal: SignalIcon,
 }
 
-/* ------------------------------------------------------------------ */
-/*  Decorative Watermarks                                              */
-/* ------------------------------------------------------------------ */
-
 function StarIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg viewBox="0 0 24 24" className={className} style={style} aria-hidden="true">
@@ -70,10 +74,6 @@ function StarIcon({ className, style }: { className?: string; style?: React.CSSP
     </svg>
   )
 }
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                           */
-/* ------------------------------------------------------------------ */
 
 export function HeroSection() {
   const { t } = useTranslation()
@@ -92,16 +92,16 @@ export function HeroSection() {
   return (
     <section
       id="section-hero"
-      className="page-section min-h-screen relative flex items-center overflow-hidden"
+      className="page-section min-h-[100dvh] relative flex items-center overflow-hidden pt-16 md:pt-24 pb-12"
       aria-label="Hero"
     >
-      {/* Decorative Blur - Full bleed and smooth transitioning */}
-      <div className="absolute top-1/12 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-20 pointer-events-none transition-all duration-1000" style={{ background: color }} />
-      <div className="absolute bottom-1/10 -left-40 w-[500px] h-[500px] rounded-full blur-[120px] opacity-8 pointer-events-none transition-all duration-1000" style={{ background: 'var(--clover-mid)' }} />
+      {/* Decorative Blur Orbs */}
+      <div className="absolute top-1/12 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-20 pointer-events-none transition-all duration-1000 hidden md:block" style={{ background: color }} />
+      <div className="absolute bottom-1/10 -left-40 w-[500px] h-[500px] rounded-full blur-[120px] opacity-8 pointer-events-none transition-all duration-1000 hidden md:block" style={{ background: 'var(--clover-mid)' }} />
 
-      {/* Slowly rotating mega clover (right, watermark) */}
+      {/* Rotating mega clover watermark */}
       <motion.div
-        className="absolute z-0 pointer-events-none"
+        className="absolute z-0 pointer-events-none hidden md:block"
         style={{ top: '-12%', right: '-10%', color, opacity: 0.055 }}
         animate={{ rotate: 360 }}
         transition={{ duration: 150, repeat: Infinity, ease: 'linear' }}
@@ -109,7 +109,6 @@ export function HeroSection() {
         <CloverDecor style={{ width: '560px', height: '560px' }} color={color} />
       </motion.div>
 
-      {/* Small accent clover bottom-left */}
       <CloverDecor
         className="absolute z-0 pointer-events-none"
         style={{
@@ -124,80 +123,71 @@ export function HeroSection() {
       />
 
       {/* Floating star sparkles */}
-      <StarIcon
-        className="absolute z-0"
-        style={{ top: '11%', right: '27%', width: '14px', height: '14px', color, opacity: 0.22 }}
-      />
-      <StarIcon
-        className="absolute z-0"
-        style={{ top: '27%', right: '14%', width: '9px', height: '9px', color, opacity: 0.14 }}
-      />
-      <StarIcon
-        className="absolute z-0"
-        style={{ top: '61%', right: '21%', width: '12px', height: '12px', color, opacity: 0.16 }}
-      />
+      <StarIcon className="absolute z-0" style={{ top: '11%', right: '27%', width: '14px', height: '14px', color, opacity: 0.22 }} />
+      <StarIcon className="absolute z-0" style={{ top: '27%', right: '14%', width: '9px', height: '9px', color, opacity: 0.14 }} />
+      <StarIcon className="absolute z-0" style={{ top: '61%', right: '21%', width: '12px', height: '12px', color, opacity: 0.16 }} />
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 lg:gap-16 items-center">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 lg:gap-16 items-center">
+
           {/* Left Content */}
           <motion.div
-            className="lg:col-span-8"
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="lg:col-span-7"
+            variants={stagger}
+            initial="hidden"
+            animate="show"
           >
-            <motion.div 
-              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white shadow-sm border border-black/[0.05] mb-8 mr-[38%] sm:mr-[20%] lg:mr-0 max-w-[calc(100%-38%)] sm:max-w-[calc(100%-20%)] lg:max-w-none"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+            {/* Eyebrow + Color Badge */}
+            <motion.div
+              variants={fadeUp}
+              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white shadow-sm border border-black/[0.05] mb-8"
             >
-              <div className="w-2 h-2 rounded-full animate-pulse shrink-0" style={{ background: color }} />
+              <div
+                className="w-2 h-2 rounded-full shrink-0"
+                style={{ background: color, animation: 'css-breathe-dot 2s ease-in-out infinite' }}
+              />
               <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-(--ink) truncate">
                 {t('product.name')} <span className="opacity-40">/</span> {t(`colors.${entry.id}.label`)}
               </span>
             </motion.div>
 
-            <motion.h1 
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black mb-6 leading-[0.95] tracking-tight pr-[38%] sm:pr-[20%] lg:pr-0"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+            {/* Headline */}
+            <motion.h1
+              variants={fadeUp}
+              className="text-4xl sm:text-6xl md:text-7xl xl:text-7xl 2xl:text-8xl font-black mb-6 leading-[0.95] tracking-tight lg:pr-0"
             >
-              {t('hero.title1')} <br className="hidden sm:inline" />
-              {t('hero.title2')} <span 
-                className="text-transparent bg-clip-text transition-all duration-1000" 
+              {t('hero.title1')}{' '}
+              {t('hero.title2')}{' '}
+              <span
+                className="text-transparent bg-clip-text transition-all duration-700"
                 style={{ backgroundImage: activeGradient }}
               >
                 {t('hero.title3')}
               </span>
             </motion.h1>
 
-            <motion.p 
-              className="text-base sm:text-lg md:text-xl text-(--ink-muted) mb-10 max-w-xl font-medium leading-relaxed pr-[38%] sm:pr-[20%] lg:pr-0"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
+            {/* Subtitle */}
+            <motion.p
+              variants={fadeUp}
+              className="text-base sm:text-lg md:text-xl text-(--ink-muted) mb-8 max-w-xl font-medium leading-relaxed"
             >
-              <span className="text-(--ink) font-extrabold">{t(`colors.${entry.id}.tagline`)}</span> {t('hero.subtitle')}
+              <span className="text-(--ink) font-extrabold">{t(`colors.${entry.id}.tagline`)}</span>{' '}
+              {t('hero.subtitle')}
             </motion.p>
 
-            {/* Swatches in Hero */}
-            <motion.div 
-              className="bg-white rounded-[24px] sm:rounded-[32px] p-4 sm:p-6 mb-12 w-full max-w-[280px] sm:max-w-sm lg:max-w-fit shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-black/[0.03] mr-[38%] sm:mr-[20%] lg:mr-0"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5 }}
+            {/* Color Swatches Panel */}
+            <motion.div
+              variants={fadeUp}
+              className="bg-white rounded-[28px] sm:rounded-[32px] p-4 sm:p-5 mb-10 w-full max-w-[360px] sm:max-w-[400px] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-black/[0.03]"
             >
               <div className="flex flex-col gap-3 min-w-0">
                 <div className="flex flex-col gap-0.5 min-w-0">
                   <span className="text-[0.6rem] sm:text-[0.65rem] font-black uppercase tracking-[0.2em] text-(--ink-muted) block">
                     {t('hero.selectFinish')}
                   </span>
-                  <span 
-                    className="text-[0.88rem] sm:text-base font-extrabold tracking-tight transition-colors duration-300 block truncate" 
-                    style={{ color: color }}
+                  <span
+                    className="text-[0.88rem] sm:text-base font-extrabold tracking-tight transition-colors duration-300 block truncate"
+                    style={{ color }}
                     title={t(`colors.${entry.id}.label`)}
                   >
                     {t(`colors.${entry.id}.label`)}
@@ -207,8 +197,11 @@ export function HeroSection() {
               </div>
             </motion.div>
 
-            {/* Features/Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {/* Stats Grid */}
+            <motion.div
+              variants={fadeUp}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl"
+            >
               {HERO_STATS.map((stat, i) => {
                 const Icon = iconMap[stat.icon]
                 const statKeys = ['latency', 'finishes', 'battery'] as const
@@ -216,22 +209,24 @@ export function HeroSection() {
                 return (
                   <motion.div
                     key={stat.k}
-                    className="flex flex-col p-4 sm:p-6 rounded-[24px] border border-black/[0.03] bg-white transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group shadow-sm hover:shadow-xl mr-[38%] sm:mr-[20%] md:mr-0"
-                    style={{
-                      borderColor: 'rgba(0, 0, 0, 0.03)',
-                    }}
+                    className="flex flex-col p-4 sm:p-5 rounded-[24px] border border-black/[0.04] bg-white transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group shadow-sm hover:shadow-xl"
                     whileHover={{
                       borderColor: color,
                       boxShadow: `0 12px 30px -10px ${entry.glow}`,
                     }}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 + i * 0.1 }}
+                    transition={{ delay: 0.5 + i * 0.12, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <div className="flex items-center gap-2.5 mb-3">
-                      <div 
+                    {/* Shimmer on hover */}
+                    <div className="absolute inset-0 rounded-[24px] overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    </div>
+
+                    <div className="flex items-center gap-2.5 mb-3 relative">
+                      <div
                         className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center transition-all duration-300 group-hover:scale-105 shrink-0"
-                        style={{ color: color, border: `1px solid ${color}20` }}
+                        style={{ color, border: `1px solid ${color}20` }}
                       >
                         <Icon />
                       </div>
@@ -239,36 +234,34 @@ export function HeroSection() {
                         {t(`stats.${key}.k`)}
                       </span>
                     </div>
-                    
-                    <div className="text-[1.1rem] font-black text-(--ink) font-mono tracking-tight leading-none mb-1">
+
+                    <div className="text-[1.1rem] font-black text-(--ink) font-mono tracking-tight leading-none mb-1 relative">
                       {t(`stats.${key}.v`)}
                     </div>
-                    
-                    <p className="text-[0.75rem] text-(--ink-muted) leading-snug font-medium">
+
+                    <p className="text-[0.75rem] text-(--ink-muted) leading-snug font-medium relative">
                       {t(`stats.${key}.sub`)}
                     </p>
                   </motion.div>
                 )
               })}
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Right Space - Reserved for 3D model */}
-          <div className="hidden lg:flex items-center justify-center relative min-h-[600px] lg:col-span-2">
-             {/* This area is populated by the CloverOverlayScene in App.tsx */}
-             <motion.div 
-                className="absolute bottom-10 left-0 flex items-center gap-3 text-(--ink-muted)"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.5 }}
-                transition={{ delay: 1 }}
-             >
-                <MouseIcon />
-                <span className="text-[0.65rem] font-bold uppercase tracking-widest whitespace-nowrap">{t('hero.dragToRotate')}</span>
-             </motion.div>
+          {/* Right Space - Reserved for 3D model overlay */}
+          <div className="hidden lg:flex lg:col-span-3 items-center justify-center relative min-h-[600px]">
+            <motion.div
+              className="absolute bottom-10 left-0 flex items-center gap-3 text-(--ink-muted)"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              transition={{ delay: 1.2 }}
+            >
+              <MouseIcon />
+              <span className="text-[0.65rem] font-bold uppercase tracking-widest whitespace-nowrap">{t('hero.dragToRotate')}</span>
+            </motion.div>
           </div>
         </div>
       </div>
     </section>
   )
 }
-

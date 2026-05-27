@@ -8,7 +8,7 @@ export function SiteFooter() {
     <footer className="relative mt-20 border-t border-black/[0.05] bg-white/50 backdrop-blur-sm" aria-label="Site footer">
       <div className="max-w-[1200px] mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-          {/* Brand Col */}
+          {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <CloverDecor className="w-8 h-8" color="var(--clover)" />
@@ -19,7 +19,7 @@ export function SiteFooter() {
             </p>
           </div>
 
-          {/* Links Col 1 */}
+          {/* Product Links */}
           <div>
             <h4 className="text-[0.7rem] font-black uppercase tracking-widest text-(--ink) mb-6">{t('footer.product')}</h4>
             <ul className="space-y-4">
@@ -29,7 +29,7 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Links Col 2 */}
+          {/* Resources */}
           <div>
             <h4 className="text-[0.7rem] font-black uppercase tracking-widest text-(--ink) mb-6">{t('footer.resources')}</h4>
             <ul className="space-y-4">
@@ -52,21 +52,17 @@ export function SiteFooter() {
           <p className="text-[0.8rem] text-(--ink-muted) font-medium">
             &copy; {new Date().getFullYear()} {t('footer.copyright')}
           </p>
-          
+
           <div className="flex items-center gap-6">
             <span className="text-[0.7rem] font-bold text-(--ink-muted) px-3 py-1 rounded-full bg-black/[0.03] border border-black/[0.03]">
               {t('product.edition')}
             </span>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[0.7rem] font-bold text-(--ink-muted) uppercase tracking-wider">{t('footer.systemsActive')}</span>
-            </div>
           </div>
         </div>
       </div>
-      
-      {/* Decorative gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-(--clover) via-(--clover-mid) to-emerald-400" />
+
+      {/* Bottom gradient line */}
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-(--clover) via-(--clover-mid) to-emerald-400" />
     </footer>
   )
 }

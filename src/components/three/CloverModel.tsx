@@ -112,6 +112,8 @@ export const CloverModel = forwardRef<THREE.Group, CloverModelProps>(function Cl
         mat.roughness = 1
         mat.metalness = 0
         mat.envMapIntensity = 0
+        mat.emissive.set(0x000000)
+        mat.emissiveIntensity = 0
         mat.needsUpdate = true
       }
     }
@@ -140,6 +142,8 @@ export const CloverModel = forwardRef<THREE.Group, CloverModelProps>(function Cl
         const mat = materials[name]
         if (mat instanceof THREE.MeshStandardMaterial) {
           mat.color.set(color)
+          mat.emissive.set(color)
+          mat.emissiveIntensity = 0.18
         }
       }
       initialColorAppliedRef.current = true
@@ -214,6 +218,8 @@ export const CloverModel = forwardRef<THREE.Group, CloverModelProps>(function Cl
       const mat = materials[name]
       if (mat instanceof THREE.MeshStandardMaterial) {
         mat.color.lerp(targetColorRef.current, 0.08)
+        mat.emissive.copy(targetColorRef.current)
+        mat.emissiveIntensity = THREE.MathUtils.lerp(mat.emissiveIntensity, 0.18, 0.08)
       }
     }
   })
